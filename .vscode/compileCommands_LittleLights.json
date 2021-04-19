@@ -1,0 +1,67 @@
+[
+    {
+        "file": "D:\\\\ParallelsGames\\\\LittleLights\\\\ProyectoUE4\\\\LittleLights\\\\Source\\\\LittleLights\\\\LittleLights.Build.cs",
+        "command": "cl.exe @\"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\.vscode\\compileCommands_LittleLights\\LittleLights.190.rsp\"",
+        "directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+    },
+    {
+        "file": "D:\\\\ParallelsGames\\\\LittleLights\\\\ProyectoUE4\\\\LittleLights\\\\Source\\\\LittleLights\\\\LittleLights.cpp",
+        "command": "cl.exe @\"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\.vscode\\compileCommands_LittleLights\\LittleLights.190.rsp\"",
+        "directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+    },
+    {
+        "file": "D:\\\\ParallelsGames\\\\LittleLights\\\\ProyectoUE4\\\\LittleLights\\\\Source\\\\LittleLights\\\\LittleLights.h",
+        "command": "cl.exe @\"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\.vscode\\compileCommands_LittleLights\\LittleLights.190.rsp\"",
+        "directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+    },
+    {
+        "file": "D:\\\\ParallelsGames\\\\LittleLights\\\\ProyectoUE4\\\\LittleLights\\\\Source\\\\LittleLights\\\\LittleLightsGameModeBase.cpp",
+        "command": "cl.exe @\"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\.vscode\\compileCommands_LittleLights\\LittleLights.190.rsp\"",
+        "directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+    },
+    {
+        "file": "D:\\\\ParallelsGames\\\\LittleLights\\\\ProyectoUE4\\\\LittleLights\\\\Source\\\\LittleLights\\\\LittleLightsGameModeBase.h",
+        "command": "cl.exe @\"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\.vscode\\compileCommands_LittleLights\\LittleLights.190.rsp\"",
+        "directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+    },
+    {
+        "file": "d:\\\\ParallelsGames\\\\LittleLights\\\\ProyectoUE4\\\\LittleLights\\\\Source\\\\LittleLights\\\\Personaje.h",
+        "command": "cl.exe @\"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\.vscode\\compileCommands_LittleLights\\LittleLights.190.rsp\"",
+        "directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+    },
+    {
+        "file": "d:\\\\ParallelsGames\\\\LittleLights\\\\ProyectoUE4\\\\LittleLights\\\\Source\\\\LittleLights\\\\Personaje.cpp",
+        "command": "cl.exe @\"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\.vscode\\compileCommands_LittleLights\\LittleLights.190.rsp\"",
+        "directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+    },
+    {
+        "file": "d:\\\\ParallelsGames\\\\LittleLights\\\\ProyectoUE4\\\\LittleLights\\\\Source\\\\LittleLights\\\\LL_GameModeBase.cpp",
+        "command": "cl.exe @\"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\.vscode\\compileCommands_LittleLights\\LittleLights.190.rsp\"",
+        "directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+    },
+    {
+        "file": "d:\\\\ParallelsGames\\\\LittleLights\\\\ProyectoUE4\\\\LittleLights\\\\Source\\\\LittleLights\\\\LL_GameModeBase.h",
+        "command": "cl.exe @\"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\.vscode\\compileCommands_LittleLights\\LittleLights.190.rsp\"",
+        "directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+    },
+    {
+        "file": "d:\\\\ParallelsGames\\\\LittleLights\\\\ProyectoUE4\\\\LittleLights\\\\Source\\\\LittleLights\\\\LL_PlayerControllerBase.h",
+        "command": "cl.exe @\"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\.vscode\\compileCommands_LittleLights\\LittleLights.190.rsp\"",
+        "directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+    },
+    {
+        "file": "d:\\\\ParallelsGames\\\\LittleLights\\\\ProyectoUE4\\\\LittleLights\\\\Source\\\\LittleLights\\\\LL_PlayerControllerBase.cpp",
+        "command": "cl.exe @\"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\.vscode\\compileCommands_LittleLights\\LittleLights.190.rsp\"",
+        "directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+    },
+    {
+        "file": "d:\\\\ParallelsGames\\\\LittleLights\\\\ProyectoUE4\\\\LittleLights\\\\Source\\\\LittleLights\\\\Pickable_Object.h",
+        "command": "cl.exe @\"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\.vscode\\compileCommands_LittleLights\\LittleLights.190.rsp\"",
+        "directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+    },
+    {
+        "file": "d:\\\\ParallelsGames\\\\LittleLights\\\\ProyectoUE4\\\\LittleLights\\\\Source\\\\LittleLights\\\\Pickable_Object.cpp",
+        "command": "cl.exe @\"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\.vscode\\compileCommands_LittleLights\\LittleLights.190.rsp\"",
+        "directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+    }
+]
