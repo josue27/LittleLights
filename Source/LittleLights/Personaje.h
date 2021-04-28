@@ -4,8 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "Personaje.generated.h"
 
+#include "Personaje.generated.h"
+class ATorch;
 class UArrowComponent;
 UCLASS()
 class LITTLELIGHTS_API APersonaje : public ACharacter
@@ -36,15 +37,28 @@ public:
 	int32 BengalasDisponibles = 3;
 	UFUNCTION(BlueprintPure)
 	int32 GetBengalas();
-	
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bCanMove = true;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	bool bFlaresEnabled	= false;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	bool bStartWithLight= true;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TSubclassOf<AActor> Flare;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ATorch> TorchClass;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	ATorch* Torch;
+	UFUNCTION()
+	void LightUpTorch();
 
 private:
 	void MovimientoForward(float AxisValue);
 	void MovimientoRight(float AxisValue);
 	void RotacionHorizontal(float AxisValue);
 	void UpdateRotacion();
-
+	UFUNCTION()
+	void ShootFlare();
 	FQuat RotacionFinal;
 
 };

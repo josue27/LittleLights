@@ -63,5 +63,25 @@
         "file": "d:\\\\ParallelsGames\\\\LittleLights\\\\ProyectoUE4\\\\LittleLights\\\\Source\\\\LittleLights\\\\Pickable_Object.cpp",
         "command": "cl.exe @\"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\.vscode\\compileCommands_LittleLights\\LittleLights.190.rsp\"",
         "directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+    },
+    {
+        "file": "d:\\\\ParallelsGames\\\\LittleLights\\\\ProyectoUE4\\\\LittleLights\\\\Source\\\\LittleLights\\\\Torch.h",
+        "command": "cl.exe @\"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\.vscode\\compileCommands_LittleLights\\LittleLights.190.rsp\"",
+        "directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+    },
+    {
+        "file": "d:\\\\ParallelsGames\\\\LittleLights\\\\ProyectoUE4\\\\LittleLights\\\\Source\\\\LittleLights\\\\Torch.cpp",
+        "command": "cl.exe @\"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\.vscode\\compileCommands_LittleLights\\LittleLights.190.rsp\"",
+        "directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+    },
+    {
+        "file": "d:\\\\ParallelsGames\\\\LittleLights\\\\ProyectoUE4\\\\LittleLights\\\\Source\\\\LittleLights\\\\FirePit.h",
+        "command": "cl.exe @\"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\.vscode\\compileCommands_LittleLights\\LittleLights.190.rsp\"",
+        "directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
+    },
+    {
+        "file": "d:\\\\ParallelsGames\\\\LittleLights\\\\ProyectoUE4\\\\LittleLights\\\\Source\\\\LittleLights\\\\FirePit.cpp",
+        "command": "cl.exe @\"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\.vscode\\compileCommands_LittleLights\\LittleLights.190.rsp\"",
+        "directory": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Source"
     }
 ]
