@@ -4,10 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/HUD.h"
 
 #include "Personaje.generated.h"
 class ATorch;
 class UArrowComponent;
+class AFirePit;
+class ALevel_Manager_Base;
+
 UCLASS()
 class LITTLELIGHTS_API APersonaje : public ACharacter
 {
@@ -21,18 +25,24 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	
+
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float VelocidadRotacion = 1.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float VelocidadMovimiento = 1.0f;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category="Components", meta=(AllowPrivateAccess = "true"))
 	UArrowComponent* PosicionSpawnBengala;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category="Components", meta=(AllowPrivateAccess = "true"))
+	UArrowComponent* TorchPosition;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	int32 BengalasDisponibles = 3;
 	UFUNCTION(BlueprintPure)
@@ -49,8 +59,62 @@ public:
 	TSubclassOf<ATorch> TorchClass;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	ATorch* Torch;
+	UFUNCTION(BlueprintCallable)
+	void LightUpTorch();// no need for implementation cause is BPImplementable
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	bool bInFirePit = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bIsLightingUpTorch = false;//NOT USING
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int FragmentsAmount = 0;
+
+	//The difference that we rest to de movement in order to correspond
+	//the movement from the joystick
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float JoystickAnlgeDifference = 45;
+	UPROPERTY (EditAnywhere, BlueprintReadWrite)
+	AFirePit* FirePitTemp = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float DistanceRatio = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float JumpForce = 3000.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Stamine = 10.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float CurrentStamine = 0.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float SprintVelocity = 60.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float NormalMaxVelocity = 30.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bLightingTorch;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bWithFlares;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bJumping;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bSprint;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		UUserWidget* Gameplay_HUD;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bShowHints = false;
 	UFUNCTION()
-	void LightUpTorch();
+		void TorchLightDecay();
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void AddHUD();
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void TorchOff();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		ALevel_Manager_Base* LevelManager;
+	
+	UFUNCTION(BlueprintCallable)
+		void StopCharacter();
+	UFUNCTION(BlueprintCallable)
+		void ContinueMovement();
 
 private:
 	void MovimientoForward(float AxisValue);
@@ -59,6 +123,29 @@ private:
 	void UpdateRotacion();
 	UFUNCTION()
 	void ShootFlare();
+
+
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class UUserWidget> GameplayHUD_Class;
+
+
 	FQuat RotacionFinal;
+	
+	
+
+	friend class AMainPlayer_DebugHUD;
+
+	FTimerHandle DelayLightingTorch;
+
+	UFUNCTION()
+		void TorchLightingCompleted();
+	UFUNCTION()
+		void SprintAction();
+	UFUNCTION()
+		void SprintCancelled();
+	UFUNCTION()
+		void SprintUpdate();
+
 
 };

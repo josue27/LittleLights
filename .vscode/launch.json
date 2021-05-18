@@ -8,11 +8,11 @@
 			"program": "D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\Binaries\\Win64\\UE4-Win64-Debug.exe",
 			"args": [
 			],
-			"cwd": "C:\\Program Files\\Epic Games\\UE_4.26",
+			"cwd": "E:\\EpicGames_Library\\UE_4.26",
 			"stopAtEntry": false,
 			"externalConsole": true,
 			"type": "cppvsdbg",
-			"visualizerFile": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+			"visualizerFile": "E:\\EpicGames_Library\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
 		},
 		{
 			"name": "LittleLights (DebugGame)",
@@ -21,11 +21,11 @@
 			"program": "D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\Binaries\\Win64\\UE4-Win64-DebugGame.exe",
 			"args": [
 			],
-			"cwd": "C:\\Program Files\\Epic Games\\UE_4.26",
+			"cwd": "E:\\EpicGames_Library\\UE_4.26",
 			"stopAtEntry": false,
 			"externalConsole": true,
 			"type": "cppvsdbg",
-			"visualizerFile": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+			"visualizerFile": "E:\\EpicGames_Library\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
 		},
 		{
 			"name": "LittleLights (Development)",
@@ -34,11 +34,11 @@
 			"program": "D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\Binaries\\Win64\\UE4.exe",
 			"args": [
 			],
-			"cwd": "C:\\Program Files\\Epic Games\\UE_4.26",
+			"cwd": "E:\\EpicGames_Library\\UE_4.26",
 			"stopAtEntry": false,
 			"externalConsole": true,
 			"type": "cppvsdbg",
-			"visualizerFile": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+			"visualizerFile": "E:\\EpicGames_Library\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
 		},
 		{
 			"name": "LittleLights (Shipping)",
@@ -47,11 +47,11 @@
 			"program": "D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\Binaries\\Win64\\UE4-Win64-Shipping.exe",
 			"args": [
 			],
-			"cwd": "C:\\Program Files\\Epic Games\\UE_4.26",
+			"cwd": "E:\\EpicGames_Library\\UE_4.26",
 			"stopAtEntry": false,
 			"externalConsole": true,
 			"type": "cppvsdbg",
-			"visualizerFile": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+			"visualizerFile": "E:\\EpicGames_Library\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
 		},
 		{
 			"name": "LittleLights (Test)",
@@ -60,69 +60,69 @@
 			"program": "D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\Binaries\\Win64\\UE4-Win64-Test.exe",
 			"args": [
 			],
-			"cwd": "C:\\Program Files\\Epic Games\\UE_4.26",
+			"cwd": "E:\\EpicGames_Library\\UE_4.26",
 			"stopAtEntry": false,
 			"externalConsole": true,
 			"type": "cppvsdbg",
-			"visualizerFile": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+			"visualizerFile": "E:\\EpicGames_Library\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
 		},
 		{
 			"name": "LittleLightsEditor (Debug)",
 			"request": "launch",
 			"preLaunchTask": "LittleLightsEditor Win64 Debug Build",
-			"program": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Binaries\\Win64\\UE4Editor-Win64-Debug.exe",
+			"program": "E:\\EpicGames_Library\\UE_4.26\\Engine\\Binaries\\Win64\\UE4Editor-Win64-Debug.exe",
 			"args": [
 				"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\LittleLights.uproject"
 			],
-			"cwd": "C:\\Program Files\\Epic Games\\UE_4.26",
+			"cwd": "E:\\EpicGames_Library\\UE_4.26",
 			"stopAtEntry": false,
 			"externalConsole": true,
 			"type": "cppvsdbg",
-			"visualizerFile": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+			"visualizerFile": "E:\\EpicGames_Library\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
 		},
 		{
 			"name": "LittleLightsEditor (DebugGame)",
 			"request": "launch",
 			"preLaunchTask": "LittleLightsEditor Win64 DebugGame Build",
-			"program": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Binaries\\Win64\\UE4Editor-Win64-DebugGame.exe",
+			"program": "E:\\EpicGames_Library\\UE_4.26\\Engine\\Binaries\\Win64\\UE4Editor-Win64-DebugGame.exe",
 			"args": [
 				"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\LittleLights.uproject"
 			],
-			"cwd": "C:\\Program Files\\Epic Games\\UE_4.26",
+			"cwd": "E:\\EpicGames_Library\\UE_4.26",
 			"stopAtEntry": false,
 			"externalConsole": true,
 			"type": "cppvsdbg",
-			"visualizerFile": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+			"visualizerFile": "E:\\EpicGames_Library\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
 		},
 		{
 			"name": "LittleLightsEditor (Development)",
 			"request": "launch",
 			"preLaunchTask": "LittleLightsEditor Win64 Development Build",
-			"program": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Binaries\\Win64\\UE4Editor.exe",
+			"program": "E:\\EpicGames_Library\\UE_4.26\\Engine\\Binaries\\Win64\\UE4Editor.exe",
 			"args": [
 				"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\LittleLights.uproject"
 			],
-			"cwd": "C:\\Program Files\\Epic Games\\UE_4.26",
+			"cwd": "E:\\EpicGames_Library\\UE_4.26",
 			"stopAtEntry": false,
 			"externalConsole": true,
 			"type": "cppvsdbg",
-			"visualizerFile": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+			"visualizerFile": "E:\\EpicGames_Library\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
 		},
 		{
 			"name": "Generate Project Files",
 			"type": "clr",
 			"request": "launch",
-			"program": "C:\\Program Files\\Epic Games\\UE_4.26\\Engine\\Binaries\\DotNET\\UnrealBuildTool.exe",
+			"program": "E:\\EpicGames_Library\\UE_4.26\\Engine\\Binaries\\DotNET\\UnrealBuildTool.exe",
 			"console": "externalTerminal",
 			"args": [
 				"-projectfiles",
 				"-vscode",
-				"-project=\"D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\LittleLights.uproject\"",
+				"-project=D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\LittleLights.uproject",
 				"-game",
 				"-engine"
 			],
 			"internalConsoleOptions": "openOnSessionStart",
-			"cwd": "C:\\Program Files\\Epic Games\\UE_4.26"
+			"cwd": "E:\\EpicGames_Library\\UE_4.26"
 		}
 	]
 }

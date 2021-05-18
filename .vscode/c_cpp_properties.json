@@ -4,8 +4,15 @@
             "name": "LittleLightsEditor Editor Win64 Development (LittleLights)",
             "intelliSenseMode": "msvc-x64",
             "compileCommands": "D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\.vscode\\compileCommands_LittleLights.json",
-            "cppStandard": "c++14",
-            "cStandard": "c17"
+            "cStandard": "c17",
+            "cppStandard": "c++14"
+        },
+        {
+            "name": "Win32",
+            "intelliSenseMode": "msvc-x64",
+            "compileCommands": "D:\\ParallelsGames\\LittleLights\\ProyectoUE4\\LittleLights\\.vscode\\compileCommands_Default.json",
+            "cStandard": "c17",
+            "cppStandard": "c++17"
         }
     ],
     "version": 4

@@ -3,6 +3,10 @@
 
 #include "Torch.h"
 #include "Components/PointLightComponent.h"
+#include "Components/SpotLightComponent.h"
+#include "Engine/World.h"
+#include "Personaje.h"
+//#include "Kismet/GameplayStatics.h"
 // Sets default values
 ATorch::ATorch()
 {
@@ -22,7 +26,8 @@ ATorch::ATorch()
 void ATorch::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	TorchLight->Intensity = InitialIntensity;
+	CurrentTime = LightUpTime;
 }
 
 // Called every frame
@@ -30,9 +35,63 @@ void ATorch::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	if(TorchLight)
-	{
+	{/*
 		if(TorchLight->Intensity > 0)
-			TorchLight->Intensity -= LightDecayVelocity * DeltaTime;
+			TorchLight->Intensity -= LightDecayVelocity * DeltaTime;*/
+		LightDecay();
+	}
+}
+
+void ATorch::StartDecay(float NewLightUpTime)
+{
+	if (NewLightUpTime != 0)
+	{
+		LightUpTime = NewLightUpTime;
+	}
+
+	RestartLight();
+	bStartDecay = true;
+}
+
+void ATorch::RestartLight()
+{
+
+	CurrentTime = LightUpTime + GetWorld()->GetTimeSeconds();
+}
+
+void ATorch::LightDecay()
+{
+	if (!bStartDecay)
+	{
+		return;
+	}
+	float RemainingTime = FMath::Clamp((CurrentTime - GetWorld()->GetTimeSeconds()) / LightUpTime, 0.0f, 1.0f);
+	if (RemainingTime <= 0.0f)
+	{
+		bStartDecay = false;
+		//APersonaje* Player = Cast<APersonaje>(	GetWorld()->GetFirstPlayerController());
+		APersonaje* Player = Cast<APersonaje>(	GetOwner());
+		if (Player)
+		{
+			Player->TorchOff();
+		}
+		TorchLight->Intensity = 0.0f;
+		if (SpotLight_Component != nullptr)
+		{
+			SpotLight_Component->Intensity = 0.0f;
+		}
+		DeltaIntensity = 0.0f;
+		UE_LOG(LogTemp, Warning, TEXT("Torch Light finished...notifying Player"));
+	}
+	else
+	{
+		TorchLight->Intensity = FMath::Lerp(0.0f, InitialIntensity, RemainingTime);
+		if (SpotLight_Component != nullptr)
+		{
+
+		SpotLight_Component->Intensity = FMath::Lerp(0.0f, InitialIntensity, RemainingTime);
+		}
+		DeltaIntensity = RemainingTime;
 	}
 }
 

@@ -13,5 +13,7 @@ UCLASS()
 class LITTLELIGHTS_API ALL_GameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+protected:
+	ALL_GameModeBase();
 	
 };

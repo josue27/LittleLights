@@ -7,7 +7,7 @@
 #include "Torch.generated.h"
 
 class UPointLightComponent;
-
+class USpotLightComponent;
 UCLASS()
 class LITTLELIGHTS_API ATorch : public AActor
 {
@@ -41,4 +41,23 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	float LightDecayVelocity = 1.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float InitialIntensity = 3000.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float  CurrentTime = 0.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float LightUpTime = 10.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bStartDecay = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float DeltaIntensity = 0.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		USpotLightComponent* SpotLight_Component;
+
+	UFUNCTION(BlueprintCallable)
+		void StartDecay(float NewLightUpTime);
+	UFUNCTION(BlueprintCallable)
+		void RestartLight();
+	UFUNCTION(BlueprintCallable)
+		void LightDecay();
 };

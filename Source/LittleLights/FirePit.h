@@ -36,6 +36,8 @@ public:
 
 	UFUNCTION()
 	void PlayerInPit(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
-	
+	UFUNCTION()
+	void PlayerLeftPit(UPrimitiveComponent* OverlappedComp,class AActor * OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
 
 };

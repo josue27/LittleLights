@@ -4,14 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "GameFramework/GameMode.h"
 #include "LittleLightsGameModeBase.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class LITTLELIGHTS_API ALittleLightsGameModeBase : public AGameModeBase
+class LITTLELIGHTS_API ALittleLightsGameModeBase : public AGameMode
 {
 	GENERATED_BODY()
-	
+protected:
+	ALittleLightsGameModeBase();
 };
