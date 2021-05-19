@@ -20,7 +20,7 @@ void AMainPlayer_DebugHUD::DrawHUD()
 		AddBool(L"Can Move", player->bCanMove);
 		AddBool(L"Sprinting", player->bSprint);
 		AddFloat(L"CurrentStamine", player->CurrentStamine);
-		
+		AddBool(L"Jumping", player->bJumping);
 	}
 	/*else
 	{

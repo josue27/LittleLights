@@ -9,6 +9,8 @@
 #include "FirePit.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Torch.h"
+#include "Components/TimelineComponent.h"
+
 #include "Level_Manager_Base.h"
 // Sets default values
 APersonaje::APersonaje()
@@ -41,8 +43,22 @@ void APersonaje::BeginPlay()
 
 	VelocidadMovimiento = NormalMaxVelocity;
 	CurrentStamine = Stamine;
+
+	if (CurveFloat)
+	{
+		FOnTimelineFloat TimelineProgress;
+		
+		TimelineProgress.BindUFunction(this, FName("TimelineRoll_Progress"));
+		
+		CurveTimeline.AddInterpFloat(CurveFloat, TimelineProgress);
+		
+
+	}
+	
 		
 }
+
+
 
 // Called every frame
 void APersonaje::Tick(float DeltaTime)
@@ -50,6 +66,7 @@ void APersonaje::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	//UpdateRotacion();
 	SprintUpdate();
+	CurveTimeline.TickTimeline(DeltaTime);
 }
 
 // Called to bind functionality to input
@@ -62,6 +79,7 @@ void APersonaje::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	PlayerInputComponent->BindAction(TEXT("InteractInput"),IE_Pressed,this,&APersonaje::LightUpTorch);
 	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Pressed, this, &APersonaje::SprintAction);
 	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Released, this, &APersonaje::SprintCancelled);
+	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &APersonaje::RollForward);
 
 		// PlayerInputComponent->BindAxis(TEXT("RotarHorizontal"),this,&APersonaje::RotacionHorizontal);
 
@@ -241,5 +259,31 @@ void APersonaje::ShootFlare()
 	UE_LOG(LogTemp,Warning,TEXT("Shooted Flare"));
 }
 
+void APersonaje::RollForward()
+{
+	if (bJumping)
+	{
+		return;
+	}
+	bJumping = true;
+	CurveTimeline.PlayFromStart();
+	GetWorld()->GetTimerManager().SetTimer(DelayForJumpAnimation, this, &APersonaje::JumpCompleted, DelayForCompletedJump, false);
 
+}
+
+void APersonaje::TimelineRoll_Progress(float Value)
+{
+	FVector EndLoc = (GetActorLocation().ForwardVector * JumpDistance) + GetActorLocation();
+
+	float NewLoc_X = FMath::Lerp(GetActorLocation().X, EndLoc.X, Value);
+	FVector NewLoc = GetActorLocation();
+	NewLoc.X = NewLoc_X;
+	//SetActorLocation(NewLoc);
+	AddActorWorldOffset(EndLoc);
+}
+
+void APersonaje::JumpCompleted()
+{
+	bJumping = false;
+}
 

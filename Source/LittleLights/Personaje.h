@@ -5,12 +5,13 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/HUD.h"
-
+#include "Components/TimelineComponent.h"
 #include "Personaje.generated.h"
 class ATorch;
 class UArrowComponent;
 class AFirePit;
 class ALevel_Manager_Base;
+class UCurveFloat;
 
 UCLASS()
 class LITTLELIGHTS_API APersonaje : public ACharacter
@@ -24,10 +25,26 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
 	
+	//This is the timeline
+	FTimeline CurveTimeline;
+	//this is gonna be the curve to the timeline
+	UPROPERTY(EditAnywhere, Category = "Jump Settings")
+		UCurveFloat* CurveFloat;
 
-
+	UFUNCTION()
+		void RollForward();
+	UFUNCTION()
+	void TimelineRoll_Progress(float Value);
+	UFUNCTION()
+		void JumpCompleted();
+	
+	
+	UPROPERTY(EditAnywhere, Category = "Jump Settings")
+		float DelayForCompletedJump=1.1f;
+	UPROPERTY(EditAnywhere, Category = "Jump Settings")
+		float JumpDistance = 5.0f;
+	FTimerHandle DelayForJumpAnimation;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -90,7 +107,7 @@ public:
 		bool bLightingTorch;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bWithFlares;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Settings")
 		bool bJumping;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bSprint;
