@@ -268,18 +268,15 @@ void APersonaje::RollForward()
 	bJumping = true;
 	CurveTimeline.PlayFromStart();
 	GetWorld()->GetTimerManager().SetTimer(DelayForJumpAnimation, this, &APersonaje::JumpCompleted, DelayForCompletedJump, false);
-
+	//VelocidadMovimiento = NormalMaxVelocity;
 }
 
 void APersonaje::TimelineRoll_Progress(float Value)
 {
-	FVector EndLoc = (GetActorLocation().ForwardVector * JumpDistance) + GetActorLocation();
 
-	float NewLoc_X = FMath::Lerp(GetActorLocation().X, EndLoc.X, Value);
-	FVector NewLoc = GetActorLocation();
-	NewLoc.X = NewLoc_X;
-	//SetActorLocation(NewLoc);
-	AddActorWorldOffset(EndLoc);
+	FVector EndLoc = (GetActorForwardVector() * JumpDistance) + GetActorLocation();
+	FVector NewLoc= FMath::Lerp(GetActorLocation(), EndLoc, Value);	
+	SetActorLocation(NewLoc);
 }
 
 void APersonaje::JumpCompleted()
