@@ -66,6 +66,7 @@ void ATorch::LightDecay()
 		return;
 	}
 	float RemainingTime = FMath::Clamp((CurrentTime - GetWorld()->GetTimeSeconds()) / LightUpTime, 0.0f, 1.0f);
+	TorchLight->AttenuationRadius = FMath::Lerp(0.0f, 1000.0f, RemainingTime);
 	if (RemainingTime <= 0.0f)
 	{
 		bStartDecay = false;
@@ -76,6 +77,8 @@ void ATorch::LightDecay()
 			Player->TorchOff();
 		}
 		TorchLight->Intensity = 0.0f;
+		TorchLight->bAffectsWorld = false;
+		//TorchLight->AttenuationRadius = 0.0f;
 		if (SpotLight_Component != nullptr)
 		{
 			SpotLight_Component->Intensity = 0.0f;

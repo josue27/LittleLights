@@ -52,6 +52,7 @@ void AFirePit::PlayerInPit(class UPrimitiveComponent* HitComp, class AActor* Oth
 }
 void AFirePit::PlayerLeftPit(UPrimitiveComponent* OverlappedComp,class AActor * OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+	//OtherActor->IsA<APersonaje>() == true;//this could also work before casting
 	APersonaje* PersonajeJugador = Cast<APersonaje>(OtherActor);
 	if(PersonajeJugador)
 	{

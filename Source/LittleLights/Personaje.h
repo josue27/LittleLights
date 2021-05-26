@@ -12,6 +12,7 @@ class UArrowComponent;
 class AFirePit;
 class ALevel_Manager_Base;
 class UCurveFloat;
+class USpringArmComponent;
 
 UCLASS()
 class LITTLELIGHTS_API APersonaje : public ACharacter
@@ -26,6 +27,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
+	//Check "the turbo" he used this
+	//FRunTimeFloatCurve
 	//This is the timeline
 	FTimeline CurveTimeline;
 	//this is gonna be the curve to the timeline
@@ -116,6 +119,10 @@ public:
 		UUserWidget* Gameplay_HUD;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bShowHints = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		USpringArmComponent* SpringArmRef = nullptr;
+
+
 	UFUNCTION()
 		void TorchLightDecay();
 

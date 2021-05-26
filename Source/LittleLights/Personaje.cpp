@@ -10,7 +10,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Torch.h"
 #include "Components/TimelineComponent.h"
-
+#include  "GameFramework/SpringArmComponent.h"
 #include "Level_Manager_Base.h"
 // Sets default values
 APersonaje::APersonaje()
@@ -67,6 +67,11 @@ void APersonaje::Tick(float DeltaTime)
 	//UpdateRotacion();
 	SprintUpdate();
 	CurveTimeline.TickTimeline(DeltaTime);
+
+	if (Torch != nullptr)
+	{
+
+	}
 }
 
 // Called to bind functionality to input
@@ -209,6 +214,11 @@ void APersonaje::MovimientoForward(float AxisValue)
 	FRotator Yaw(0,Rotation.Yaw - JoystickAnlgeDifference,0);
 	FVector Direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::X);
 	AddMovementInput(Direction,AxisValue * VelocidadMovimiento * GetWorld()->DeltaTimeSeconds);
+
+	if (SpringArmRef != nullptr)
+	{
+		SpringArmRef->TargetOffset = GetActorForwardVector() * 120.0f;
+	}
 	//UE_LOG(LogTemp,Warning,TEXT("MOVIENDO"));
 }
 
@@ -216,11 +226,18 @@ void APersonaje::MovimientoRight(float AxisValue)
 {
 	if(VelocidadMovimiento <= 0 || !bCanMove)
 		return;
+
+	//BUG TO FIX: When pressing with 2 keyboard keys the velocity get higher(250) but with
+	//analog stick it doesnt happen
 	FRotator Rotation = Controller->GetControlRotation();
 	FRotator Yaw(0,Rotation.Yaw - JoystickAnlgeDifference,0);
 	FVector Direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::Y);
 	AddMovementInput(Direction,AxisValue * VelocidadMovimiento * GetWorld()->DeltaTimeSeconds);	
 
+	if (SpringArmRef != nullptr)
+	{
+		SpringArmRef->TargetOffset = GetActorForwardVector() * 120.0f;
+	}
 }
 
 void APersonaje::RotacionHorizontal(float AxisValue) 
