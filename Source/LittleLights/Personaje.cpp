@@ -11,7 +11,9 @@
 #include "Torch.h"
 #include "Components/TimelineComponent.h"
 #include  "GameFramework/SpringArmComponent.h"
+#include "JumpOverZone.h"
 #include "Level_Manager_Base.h"
+#include "DrawDebugHelpers.h"
 // Sets default values
 APersonaje::APersonaje()
 {
@@ -72,6 +74,8 @@ void APersonaje::Tick(float DeltaTime)
 	{
 
 	}
+
+	
 }
 
 // Called to bind functionality to input
@@ -81,10 +85,10 @@ void APersonaje::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	PlayerInputComponent->BindAxis(TEXT("MoverAdelante"),this,&APersonaje::MovimientoForward);
 	PlayerInputComponent->BindAxis(TEXT("MoverDerecha"),this,&APersonaje::MovimientoRight);
 	PlayerInputComponent->BindAction(TEXT("InputFlare"),IE_Pressed,this,&APersonaje::ShootFlare);
-	PlayerInputComponent->BindAction(TEXT("InteractInput"),IE_Pressed,this,&APersonaje::LightUpTorch);
+	PlayerInputComponent->BindAction(TEXT("InteractInput"),IE_Pressed,this,&APersonaje::ActionButtonCall);
 	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Pressed, this, &APersonaje::SprintAction);
 	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Released, this, &APersonaje::SprintCancelled);
-	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &APersonaje::RollForward);
+	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &APersonaje::JumpButtonCall);
 
 		// PlayerInputComponent->BindAxis(TEXT("RotarHorizontal"),this,&APersonaje::RotacionHorizontal);
 
@@ -126,22 +130,12 @@ void APersonaje::LightUpTorch()
 
 
 }
+
+
 /// <summary>
 /// Function Called by LightUpTorch after SetTimer just to let the animation play
 /// </summary>
-void APersonaje::TorchLightingCompleted()
-{
-	bLightingTorch = false;
-	if (Torch != nullptr)
-	{
-		if (LevelManager != nullptr)
-		{
-			Torch->StartDecay(LevelManager->TorchLightUpTime);
-		}
-		Torch->StartDecay(10.0f);//TODO:Hardcoded with need the level manager ref
-	}
-	bCanMove = true;
-}
+
 
 void APersonaje::SprintAction()
 {
@@ -186,6 +180,19 @@ void APersonaje::SprintUpdate()
 	UE_LOG(LogTemp, Warning, TEXT("CurrenStamine: %f"), CurrentStamine);
 }
 
+void APersonaje::TorchLightingCompleted()
+{
+	bLightingTorch = false;
+	if (Torch != nullptr)
+	{
+		if (LevelManager != nullptr)
+		{
+			Torch->StartDecay(LevelManager->TorchLightUpTime);
+		}
+		Torch->StartDecay(DefaultTorchDecay);//TODO:Hardcoded with need the level manager ref
+	}
+	bCanMove = true;
+}
 
 void APersonaje::TorchLightDecay()
 {
@@ -205,6 +212,39 @@ void APersonaje::ContinueMovement()
 	bCanMove = true;
 }
 
+void APersonaje::ActionButtonCall()
+{
+
+	if (bInFirePit)
+	{
+		LightUpTorch();
+	}
+	else if(bInJumpOverZone && Temp_JumpOverZone)
+	{
+
+		//JumpOver();
+	}
+}
+
+void APersonaje::JumpOver()
+{
+	if (bJumpingOver) return;
+
+	bJumpingOver = true;
+	Temp_JumpOverZone->StartJumpOver();
+
+
+}
+
+void APersonaje::ShowHint(bool showhint, const FString& textToShow)
+{
+	bShowHints = showhint;
+	
+
+	TextHint =  textToShow != " "?  FText::FromString(textToShow) : FText::FromString("Press E for action");
+	
+}
+
 void APersonaje::MovimientoForward(float AxisValue)
 {
 	if(VelocidadMovimiento <= 0 || !bCanMove)
@@ -222,7 +262,58 @@ void APersonaje::MovimientoForward(float AxisValue)
 	//UE_LOG(LogTemp,Warning,TEXT("MOVIENDO"));
 }
 
-void APersonaje::MovimientoRight(float AxisValue) 
+void APersonaje::JumpButtonCall()
+{
+
+	//Create LaneTrace to detect if in front of JumpOverObstacle || WalkUnderObstacle || BalancingObstalce
+	FVector LineStart = GetActorLocation();
+	FVector LineEnd = LineStart +( GetActorRotation().Vector() * JumpDistanceDetection);
+	FHitResult Hit;
+	FCollisionQueryParams TraceParams;
+	//This is important or wont trace line
+	TraceParams.AddIgnoredActor(this);
+	TraceParams.AddIgnoredActor(GetOwner());
+
+	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, LineStart, LineEnd, ECC_Visibility, TraceParams);
+	
+	DrawDebugLine(GetWorld(), LineStart, LineEnd, FColor::Red, false, 3.0f);
+	
+	if (bHit)
+	{
+		DrawDebugBox(GetWorld(), Hit.ImpactPoint, FVector(5, 5, 5), FColor::Red, false, 3.0f);
+
+		if (Hit.Actor != nullptr)
+		{
+			//If in front of JumpOverObstacle
+			if (Hit.Actor->IsA<AJumpOverZone>())
+			{
+				UE_LOG(LogTemp, Warning, TEXT("In JumpOver Zone"));
+				JumpOver();
+			}
+			//else if in front of WalkUnderObstacle
+				//WalkUnder()
+			//els if in front of BalancinObstacle
+				//StartBalancing()
+			else
+			{
+
+				RollForward();
+			}
+			
+		}
+	}
+	else
+	{
+		RollForward();
+
+	}
+		
+	
+	//else
+		//RollForward
+}
+
+void APersonaje::MovimientoRight(float AxisValue)
 {
 	if(VelocidadMovimiento <= 0 || !bCanMove)
 		return;
@@ -283,6 +374,9 @@ void APersonaje::RollForward()
 		return;
 	}
 	bJumping = true;
+
+	
+
 	CurveTimeline.PlayFromStart();
 	GetWorld()->GetTimerManager().SetTimer(DelayForJumpAnimation, this, &APersonaje::JumpCompleted, DelayForCompletedJump, false);
 	//VelocidadMovimiento = NormalMaxVelocity;

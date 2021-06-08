@@ -13,6 +13,7 @@ class AFirePit;
 class ALevel_Manager_Base;
 class UCurveFloat;
 class USpringArmComponent;
+class AJumpOverZone;
 
 UCLASS()
 class LITTLELIGHTS_API APersonaje : public ACharacter
@@ -79,6 +80,8 @@ public:
 	TSubclassOf<ATorch> TorchClass;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	ATorch* Torch;
+	UPROPERTY(EditAnywhere)
+	float DefaultTorchDecay = 30.0f;
 	UFUNCTION(BlueprintCallable)
 	void LightUpTorch();// no need for implementation cause is BPImplementable
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
@@ -112,16 +115,26 @@ public:
 		bool bWithFlares;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Settings")
 		bool bJumping;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Settings")
+		float JumpDistanceDetection = 200.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bSprint;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		UUserWidget* Gameplay_HUD;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite , Category ="Hints")
 		bool bShowHints = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		USpringArmComponent* SpringArmRef = nullptr;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category ="Jump Over settings")
+		bool bInJumpOverZone = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Over settings")
+		bool bJumpingOver = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Over settings")
+		AJumpOverZone* Temp_JumpOverZone = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hints")
+		FText TextHint;
 
 	UFUNCTION()
 		void TorchLightDecay();
@@ -139,6 +152,18 @@ public:
 		void StopCharacter();
 	UFUNCTION(BlueprintCallable)
 		void ContinueMovement();
+
+	UFUNCTION(BlueprintCallable)
+		void ActionButtonCall();
+
+	UFUNCTION(BlueprintCallable)
+		void JumpOver();
+
+	UFUNCTION()
+		void ShowHint(bool bShowHint, const FString& textToShow);
+
+	UFUNCTION(BlueprintCallable)
+		void JumpButtonCall();
 
 private:
 	void MovimientoForward(float AxisValue);

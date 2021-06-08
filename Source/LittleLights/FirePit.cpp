@@ -46,6 +46,7 @@ void AFirePit::PlayerInPit(class UPrimitiveComponent* HitComp, class AActor* Oth
 			PersonajeJugador->bInFirePit = true;
 			PersonajeJugador->FirePitTemp = this;
 			PersonajeJugador->bShowHints = true;
+			PersonajeJugador->ShowHint(true, FString(TEXT("Press E or Square to lightup torch")) );
 
 		UE_LOG(LogTemp,Warning,TEXT("Player on firepit"));
 	}

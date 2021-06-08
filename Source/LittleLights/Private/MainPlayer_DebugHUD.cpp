@@ -21,6 +21,8 @@ void AMainPlayer_DebugHUD::DrawHUD()
 		AddBool(L"Sprinting", player->bSprint);
 		AddFloat(L"CurrentStamine", player->CurrentStamine);
 		AddBool(L"Jumping", player->bJumping);
+		AddBool(L"InJumpOverZone", player->bInJumpOverZone);
+		AddBool(L"IsJumpingOver", player->bJumpingOver);
 	}
 	/*else
 	{
