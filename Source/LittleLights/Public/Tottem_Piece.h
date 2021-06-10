@@ -23,6 +23,8 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bTaken = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bDelivered = false;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

@@ -16,7 +16,7 @@ void AMainPlayer_DebugHUD::DrawHUD()
 		AddFloat(L"Velocity", player->GetVelocity().Size());
 		AddFloat(L"VelocidadMovimiento", player->VelocidadMovimiento);
 		AddInt(L"Bengalas", player->BengalasDisponibles);
-		AddInt(L"Fragments in hand", player->FragmentsAmount);
+		AddInt(L"Fragments in amount(in hand)", player->FragmentsAmount);
 		AddBool(L"Can Move", player->bCanMove);
 		AddBool(L"Sprinting", player->bSprint);
 		AddFloat(L"CurrentStamine", player->CurrentStamine);
