@@ -70,6 +70,8 @@ void APersonaje::Tick(float DeltaTime)
 	SprintUpdate();
 	CurveTimeline.TickTimeline(DeltaTime);
 
+	LookingAt();
+
 	if (Torch != nullptr)
 	{
 
@@ -226,12 +228,17 @@ void APersonaje::ActionButtonCall()
 	}
 }
 
-void APersonaje::JumpOver()
+void APersonaje::JumpOver(class AJumpOverZone* TempZone)
 {
 	if (bJumpingOver) return;
 
-	bJumpingOver = true;
-	Temp_JumpOverZone->StartJumpOver();
+	Temp_JumpOverZone = TempZone;
+
+	bJumpingOver = true;//for animation BP
+	bCanMove = false;
+	//Jump();
+	if(Temp_JumpOverZone)
+		Temp_JumpOverZone->StartJumpOver(EspecialMovementZoneType::JumpOver,this);
 
 
 }
@@ -260,8 +267,14 @@ void APersonaje::MovimientoForward(float AxisValue)
 		SpringArmRef->TargetOffset = GetActorForwardVector() * 120.0f;
 	}
 	//UE_LOG(LogTemp,Warning,TEXT("MOVIENDO"));
-}
+} 
 
+
+
+/// <summary>
+/// When user press jump, it doesn't jump , first cast a linetrace to see if is in front of a JumpOverZone(EspecialMovementZone) and there 
+/// if it is, take different actions, jumpover, crouch, etc.
+/// </summary>
 void APersonaje::JumpButtonCall()
 {
 
@@ -282,13 +295,20 @@ void APersonaje::JumpButtonCall()
 	{
 		DrawDebugBox(GetWorld(), Hit.ImpactPoint, FVector(5, 5, 5), FColor::Red, false, 3.0f);
 
-		if (Hit.Actor != nullptr)
+		AJumpOverZone* EspecialMovementZone = Cast<AJumpOverZone>(Hit.Actor);
+		if (EspecialMovementZone != nullptr)
 		{
 			//If in front of JumpOverObstacle
-			if (Hit.Actor->IsA<AJumpOverZone>())
+			if (EspecialMovementZone->MovementZone_Type == EspecialMovementZoneType::JumpOver)
 			{
 				UE_LOG(LogTemp, Warning, TEXT("In JumpOver Zone"));
-				JumpOver();
+
+				JumpOver(EspecialMovementZone);
+			}
+			else if (EspecialMovementZone->MovementZone_Type == EspecialMovementZoneType::Crouch)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("In Crouch Zone"));
+				CrouchUnder(EspecialMovementZone);
 			}
 			//else if in front of WalkUnderObstacle
 				//WalkUnder()
@@ -297,20 +317,26 @@ void APersonaje::JumpButtonCall()
 			else
 			{
 
-				RollForward();
+				//RollForward();
 			}
 			
 		}
 	}
 	else
 	{
-		RollForward();
+		//RollForward();
 
 	}
 		
 	
 	//else
 		//RollForward
+}
+
+void APersonaje::LookingAt()
+{
+
+
 }
 
 void APersonaje::MovimientoRight(float AxisValue)
@@ -367,6 +393,7 @@ void APersonaje::ShootFlare()
 	UE_LOG(LogTemp,Warning,TEXT("Shooted Flare"));
 }
 
+
 void APersonaje::RollForward()
 {
 	if (bJumping)
@@ -381,7 +408,18 @@ void APersonaje::RollForward()
 	GetWorld()->GetTimerManager().SetTimer(DelayForJumpAnimation, this, &APersonaje::JumpCompleted, DelayForCompletedJump, false);
 	//VelocidadMovimiento = NormalMaxVelocity;
 }
+void APersonaje::CrouchUnder(AJumpOverZone* TempZone)
+{
+	if (bIsCrossingUnder) return;
 
+	Temp_JumpOverZone = TempZone;
+
+	bIsCrossingUnder = true;//for animation BP
+	bCanMove = false;
+	//Jump();
+	if (Temp_JumpOverZone)
+		Temp_JumpOverZone->StartJumpOver(EspecialMovementZoneType::Crouch, this);
+}
 void APersonaje::TimelineRoll_Progress(float Value)
 {
 

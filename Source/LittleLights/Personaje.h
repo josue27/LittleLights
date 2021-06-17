@@ -15,6 +15,15 @@ class UCurveFloat;
 class USpringArmComponent;
 class AJumpOverZone;
 
+UENUM(BlueprintType)
+enum class CapsuleHeight_Type :uint8 
+{
+	NormalHeight = 0 UMETA(DisplayeName ="Normal Height"),
+	CrouchingHeight = 1 UMETA(DisplayName = "Crouching Height"),
+	JumpingOverHeight = 2 UMETA(DisplayName = "JumpingOver Height")
+
+};
+
 UCLASS()
 class LITTLELIGHTS_API APersonaje : public ACharacter
 {
@@ -119,6 +128,8 @@ public:
 		float JumpDistanceDetection = 200.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bSprint;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bIsCrossingUnder;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		UUserWidget* Gameplay_HUD;
@@ -135,6 +146,7 @@ public:
 		AJumpOverZone* Temp_JumpOverZone = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hints")
 		FText TextHint;
+	
 
 	UFUNCTION()
 		void TorchLightDecay();
@@ -157,13 +169,21 @@ public:
 		void ActionButtonCall();
 
 	UFUNCTION(BlueprintCallable)
-		void JumpOver();
+		void JumpOver(class AJumpOverZone* TempZone);
+	UFUNCTION(BlueprintCallable)
+		void CrouchUnder(class AJumpOverZone* TempZone);
 
 	UFUNCTION()
 		void ShowHint(bool bShowHint, const FString& textToShow);
 
 	UFUNCTION(BlueprintCallable)
 		void JumpButtonCall();
+
+	/// <summary>
+	/// Evaluates what is the PlayerCharacater is looking at so it can display something in HUD(or not)
+	/// </summary>
+	UFUNCTION(BlueprintCallable, Category="HUD")
+		void LookingAt();
 
 private:
 	void MovimientoForward(float AxisValue);
