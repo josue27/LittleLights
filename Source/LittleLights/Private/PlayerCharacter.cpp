@@ -38,14 +38,12 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (TorchClass == nullptr || !bStartWithLight)
-		return;
-	FVector TorchPos = TorchPosition->GetComponentLocation();
-	FRotator TorchRotation = TorchPosition->GetComponentRotation();
-	Torch = GetWorld()->SpawnActor<ATorch>(TorchClass, TorchPos, TorchRotation);
-	Torch->SetOwner(this);
-	Torch->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
-	Torch->SetActorLocationAndRotation(TorchPos, TorchRotation);
+	if (TorchClass != nullptr && bStartWithLight)
+	{
+		SpawnLanternOrb();
+	}
+		
+	
 
 	VelocidadMovimiento = NormalMaxVelocity;
 	CurrentStamine = Stamine;
@@ -95,6 +93,21 @@ int32 APlayerCharacter::GetBengalas()
 	return BengalasDisponibles;
 }
 
+
+void APlayerCharacter::SpawnLanternOrb()
+{
+	if (TorchClass == nullptr)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("No Torchclass specified, ignoring spawn of Lantern"))
+		return;
+	}
+	FVector TorchPos = TorchPosition->GetComponentLocation();
+	FRotator TorchRotation = TorchPosition->GetComponentRotation();
+	Torch = GetWorld()->SpawnActor<ATorch>(TorchClass, TorchPos, TorchRotation);
+	Torch->SetOwner(this);
+	Torch->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+	Torch->SetActorLocationAndRotation(TorchPos, TorchRotation);
+}
 /// <summary>
 /// Called when user press the action button to light up de torch if any
 /// </summary>
@@ -231,8 +244,8 @@ void APlayerCharacter::JumpOver(class AJumpOverZone* TempZone)
 	bJumpingOver = true;//for animation BP
 	bCanMove = false;
 	//Jump();
-	//if (Temp_JumpOverZone)
-	//	Temp_JumpOverZone->StartJumpOver(EspecialMovementZoneType::JumpOver, this);
+	if (Temp_JumpOverZone)
+		Temp_JumpOverZone->StartJumpOver(EspecialMovementZoneType::JumpOver, this);
 
 
 }
@@ -248,6 +261,15 @@ void APlayerCharacter::ShowHint(bool showhint, const FString& textToShow)
 
 void APlayerCharacter::MovimientoForward(float AxisValue)
 {
+	if (!bCanMove && bBalancing)
+	{
+		if (Temp_JumpOverZone)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Moving Forwad: %f"), AxisValue);
+			Temp_JumpOverZone->MovePlayerAlongSpline(AxisValue);
+		}
+
+	}
 	if (VelocidadMovimiento <= 0 || !bCanMove)
 		return;
 	//TODO:Poner opcion para invertir el control para ver si eso soluciona que no tengamos que voltear el startplayer position
@@ -304,21 +326,23 @@ void APlayerCharacter::JumpButtonCall()
 				UE_LOG(LogTemp, Warning, TEXT("In Crouch Zone"));
 				CrouchUnder(EspecialMovementZone);
 			}
-			//else if in front of WalkUnderObstacle
-				//WalkUnder()
-			//els if in front of BalancinObstacle
-				//StartBalancing()
+			else if (EspecialMovementZone->MovementZone_Type == EspecialMovementZoneType::CrossBalancing)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("In Balancing Zone"));
+
+				CrossBalancing(EspecialMovementZone);
+			}
 			else
 			{
 
-				//RollForward();
+				RollForward();
 			}
 
 		}
 	}
 	else
 	{
-		//RollForward();
+		RollForward();
 
 	}
 
@@ -411,8 +435,19 @@ void APlayerCharacter::CrouchUnder(AJumpOverZone* TempZone)
 	bIsCrossingUnder = true;//for animation BP
 	bCanMove = false;
 	//Jump();
-	//if (Temp_JumpOverZone)
-	//	Temp_JumpOverZone->StartJumpOver(EspecialMovementZoneType::Crouch, this);
+	if (Temp_JumpOverZone)
+		Temp_JumpOverZone->StartJumpOver(EspecialMovementZoneType::Crouch, this);
+}
+void APlayerCharacter::CrossBalancing(AJumpOverZone* TempZone)
+{
+	/*Jump();*/
+	bCanMove = false;
+	UE_LOG(LogTemp, Warning, TEXT("Calling balancing"));
+	Temp_JumpOverZone = TempZone;
+	bBalancing = true;
+	if (Temp_JumpOverZone)
+		Temp_JumpOverZone->StartJumpOver(EspecialMovementZoneType::CrossBalancing, this);
+
 }
 void APlayerCharacter::TimelineRoll_Progress(float Value)
 {

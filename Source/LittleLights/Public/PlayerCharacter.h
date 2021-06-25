@@ -140,6 +140,10 @@ public:
 		bool bJumpingOver = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Over settings")
 		AJumpOverZone* Temp_JumpOverZone = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Over settings")
+		bool bBalancing = false;
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hints")
 		FText TextHint;
 
@@ -164,10 +168,17 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void ActionButtonCall();
 
+
+#pragma region EspecialMovements
+
 	UFUNCTION(BlueprintCallable)
 		void JumpOver(class AJumpOverZone* TempZone);
 	UFUNCTION(BlueprintCallable)
 		void CrouchUnder(class AJumpOverZone* TempZone);
+	UFUNCTION(BlueprintCallable)
+		void CrossBalancing(class AJumpOverZone* TempZone);
+
+#pragma endregion EspacialMovements
 
 	UFUNCTION()
 		void ShowHint(bool bShowHint, const FString& textToShow);
@@ -181,6 +192,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "HUD")
 		void LookingAt();
 
+	UFUNCTION(BlueprintCallable, Category ="Lantern")
+		void SpawnLanternOrb();
 private:
 	void MovimientoForward(float AxisValue);
 	void MovimientoRight(float AxisValue);
@@ -211,5 +224,7 @@ private:
 		void SprintCancelled();
 	UFUNCTION()
 		void SprintUpdate();
+
+	
 
 };

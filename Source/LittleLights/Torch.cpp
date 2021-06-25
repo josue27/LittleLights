@@ -6,6 +6,7 @@
 #include "Components/SpotLightComponent.h"
 #include "Engine/World.h"
 #include "Personaje.h"
+#include "PlayerCharacter.h"
 //#include "Kismet/GameplayStatics.h"
 // Sets default values
 ATorch::ATorch()
@@ -71,7 +72,7 @@ void ATorch::LightDecay()
 	{
 		bStartDecay = false;
 		//APersonaje* Player = Cast<APersonaje>(	GetWorld()->GetFirstPlayerController());
-		APersonaje* Player = Cast<APersonaje>(	GetOwner());
+		APlayerCharacter* Player = Cast<APlayerCharacter>(	GetOwner());
 		if (Player)
 		{
 			Player->TorchOff();

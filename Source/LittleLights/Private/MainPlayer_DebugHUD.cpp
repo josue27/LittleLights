@@ -3,13 +3,14 @@
 
 #include "MainPlayer_DebugHUD.h"
 #include "LittleLights/Personaje.h"
+#include "PlayerCharacter.h"
 
 void AMainPlayer_DebugHUD::DrawHUD()
 {
 	Super::DrawHUD();
 	UE_LOG(LogTemp, Warning, TEXT("no console elements"));
 
-	APersonaje* player = Cast<APersonaje>(GetOwningPawn());
+	APlayerCharacter* player = Cast<APlayerCharacter>(GetOwningPawn());
 
 	if (player != nullptr)
 	{

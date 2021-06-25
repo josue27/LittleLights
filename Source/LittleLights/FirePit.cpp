@@ -4,6 +4,7 @@
 #include "FirePit.h"
 #include "Components/PointLightComponent.h"
 #include "Components/SphereComponent.h"
+#include "PlayerCharacter.h"
 #include "Personaje.h"
 // Sets default values
 AFirePit::AFirePit()
@@ -38,15 +39,15 @@ void AFirePit::Tick(float DeltaTime)
 
 void AFirePit::PlayerInPit(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult) 
 {
-	APersonaje* PersonajeJugador = Cast<APersonaje>(OtherActor);
-	if(PersonajeJugador)
+	APlayerCharacter* Player = Cast<APlayerCharacter>(OtherActor);
+	if(Player)
 	{
-		// PersonajeJugador->LightUpTorch();
+		// Player->LightUpTorch();
 		
-			PersonajeJugador->bInFirePit = true;
-			PersonajeJugador->FirePitTemp = this;
-			PersonajeJugador->bShowHints = true;
-			PersonajeJugador->ShowHint(true, FString(TEXT("Press E or Square to lightup torch")) );
+		Player->bInFirePit = true;
+		Player->FirePitTemp = this;
+		Player->bShowHints = true;
+		Player->ShowHint(true, FString(TEXT("Press E or Square to lightup torch")) );
 
 		UE_LOG(LogTemp,Warning,TEXT("Player on firepit"));
 	}
@@ -54,14 +55,14 @@ void AFirePit::PlayerInPit(class UPrimitiveComponent* HitComp, class AActor* Oth
 void AFirePit::PlayerLeftPit(UPrimitiveComponent* OverlappedComp,class AActor * OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	//OtherActor->IsA<APersonaje>() == true;//this could also work before casting
-	APersonaje* PersonajeJugador = Cast<APersonaje>(OtherActor);
-	if(PersonajeJugador)
+	APlayerCharacter* Player = Cast<APlayerCharacter>(OtherActor);
+	if(Player)
 	{
-		// PersonajeJugador->LightUpTorch();
+		// Player->LightUpTorch();
 	
-			PersonajeJugador->bInFirePit = false;
-			PersonajeJugador->FirePitTemp = nullptr;
-			PersonajeJugador->bShowHints = false;
+			Player->bInFirePit = false;
+			Player->FirePitTemp = nullptr;
+			Player->bShowHints = false;
 
 
 

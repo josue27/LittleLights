@@ -22,7 +22,7 @@ protected:
 //PROPERTIES
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		float TorchLightUpTime =0.0f;
+		float TorchLightUpTime = 0.0f;
 
 //FUNCTIONS
 public:	

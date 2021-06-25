@@ -237,8 +237,8 @@ void APersonaje::JumpOver(class AJumpOverZone* TempZone)
 	bJumpingOver = true;//for animation BP
 	bCanMove = false;
 	//Jump();
-	if(Temp_JumpOverZone)
-		Temp_JumpOverZone->StartJumpOver(EspecialMovementZoneType::JumpOver,this);
+	//if(Temp_JumpOverZone)
+	//	Temp_JumpOverZone->StartJumpOver(EspecialMovementZoneType::JumpOver,this);
 
 
 }
@@ -417,8 +417,8 @@ void APersonaje::CrouchUnder(AJumpOverZone* TempZone)
 	bIsCrossingUnder = true;//for animation BP
 	bCanMove = false;
 	//Jump();
-	if (Temp_JumpOverZone)
-		Temp_JumpOverZone->StartJumpOver(EspecialMovementZoneType::Crouch, this);
+	//if (Temp_JumpOverZone)
+	//	Temp_JumpOverZone->StartJumpOver(EspecialMovementZoneType::Crouch, this);
 }
 void APersonaje::TimelineRoll_Progress(float Value)
 {
