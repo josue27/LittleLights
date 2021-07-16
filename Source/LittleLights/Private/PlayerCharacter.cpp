@@ -103,10 +103,13 @@ void APlayerCharacter::SpawnLanternOrb()
 	}
 	FVector TorchPos = TorchPosition->GetComponentLocation();
 	FRotator TorchRotation = TorchPosition->GetComponentRotation();
-	Torch = GetWorld()->SpawnActor<ATorch>(TorchClass, TorchPos, TorchRotation);
+	//Torch = GetWorld()->SpawnActor<ATorch>(TorchClass, TorchPos, TorchRotation);
+	Torch = GetWorld()->SpawnActor<ATorch>(TorchClass);
 	Torch->SetOwner(this);
-	Torch->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
-	Torch->SetActorLocationAndRotation(TorchPos, TorchRotation);
+	//Torch->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+	Torch->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("RightHandSocket"));
+	//Torch->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+	//Torch->SetActorLocationAndRotation(TorchPos, TorchRotation);
 }
 /// <summary>
 /// Called when user press the action button to light up de torch if any
@@ -148,7 +151,7 @@ void APlayerCharacter::LightUpTorch()
 
 void APlayerCharacter::SprintAction()
 {
-	if (CurrentStamine > 0)
+	if (CurrentStamine > 0 && bCanSprint)
 	{
 		VelocidadMovimiento = CurrentStamine > 0 ? SprintVelocity : NormalMaxVelocity;
 		CurrentStamine = FMath::Abs((GetWorld()->GetTimeSeconds() + CurrentStamine) - GetWorld()->GetTimeSeconds());
@@ -293,7 +296,10 @@ void APlayerCharacter::MovimientoForward(float AxisValue)
 /// </summary>
 void APlayerCharacter::JumpButtonCall()
 {
-
+	if (!bCanJump)
+	{
+		return;
+	}
 	//Create LaneTrace to detect if in front of JumpOverObstacle || WalkUnderObstacle || BalancingObstalce
 	FVector LineStart = GetActorLocation();
 	FVector LineEnd = LineStart + (GetActorRotation().Vector() * JumpDistanceDetection);

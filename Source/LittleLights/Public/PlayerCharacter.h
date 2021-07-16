@@ -76,6 +76,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bCanMove = true;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bCanSprint = true;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bFlaresEnabled = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bStartWithLight = true;
@@ -118,6 +120,8 @@ public:
 		bool bLightingTorch;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bWithFlares;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Settings")
+		bool bCanJump = true;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Settings")
 		bool bJumping;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Settings")
