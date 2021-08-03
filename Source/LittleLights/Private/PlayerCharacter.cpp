@@ -296,10 +296,7 @@ void APlayerCharacter::MovimientoForward(float AxisValue)
 /// </summary>
 void APlayerCharacter::JumpButtonCall()
 {
-	if (!bCanJump)
-	{
-		return;
-	}
+	
 	//Create LaneTrace to detect if in front of JumpOverObstacle || WalkUnderObstacle || BalancingObstalce
 	FVector LineStart = GetActorLocation();
 	FVector LineEnd = LineStart + (GetActorRotation().Vector() * JumpDistanceDetection);
@@ -420,7 +417,7 @@ void APlayerCharacter::ShootFlare()
 
 void APlayerCharacter::RollForward()
 {
-	if (bJumping)
+	if (bJumping || !bCanJump)
 	{
 		return;
 	}
