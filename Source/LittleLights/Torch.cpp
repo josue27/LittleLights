@@ -29,6 +29,8 @@ void ATorch::BeginPlay()
 	Super::BeginPlay();
 	TorchLight->Intensity = InitialIntensity;
 	CurrentTime = LightUpTime;
+
+	//UE_LOG(LogTemp, Log, TEXT("Spawned by %s"), GetOwner()->GetName());
 }
 
 // Called every frame
