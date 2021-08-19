@@ -146,7 +146,12 @@ public:
 		AJumpOverZone* Temp_JumpOverZone = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Over settings")
 		bool bBalancing = false;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Over settings Balancing")
+		float Balancing_X;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Over settings Balancing")
+		float BalancingSensitivity = 0.01f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Over settings Balancing")
+		float UnbalanceVelocity = 0.001f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hints")
 		FText TextHint;
@@ -172,6 +177,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void ActionButtonCall();
 
+	
 
 #pragma region EspecialMovements
 

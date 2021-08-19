@@ -71,6 +71,11 @@ void APlayerCharacter::Tick(float DeltaTime)
 
 	LookingAt();
 
+
+	if (bBalancing)
+	{
+		Balancing_X += UnbalanceVelocity;
+	}
 }
 
 // Called to bind functionality to input
@@ -285,10 +290,37 @@ void APlayerCharacter::MovimientoForward(float AxisValue)
 	{
 		SpringArmRef->TargetOffset = GetActorForwardVector() * 120.0f;
 	}
-	//UE_LOG(LogTemp,Warning,TEXT("MOVIENDO"));
+	UE_LOG(LogTemp,Warning,TEXT("MOVIENDO"));
 }
 
+void APlayerCharacter::MovimientoRight(float AxisValue)
+{
+	if (!bCanMove && bBalancing)
+	{
+		
+			Balancing_X += AxisValue * BalancingSensitivity;
+		
+	}
+	if (VelocidadMovimiento <= 0 || !bCanMove)
+	{
 
+		return;
+	}
+
+	//BUG TO FIX: When pressing with 2 keyboard keys the velocity get higher(250) but with
+	//analog stick it doesnt happen
+	FRotator Rotation = Controller->GetControlRotation();
+	FRotator Yaw(0, Rotation.Yaw - JoystickAnlgeDifference, 0);
+	FVector Direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::Y);
+	AddMovementInput(Direction, AxisValue * VelocidadMovimiento * GetWorld()->DeltaTimeSeconds);
+
+	if (SpringArmRef != nullptr)
+	{
+		SpringArmRef->TargetOffset = GetActorForwardVector() * 120.0f;
+	}
+
+	
+}
 
 /// <summary>
 /// When user press jump, it doesn't jump , first cast a linetrace to see if is in front of a JumpOverZone(EspecialMovementZone) and there 
@@ -360,23 +392,7 @@ void APlayerCharacter::LookingAt()
 
 }
 
-void APlayerCharacter::MovimientoRight(float AxisValue)
-{
-	if (VelocidadMovimiento <= 0 || !bCanMove)
-		return;
 
-	//BUG TO FIX: When pressing with 2 keyboard keys the velocity get higher(250) but with
-	//analog stick it doesnt happen
-	FRotator Rotation = Controller->GetControlRotation();
-	FRotator Yaw(0, Rotation.Yaw - JoystickAnlgeDifference, 0);
-	FVector Direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::Y);
-	AddMovementInput(Direction, AxisValue * VelocidadMovimiento * GetWorld()->DeltaTimeSeconds);
-
-	if (SpringArmRef != nullptr)
-	{
-		SpringArmRef->TargetOffset = GetActorForwardVector() * 120.0f;
-	}
-}
 
 void APlayerCharacter::RotacionHorizontal(float AxisValue)
 {
@@ -424,9 +440,9 @@ void APlayerCharacter::RollForward()
 	bJumping = true;
 
 
-
-	CurveTimeline.PlayFromStart();
-	GetWorld()->GetTimerManager().SetTimer(DelayForJumpAnimation, this, &APlayerCharacter::JumpCompleted, DelayForCompletedJump, false);
+	//DEPRECATED: we change it to recieve a notify from animation
+	/*CurveTimeline.PlayFromStart();
+	GetWorld()->GetTimerManager().SetTimer(DelayForJumpAnimation, this, &APlayerCharacter::JumpCompleted, DelayForCompletedJump, false);*/
 	//VelocidadMovimiento = NormalMaxVelocity;
 }
 void APlayerCharacter::CrouchUnder(AJumpOverZone* TempZone)
