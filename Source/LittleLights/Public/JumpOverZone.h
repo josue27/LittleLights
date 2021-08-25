@@ -48,4 +48,7 @@ public:
 public:
 	UFUNCTION(BlueprintImplementableEvent)
 		void MovePlayerAlongSpline(float axisValue);
+	UFUNCTION(BlueprintImplementableEvent)
+		void PlayerLostBalance();
+
 };

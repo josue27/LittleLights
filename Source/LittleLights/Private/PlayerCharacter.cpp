@@ -75,6 +75,21 @@ void APlayerCharacter::Tick(float DeltaTime)
 	if (bBalancing)
 	{
 		Balancing_X += UnbalanceVelocity;
+		if (Balancing_X <= -0.9f || Balancing_X >= 0.9)
+		{
+			bLostBalance = true;
+			bBalancing = false;
+			if (Temp_JumpOverZone)
+			{
+				Temp_JumpOverZone->PlayerLostBalance();
+				PlayerFall();
+			}
+		}
+		else
+		{
+			bLostBalance = false;
+
+		}
 	}
 }
 
@@ -265,6 +280,10 @@ void APlayerCharacter::ShowHint(bool showhint, const FString& textToShow)
 
 	TextHint = textToShow != " " ? FText::FromString(textToShow) : FText::FromString("Press E for action");
 
+}
+
+void APlayerCharacter::BalanceUpdate()
+{
 }
 
 void APlayerCharacter::MovimientoForward(float AxisValue)

@@ -54,7 +54,7 @@ protected:
 
 
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -152,6 +152,8 @@ public:
 		float BalancingSensitivity = 0.01f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Over settings Balancing")
 		float UnbalanceVelocity = 0.001f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Over settings Balancing")
+		bool bLostBalance;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hints")
 		FText TextHint;
@@ -204,6 +206,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category ="Lantern")
 		void SpawnLanternOrb();
+
+	UFUNCTION(Category = "Balancing")
+		void BalanceUpdate();
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void PlayerFall();
+
 private:
 	void MovimientoForward(float AxisValue);
 	void MovimientoRight(float AxisValue);
