@@ -3,16 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "LL_GameplayInterface.h"
 #include "GameFramework/Actor.h"
 #include "FirePit.generated.h"
 
 class UPointLightComponent;
 class USphereComponent;
 UCLASS()
-class LITTLELIGHTS_API AFirePit : public AActor
+class LITTLELIGHTS_API AFirePit : public AActor, public  ILL_GameplayInterface
 {
 	GENERATED_BODY()
-	
+
+	void Interact_Implementation(APawn* InstigatorPawn) override;
 public:	
 	// Sets default values for this actor's properties
 	AFirePit();
@@ -34,6 +36,9 @@ public:
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	USphereComponent* SphereCollision;
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Pond")
+	float RefillAmount = 30.0f;
+	
 	UFUNCTION()
 	void PlayerInPit(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 	UFUNCTION()

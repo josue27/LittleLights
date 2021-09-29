@@ -6,6 +6,9 @@
 #include "Components/SphereComponent.h"
 #include "PlayerCharacter.h"
 #include "Personaje.h"
+
+
+
 // Sets default values
 AFirePit::AFirePit()
 {
@@ -26,7 +29,7 @@ void AFirePit::BeginPlay()
 {
 	Super::BeginPlay();
 	SphereCollision->OnComponentBeginOverlap.AddDynamic(this,&AFirePit::PlayerInPit);
-	 SphereCollision->OnComponentEndOverlap.AddDynamic(this,&AFirePit::PlayerLeftPit);
+	SphereCollision->OnComponentEndOverlap.AddDynamic(this,&AFirePit::PlayerLeftPit);
 	
 }
 
@@ -67,5 +70,13 @@ void AFirePit::PlayerLeftPit(UPrimitiveComponent* OverlappedComp,class AActor * 
 
 
 		UE_LOG(LogTemp,Warning,TEXT("Player left firepit"));
+	}
+}
+void AFirePit::Interact_Implementation(APawn* InstigatorPawn)
+{
+	APlayerCharacter* Player = Cast<APlayerCharacter>(InstigatorPawn);
+	if(Player)
+	{
+		Player->LightUpTorch(RefillAmount);
 	}
 }

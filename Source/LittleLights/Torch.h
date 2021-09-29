@@ -49,15 +49,20 @@ public:
 		float LightUpTime = 10.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bStartDecay = false;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+		bool bLightOver = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float DeltaIntensity = 0.0f;
+		float DeltaIntensity = 1.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		USpotLightComponent* SpotLight_Component;
 
 	UFUNCTION(BlueprintCallable)
-		void StartDecay(float NewLightUpTime);
+		void StartDecay(float NewLightUpTime, bool bStarToDecay = false);
 	UFUNCTION(BlueprintCallable)
 		void RestartLight();
 	UFUNCTION(BlueprintCallable)
 		void LightDecay();
+
+	UFUNCTION(BlueprintCallable)
+	void TurnOnOrb();
 };

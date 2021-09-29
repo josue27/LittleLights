@@ -108,11 +108,10 @@ void APersonaje::LightUpTorch()
 {
 	if (bLightingTorch)
 	{
-		bLightingTorch = false;
+		
 		return;
 	}
-	else if(bInFirePit)
-	{
+	
 		UE_LOG(LogTemp, Warning, TEXT("Restarting Torch light"));
 		bCanMove = false;//make function
 		if (FirePitTemp)
@@ -128,11 +127,24 @@ void APersonaje::LightUpTorch()
 				Torch->bStartDecay = false;
 			}
 		}
-	}
+	
 
 
 }
+void APersonaje::TorchLightingCompleted()
+{
+	if (Torch != nullptr)
+	{
+		if (LevelManager != nullptr)
+		{
+			Torch->StartDecay(LevelManager->TorchLightUpTime,true);
+		}
+		Torch->StartDecay(DefaultTorchDecay,true);//TODO:Hardcoded with need the level manager ref
+	}
+	bLightingTorch = false;
 
+	bCanMove = true;
+}
 
 /// <summary>
 /// Function Called by LightUpTorch after SetTimer just to let the animation play
@@ -182,19 +194,7 @@ void APersonaje::SprintUpdate()
 	UE_LOG(LogTemp, Warning, TEXT("CurrenStamine: %f"), CurrentStamine);
 }
 
-void APersonaje::TorchLightingCompleted()
-{
-	bLightingTorch = false;
-	if (Torch != nullptr)
-	{
-		if (LevelManager != nullptr)
-		{
-			Torch->StartDecay(LevelManager->TorchLightUpTime);
-		}
-		Torch->StartDecay(DefaultTorchDecay);//TODO:Hardcoded with need the level manager ref
-	}
-	bCanMove = true;
-}
+
 
 void APersonaje::TorchLightDecay()
 {

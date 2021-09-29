@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "LittleLights/LL_GameModeBase.h"
 #include "Level_Manager_Base.generated.h"
 
 UCLASS()
@@ -14,7 +15,9 @@ class LITTLELIGHTS_API ALevel_Manager_Base : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ALevel_Manager_Base();
-
+protected:
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Level Manager")
+	EGameState CurrentGameState;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

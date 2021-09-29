@@ -3,6 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "Camera/CameraComponent.h"
+#include "Components/SpotLightComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/HUD.h"
 #include "Components/TimelineComponent.h"
@@ -15,7 +18,7 @@ class UCurveFloat;
 class USpringArmComponent;
 class AJumpOverZone;
 
-
+class ULL_InteractorComponent;
 UCLASS()
 class LITTLELIGHTS_API APlayerCharacter : public ACharacter
 {
@@ -44,6 +47,9 @@ protected:
 	UFUNCTION()
 		void JumpCompleted();
 
+	UFUNCTION(Category="Player Camera")
+	void UpdateFov();
+	
 
 	UPROPERTY(EditAnywhere, Category = "Jump Settings")
 		float DelayForCompletedJump = 1.1f;
@@ -51,9 +57,18 @@ protected:
 		float JumpDistance = 5.0f;
 	FTimerHandle DelayForJumpAnimation;
 
-
-
-
+	UPROPERTY(EditAnywhere,Category="Player Camera")
+	UCameraComponent* CameraComp;
+	UPROPERTY(EditAnywhere,Category="Player Camera")
+	USpringArmComponent* SpringArmComponent;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite ,Category="Player Camera")
+	float Fov_B = 60.0f;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite ,Category="Player Camera")
+	float Fov_A = 45.0f;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite ,Category="Player Camera")
+	USpotLightComponent* FillLight;
+	UPROPERTY(BlueprintReadWrite,Category="Player Camera")
+	FRotator FillLightInitRotation;
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -90,7 +105,7 @@ public:
 	UPROPERTY(EditAnywhere)
 		float DefaultTorchDecay = 30.0f;
 	UFUNCTION(BlueprintCallable)
-		void LightUpTorch();// no need for implementation cause is BPImplementable
+		void LightUpTorch(float AmountRefill);// no need for implementation cause is BPImplementable
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bInFirePit = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -98,6 +113,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int FragmentsAmount = 0;
 
+	UPROPERTY(VisibleAnywhere)
+	ULL_InteractorComponent* InteractorComp;
 	//The difference that we rest to de movement in order to correspond
 	//the movement from the joystick
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -230,12 +247,12 @@ private:
 	FQuat RotacionFinal;
 
 
-
+	float TempRefillAmount;
 	friend class AMainPlayer_DebugHUD;
 
 	FTimerHandle DelayLightingTorch;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 		void TorchLightingCompleted();
 	UFUNCTION()
 		void SprintAction();

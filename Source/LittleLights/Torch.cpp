@@ -45,7 +45,7 @@ void ATorch::Tick(float DeltaTime)
 	}
 }
 
-void ATorch::StartDecay(float NewLightUpTime)
+void ATorch::StartDecay(float NewLightUpTime, bool bStarToDecay)
 {
 	if (NewLightUpTime != 0)
 	{
@@ -53,18 +53,20 @@ void ATorch::StartDecay(float NewLightUpTime)
 	}
 
 	RestartLight();
-	bStartDecay = true;
+	bStartDecay = bStarToDecay;
 }
 
 void ATorch::RestartLight()
 {
 
 	CurrentTime = LightUpTime + GetWorld()->GetTimeSeconds();
+	bLightOver = false;
+
 }
 
 void ATorch::LightDecay()
 {
-	if (!bStartDecay)
+	if (!bStartDecay || bLightOver)
 	{
 		return;
 	}
@@ -72,7 +74,8 @@ void ATorch::LightDecay()
 	TorchLight->AttenuationRadius = FMath::Lerp(0.0f, 1000.0f, RemainingTime);
 	if (RemainingTime <= 0.0f)
 	{
-		bStartDecay = false;
+		bLightOver = true;
+		//bStartDecay = false;
 		//APersonaje* Player = Cast<APersonaje>(	GetWorld()->GetFirstPlayerController());
 		APlayerCharacter* Player = Cast<APlayerCharacter>(	GetOwner());
 		if (Player)
@@ -95,9 +98,23 @@ void ATorch::LightDecay()
 		if (SpotLight_Component != nullptr)
 		{
 
-		SpotLight_Component->Intensity = FMath::Lerp(0.0f, InitialIntensity, RemainingTime);
+			SpotLight_Component->Intensity = FMath::Lerp(0.0f, InitialIntensity, RemainingTime);
 		}
 		DeltaIntensity = RemainingTime;
 	}
+}
+
+void ATorch::TurnOnOrb()
+{
+	
+	TorchLight->AttenuationRadius =1000.0f;
+	TorchLight->Intensity =InitialIntensity;
+	if (SpotLight_Component != nullptr)
+	{
+
+			SpotLight_Component->Intensity = InitialIntensity;
+	}
+	DeltaIntensity = 1.0f;
+	
 }
 

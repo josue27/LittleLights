@@ -15,7 +15,9 @@
 #include "JumpOverZone.h"
 #include "Level_Manager_Base.h"
 #include "DrawDebugHelpers.h"
-
+#include "IPropertyTableColumn.h"
+#include "Camera/CameraComponent.h"
+#include "LL_InteractorComponent.h"
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
@@ -31,6 +33,19 @@ APlayerCharacter::APlayerCharacter()
 	TorchPosition = CreateDefaultSubobject<UArrowComponent>(TEXT("TorhcSpawnPos"));
 	TorchPosition->SetupAttachment(RootComponent);
 
+	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
+	SpringArmComponent->bDoCollisionTest = false;
+	SpringArmComponent->bInheritPitch = false;
+	SpringArmComponent->bInheritRoll = false;
+	SpringArmComponent->bInheritYaw = false;
+	SpringArmComponent->bEnableCameraLag = true;
+	SpringArmComponent->SetupAttachment(RootComponent);
+	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
+	CameraComp->SetupAttachment(SpringArmComponent);
+	FillLight = CreateDefaultSubobject<USpotLightComponent>(TEXT("FillLight"));
+	FillLight->SetupAttachment(RootComponent);
+
+	InteractorComp = CreateDefaultSubobject<ULL_InteractorComponent>(TEXT("InteractoComp"));
 }
 
 // Called when the game starts or when spawned
@@ -42,6 +57,9 @@ void APlayerCharacter::BeginPlay()
 	{
 		SpawnLanternOrb();
 	}
+
+	FillLightInitRotation = FillLight->GetComponentRotation();
+
 		
 	
 
@@ -70,7 +88,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 	CurveTimeline.TickTimeline(DeltaTime);
 
 	LookingAt();
-
+	UpdateFov();
 
 	if (bBalancing)
 	{
@@ -134,35 +152,43 @@ void APlayerCharacter::SpawnLanternOrb()
 /// <summary>
 /// Called when user press the action button to light up de torch if any
 /// </summary>
-void APlayerCharacter::LightUpTorch()
+void APlayerCharacter::LightUpTorch(float AmountRefill)
 {
-	if (bLightingTorch)
+	if (bLightingTorch || !Torch)
 	{
-		bLightingTorch = false;
+		
 		return;
 	}
-	else if (bInFirePit)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Restarting Torch light"));
-		bCanMove = false;//make function
-		if (FirePitTemp)
-		{
-			bLightingTorch = true;
-			FRotator RotateTo = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), FirePitTemp->GetActorLocation());
-			RotateTo.Pitch = GetActorRotation().Pitch;
-			RotateTo.Roll = GetActorRotation().Roll;
-			SetActorRotation(RotateTo);
-			GetWorld()->GetTimerManager().SetTimer(DelayLightingTorch, this, &APlayerCharacter::TorchLightingCompleted, 4.0f, false);
-			if (Torch != nullptr)
-			{
-				Torch->bStartDecay = false;
-			}
-		}
-	}
 
-
+	UE_LOG(LogTemp, Warning, TEXT("Restarting Torch light"));
+	bCanMove = false;//make function
+	bLightingTorch = true;
+	FRotator RotateTo = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), FirePitTemp->GetActorLocation());
+	RotateTo.Pitch = GetActorRotation().Pitch;
+	RotateTo.Roll = GetActorRotation().Roll;
+	SetActorRotation(RotateTo);
+	
+	//GetWorld()->GetTimerManager().SetTimer(DelayLightingTorch, this, &APlayerCharacter::TorchLightingCompleted, 4.0f, false);
+	TempRefillAmount = AmountRefill;
+	
 }
+void APlayerCharacter::TorchLightingCompleted()
+{
 
+	if (Torch != nullptr)
+	{
+		if(TempRefillAmount > 0.0f)
+		{
+			Torch->StartDecay(TempRefillAmount,true);
+		}else
+		{
+			Torch->StartDecay(DefaultTorchDecay,true);
+		}
+		
+	}
+	bLightingTorch = false;
+	bCanMove = true;
+}
 
 /// <summary>
 /// Function Called by LightUpTorch after SetTimer just to let the animation play
@@ -212,19 +238,7 @@ void APlayerCharacter::SprintUpdate()
 	UE_LOG(LogTemp, Warning, TEXT("CurrenStamine: %f"), CurrentStamine);
 }
 
-void APlayerCharacter::TorchLightingCompleted()
-{
-	bLightingTorch = false;
-	if (Torch != nullptr)
-	{
-		if (LevelManager != nullptr)
-		{
-			Torch->StartDecay(LevelManager->TorchLightUpTime);
-		}
-		Torch->StartDecay(DefaultTorchDecay);//TODO:Hardcoded with need the level manager ref
-	}
-	bCanMove = true;
-}
+
 
 void APlayerCharacter::TorchLightDecay()
 {
@@ -246,12 +260,12 @@ void APlayerCharacter::ContinueMovement()
 
 void APlayerCharacter::ActionButtonCall()
 {
-
-	if (bInFirePit)
+	if(InteractorComp)
 	{
-		LightUpTorch();
+		InteractorComp->PrimaryInteract();
 	}
-	else if (bInJumpOverZone && Temp_JumpOverZone)
+	return;
+	if (bInJumpOverZone && Temp_JumpOverZone)
 	{
 
 		//JumpOver();
@@ -498,5 +512,39 @@ void APlayerCharacter::TimelineRoll_Progress(float Value)
 void APlayerCharacter::JumpCompleted()
 {
 	bJumping = false;
+}
+
+void APlayerCharacter::UpdateFov()
+{
+
+	
+	if(!Torch || !CameraComp)
+	{
+		return;
+	}
+	float DeltaIntensity = Torch->DeltaIntensity;
+	if(Torch->bStartDecay)//ojo startdecay se vuelve false cuando se acaba el fuego, checar esa logica porque si no lo camara se regresa
+	{
+		//SpringArm
+		SpringArmComponent->TargetOffset = GetActorForwardVector() * 120.0f;
+		//Camera
+		float CurrentFOV = FMath::Lerp(Fov_A,Fov_B,DeltaIntensity);
+		CameraComp->SetFieldOfView(CurrentFOV);
+		
+		//FillLight
+		float ConeAngleLerp = FMath::Lerp(20.0f,40.0f,DeltaIntensity);
+		FillLight->SetOuterConeAngle(ConeAngleLerp);
+		FillLight->SetInnerConeAngle(ConeAngleLerp-5);
+		FVector FillLightRelativeLoc = FillLight->GetRelativeLocation();
+		 FillLightRelativeLoc.X = FMath::Lerp(0.0f,400.0f,DeltaIntensity);
+		FillLight->SetRelativeLocation(FillLightRelativeLoc,false);
+		FillLight->SetWorldRotation(FillLightInitRotation);
+	}else
+	{
+		CameraComp->SetFieldOfView(Fov_B);
+		
+	}
+	
+	
 }
 

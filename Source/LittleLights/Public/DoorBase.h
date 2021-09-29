@@ -6,6 +6,11 @@
 #include "GameFramework/Actor.h"
 #include "DoorBase.generated.h"
 
+class ATargetPoint;
+class UBoxComponent;
+
+
+
 UCLASS()
 class LITTLELIGHTS_API ADoorBase : public AActor
 {
@@ -14,10 +19,18 @@ class LITTLELIGHTS_API ADoorBase : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ADoorBase();
+protected:
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Door Base")
+	ATargetPoint* EndWalkPoint;
+
+	UPROPERTY( BlueprintReadWrite)
+	UBoxComponent* EndTrigger;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	
 
 public:	
 	// Called every frame
