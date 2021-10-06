@@ -57,9 +57,9 @@ protected:
 		float JumpDistance = 5.0f;
 	FTimerHandle DelayForJumpAnimation;
 
-	UPROPERTY(EditAnywhere,Category="Player Camera")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Player Camera")
 	UCameraComponent* CameraComp;
-	UPROPERTY(EditAnywhere,Category="Player Camera")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Player Camera")
 	USpringArmComponent* SpringArmComponent;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite ,Category="Player Camera")
 	float Fov_B = 60.0f;

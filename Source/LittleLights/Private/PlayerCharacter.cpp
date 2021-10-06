@@ -15,7 +15,7 @@
 #include "JumpOverZone.h"
 #include "Level_Manager_Base.h"
 #include "DrawDebugHelpers.h"
-#include "IPropertyTableColumn.h"
+
 #include "Camera/CameraComponent.h"
 #include "LL_InteractorComponent.h"
 // Sets default values

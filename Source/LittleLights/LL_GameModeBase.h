@@ -10,14 +10,7 @@
  * 
  */
 
-UENUM(BlueprintType)
-enum class EGameState : uint8
-{
-	GameInit,
-	Playing,
-	LevelCompleted,
-	LevelEnded
-};
+
 UCLASS()
 class LITTLELIGHTS_API ALL_GameModeBase : public AGameModeBase
 {
