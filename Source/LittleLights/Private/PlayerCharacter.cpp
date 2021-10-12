@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
 //#include "FirePit.h"
+#include "AIController.h"
 #include "LittleLights/FirePit.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "LittleLights/Torch.h"
@@ -18,6 +19,7 @@
 
 #include "Camera/CameraComponent.h"
 #include "LL_InteractorComponent.h"
+
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
@@ -32,7 +34,7 @@ APlayerCharacter::APlayerCharacter()
 	PosicionSpawnBengala->SetupAttachment(RootComponent);
 	TorchPosition = CreateDefaultSubobject<UArrowComponent>(TEXT("TorhcSpawnPos"));
 	TorchPosition->SetupAttachment(RootComponent);
-
+	
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComponent->bDoCollisionTest = false;
 	SpringArmComponent->bInheritPitch = false;
@@ -46,6 +48,8 @@ APlayerCharacter::APlayerCharacter()
 	FillLight->SetupAttachment(RootComponent);
 
 	InteractorComp = CreateDefaultSubobject<ULL_InteractorComponent>(TEXT("InteractoComp"));
+
+	bUseControllerRotationYaw = false;
 }
 
 // Called when the game starts or when spawned
@@ -315,14 +319,18 @@ void APlayerCharacter::MovimientoForward(float AxisValue)
 		return;
 	//TODO:Poner opcion para invertir el control para ver si eso soluciona que no tengamos que voltear el startplayer position
 	FRotator Rotation = Controller->GetControlRotation();
-	FRotator Yaw(0, Rotation.Yaw - JoystickAnlgeDifference, 0);
-	FVector Direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::X);
-	AddMovementInput(Direction, AxisValue * VelocidadMovimiento * GetWorld()->DeltaTimeSeconds);
+	Rotation.Pitch = 0.0f;
+	Rotation.Roll = 0.0f;
+	 FRotator RotationWithDiff(0, Rotation.Yaw - JoystickAnlgeDifference, 0);
+	// FVector Direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::X);
+	// AddMovementInput(Direction, AxisValue * VelocidadMovimiento * GetWorld()->DeltaTimeSeconds);
+	AddMovementInput(RotationWithDiff.Vector(), AxisValue * VelocidadMovimiento * GetWorld()->DeltaTimeSeconds);
 
-	if (SpringArmRef != nullptr)
-	{
-		SpringArmRef->TargetOffset = GetActorForwardVector() * 120.0f;
-	}
+	//DEPRECATED(Because the initial configs in the BeginPlay Movement Calculations
+	// if (SpringArmRef != nullptr)
+	// {
+	// 	SpringArmRef->TargetOffset = GetActorForwardVector() * 120.0f;
+	// }
 	UE_LOG(LogTemp,Warning,TEXT("MOVIENDO"));
 }
 
@@ -343,14 +351,21 @@ void APlayerCharacter::MovimientoRight(float AxisValue)
 	//BUG TO FIX: When pressing with 2 keyboard keys the velocity get higher(250) but with
 	//analog stick it doesnt happen
 	FRotator Rotation = Controller->GetControlRotation();
+	Rotation.Pitch = 0.0f;
+	Rotation.Roll = 0.0f;
 	FRotator Yaw(0, Rotation.Yaw - JoystickAnlgeDifference, 0);
-	FVector Direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::Y);
-	AddMovementInput(Direction, AxisValue * VelocidadMovimiento * GetWorld()->DeltaTimeSeconds);
+	//FVector Direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::Y);
+	FVector Direction = FRotationMatrix(Yaw).GetScaledAxis(EAxis::Y);//Esto segun TomLooman
 
-	if (SpringArmRef != nullptr)
-	{
-		SpringArmRef->TargetOffset = GetActorForwardVector() * 120.0f;
-	}
+
+	 AddMovementInput(Direction, AxisValue * VelocidadMovimiento * GetWorld()->DeltaTimeSeconds);
+	
+
+	//DEPRECATED(Because the initial configs in the BeginPlay and Movement Calculations
+	// if (SpringArmRef != nullptr)
+	// {
+	// 	SpringArmRef->TargetOffset = GetActorForwardVector() * 120.0f;
+	//}
 
 	
 }
@@ -514,6 +529,17 @@ void APlayerCharacter::JumpCompleted()
 	bJumping = false;
 }
 
+// void APlayerCharacter::MovePlayerTo(FVector Location, float Speed)
+// {
+// 	APlayerController* PC = UGameplayStatics::GetPlayerController(this,0);
+// 	if(!PC)return;
+// 	DisableInput(PC);
+// 	float MaxWalkSpeedTemp = GetCharacterMovement()->GetMaxSpeed();
+// 	
+// }
+
+
+
 void APlayerCharacter::UpdateFov()
 {
 
@@ -548,3 +574,8 @@ void APlayerCharacter::UpdateFov()
 	
 }
 
+
+void APlayerCharacter::StartGame_Implementation()
+{
+	bCanMove = true;
+}

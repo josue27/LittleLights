@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "LL_GameplayInterface.h"
 
 #include "Camera/CameraComponent.h"
 #include "Components/SpotLightComponent.h"
@@ -17,13 +18,14 @@ class ALevel_Manager_Base;
 class UCurveFloat;
 class USpringArmComponent;
 class AJumpOverZone;
-
 class ULL_InteractorComponent;
+
 UCLASS()
-class LITTLELIGHTS_API APlayerCharacter : public ACharacter
+class LITTLELIGHTS_API APlayerCharacter : public ACharacter, public ILL_GameplayInterface
 {
 	GENERATED_BODY()
 
+	virtual void StartGame_Implementation() override;
 public:
 	// Sets default values for this character's properties
 	APlayerCharacter();
@@ -46,6 +48,7 @@ protected:
 		void TimelineRoll_Progress(float Value);
 	UFUNCTION()
 		void JumpCompleted();
+	
 
 	UFUNCTION(Category="Player Camera")
 	void UpdateFov();
@@ -195,7 +198,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void ActionButtonCall();
-
+	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable)
+		void MovePlayerTo(FVector Location, float Speed = 150.0f);
 	
 
 #pragma region EspecialMovements

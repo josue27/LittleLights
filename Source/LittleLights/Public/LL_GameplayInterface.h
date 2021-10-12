@@ -24,4 +24,14 @@ class LITTLELIGHTS_API ILL_GameplayInterface
 public:
 	UFUNCTION(BlueprintNativeEvent)
 	void Interact(APawn* InstigatorPawn);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void StartGame();
+
+	UFUNCTION(BlueprintNativeEvent)
+	void BeaconCompleted();
+
+
+	
+	
 };
