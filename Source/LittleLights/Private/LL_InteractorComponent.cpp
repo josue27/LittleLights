@@ -6,6 +6,9 @@
 #include "DrawDebugHelpers.h"
 #include "LL_GameplayInterface.h"
 
+static TAutoConsoleVariable<bool> CVarDrawDebugInteraction(TEXT("ll.DrawDebugInteraction"),false,TEXT("Drawing Debug InteractiveComponent"),ECVF_Cheat);
+
+
 // Sets default values for this component's properties
 ULL_InteractorComponent::ULL_InteractorComponent()
 {
@@ -44,13 +47,18 @@ void ULL_InteractorComponent::PrimaryInteract()
 
 	TArray<FHitResult> Hits;
 	FCollisionShape Shape;
-	Shape.SetSphere(20.0f);
+	Shape.SetSphere(RadiusRay);
 	FCollisionObjectQueryParams QueryParams;
 	
 	
 	bool bInteractionHit = GetWorld()->SweepMultiByObjectType(Hits,Start,End,FQuat::Identity,QueryParams,Shape);
 	for(FHitResult Hit:Hits)
 	{
+		if(CVarDrawDebugInteraction.GetValueOnGameThread())
+		{
+			DrawDebugSphere(GetWorld(),Hit.ImpactPoint,30.0f,16,FColor::Red,false,2.0f);
+
+		}
 		AActor* Actor = Hit.GetActor();
 		if(Actor->Implements<ULL_GameplayInterface>())
 		{
@@ -59,8 +67,8 @@ void ULL_InteractorComponent::PrimaryInteract()
 			UE_LOG(LogTemp,Warning,TEXT("Hitted with Interactive Object"));
 			break;
 		}
-		DrawDebugSphere(GetWorld(),Hit.ImpactPoint,30.0f,16,FColor::Red,false,2.0f);
 	}
-	DrawDebugLine(GetWorld(),Start,End,FColor::Emerald,false,2.0f);
+	if(CVarDrawDebugInteraction.GetValueOnGameThread())
+		DrawDebugLine(GetWorld(),Start,End,FColor::Emerald,false,2.0f);
 }
 

@@ -88,10 +88,10 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	//UpdateRotacion();
-	SprintUpdate();
+	//SprintUpdate();
 	CurveTimeline.TickTimeline(DeltaTime);
 
-	LookingAt();
+	//LookingAt();
 	UpdateFov();
 
 	if (bBalancing)

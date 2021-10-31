@@ -13,5 +13,9 @@ UCLASS()
 class LITTLELIGHTS_API ALL_PlayerControllerBase : public APlayerController
 {
 	GENERATED_BODY()
+
+	protected:
+	
+	virtual void BeginPlay() override;
 	
 };
