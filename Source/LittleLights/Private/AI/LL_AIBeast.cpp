@@ -35,7 +35,7 @@ void ALL_AIBeast::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//if(GetController()->LineOfSightTo())
+	
 	if(TargetActorTemp && !PawnSensingComp->HasLineOfSightTo(TargetActorTemp))
 	{
 		ResetTarget(TargetActorTemp);

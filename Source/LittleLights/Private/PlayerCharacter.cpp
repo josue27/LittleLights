@@ -394,7 +394,7 @@ void APlayerCharacter::JumpButtonCall()
 	{
 		DrawDebugBox(GetWorld(), Hit.ImpactPoint, FVector(5, 5, 5), FColor::Red, false, 3.0f);
 
-		AJumpOverZone* EspecialMovementZone = Cast<AJumpOverZone>(Hit.Actor);
+		AJumpOverZone* EspecialMovementZone = Cast<AJumpOverZone>(Hit.GetActor());
 		if (EspecialMovementZone != nullptr)
 		{
 			//If in front of JumpOverObstacle
