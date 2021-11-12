@@ -63,15 +63,16 @@ void ALL_AIBeast::SetTarget(AActor* Actor)
 	AAIController* AIC = Cast<AAIController>(GetController());
 	if(AIC)
 	{
-		if(AIC->GetBlackboardComponent()->GetValueAsBool("InRange"))
-		{
-			ResetTarget(nullptr);
-			return;
-		}
+		// if(AIC->GetBlackboardComponent()->GetValueAsBool("InRange"))
+		// {
+		// 	ResetTarget(nullptr);
+		// 	return;
+		// }
 		AIC->GetBlackboardComponent()->SetValueAsObject(TargetKeyName,Actor);
 		AIC->GetBlackboardComponent()->SetValueAsVector("MoveToLoc",Actor->GetActorLocation());
 
 	}
+	//we store the actor so we can use it later on Tick and remove it when is lost
 	TargetActorTemp = Actor;
 }
 

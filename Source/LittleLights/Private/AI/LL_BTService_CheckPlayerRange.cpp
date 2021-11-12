@@ -15,7 +15,7 @@ void ULL_BTService_CheckPlayerRange::TickNode(UBehaviorTreeComponent& OwnerComp,
 	UBlackboardComponent* BBComp = OwnerComp.GetBlackboardComponent();
 	if(ensure(BBComp))
 	{
-		AActor* TargetActor = Cast<AActor>( BBComp->GetValueAsObject("TargetActor"));
+		AActor* TargetActor = Cast<AActor>( BBComp->GetValueAsObject(TargetKeyName.SelectedKeyName));
 		if(TargetActor)
 		{
 			AAIController* AIController = OwnerComp.GetAIOwner();

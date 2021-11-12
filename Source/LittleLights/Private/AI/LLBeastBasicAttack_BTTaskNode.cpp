@@ -4,6 +4,7 @@
 #include "AI/LLBeastBasicAttack_BTTaskNode.h"
 
 #include "AIController.h"
+#include "AI/LL_AIBeast.h"
 #include "BehaviorTree/BlackboardComponent.h"
 ULLBeastBasicAttack_BTTaskNode::ULLBeastBasicAttack_BTTaskNode()
 {
@@ -21,7 +22,13 @@ EBTNodeResult::Type ULLBeastBasicAttack_BTTaskNode::ExecuteTask(UBehaviorTreeCom
 		{
 			EBTNodeResult::Failed;
 		}
-		UE_LOG(LogTemp,Warning,TEXT("Beast attacked player"));
+		ALL_AIBeast* BeastAI = Cast<ALL_AIBeast>(AIController->GetPawn());
+		if(BeastAI)
+		{
+			BeastAI->BasicAttackSequence();
+			UE_LOG(LogTemp,Warning,TEXT("Beast attacked player"));
+
+		}
 		return  EBTNodeResult::Succeeded;
 	}
 	
