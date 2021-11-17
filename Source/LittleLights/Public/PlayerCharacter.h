@@ -50,6 +50,9 @@ protected:
 		void JumpCompleted();
 	
 
+	UPROPERTY(BlueprintReadWrite,Category="Player State")
+	bool bIsAlive;//changed if captured o anything else;
+	
 	UFUNCTION(Category="Player Camera")
 	void UpdateFov();
 	
@@ -72,6 +75,8 @@ protected:
 	USpotLightComponent* FillLight;
 	UPROPERTY(BlueprintReadWrite,Category="Player Camera")
 	FRotator FillLightInitRotation;
+
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -178,7 +183,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hints")
 		FText TextHint;
 
-public:
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+	void PlayerCatchByMonster();
+
+	UFUNCTION(BlueprintCallable)
+	bool IsPlayerAlive();
+
 	UFUNCTION()
 		void TorchLightDecay();
 

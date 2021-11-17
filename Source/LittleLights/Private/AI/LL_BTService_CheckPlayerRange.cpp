@@ -5,7 +5,10 @@
 
 #include "AIController.h"
 #include "DrawDebugHelpers.h"
+#include "LLGamePlayFunctionLibrary.h"
 #include "BehaviorTree/BlackboardComponent.h"
+
+static TAutoConsoleVariable<bool> CVarDebugAI(TEXT("ll.DebugAI"),false,TEXT("Enable spawning of bots via timer"),ECVF_Cheat);
 
 void ULL_BTService_CheckPlayerRange::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
@@ -16,7 +19,7 @@ void ULL_BTService_CheckPlayerRange::TickNode(UBehaviorTreeComponent& OwnerComp,
 	if(ensure(BBComp))
 	{
 		AActor* TargetActor = Cast<AActor>( BBComp->GetValueAsObject(TargetKeyName.SelectedKeyName));
-		if(TargetActor)
+		if(TargetActor && ULLGamePlayFunctionLibrary::IsPlayerAlive(TargetActor))
 		{
 			AAIController* AIController = OwnerComp.GetAIOwner();
 			if(ensure(AIController))
@@ -25,27 +28,29 @@ void ULL_BTService_CheckPlayerRange::TickNode(UBehaviorTreeComponent& OwnerComp,
 				if(ensure(AIPawn))
 				{
 					float Distance = FVector::Distance(TargetActor->GetActorLocation(),AIPawn->GetActorLocation());
-					bool InRange = Distance < DistanceAttackRange;
+					bool InRange = Distance <= DistanceAttackRange;
 					bool InLineOfSight = false;
 					if(InRange)
 					{
 						InLineOfSight = AIController->LineOfSightTo(TargetActor);
 					}
 					BBComp->SetValueAsBool(InRangeKey.SelectedKeyName,(InRange && InLineOfSight));
-			
+
+					if(CVarDebugAI.GetValueOnGameThread())
+					{
+						
 					DrawDebugString(OwnerComp.GetWorld(),TargetActor->GetActorLocation(),FString::Printf(TEXT("InRange: %s | InLOS: %s"),InRange?TEXT("true"):TEXT("false"),InLineOfSight?TEXT("true"):TEXT("false")),nullptr,FColor::Red);
 					GEngine->AddOnScreenDebugMessage(-1,0.0f,FColor::White,FString::Printf(TEXT("InRange: %s | InLOS: %s"),InRange?TEXT("true"):TEXT("false"),InLineOfSight?TEXT("true"):TEXT("false")));
-				//if(!InLineOfSight || !InRange)
-				//{
-				//	BBComp->ClearValue(TargetKeyName.SelectedKeyName);
-				//	DrawDebugString(GetWorld(),TargetActor->GetActorLocation(),"Lost Sight of Player");
-				//}else if(InRange && InLineOfSight)
-				//{
-				//	BBComp->SetValueAsVector("MoveToLoc",TargetActor->GetActorLocation());
-				//}
+					}
+
+			
 
 				}
 			}
+		}else
+		{
+			BBComp->SetValueAsBool(InRangeKey.SelectedKeyName,false);
+
 		}
 	}
 }

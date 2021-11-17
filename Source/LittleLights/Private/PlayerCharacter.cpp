@@ -50,6 +50,7 @@ APlayerCharacter::APlayerCharacter()
 	InteractorComp = CreateDefaultSubobject<ULL_InteractorComponent>(TEXT("InteractoComp"));
 
 	bUseControllerRotationYaw = false;
+	bIsAlive = true;
 }
 
 // Called when the game starts or when spawned
@@ -243,6 +244,14 @@ void APlayerCharacter::SprintUpdate()
 }
 
 
+void APlayerCharacter::PlayerCatchByMonster_Implementation()
+{
+}
+
+bool APlayerCharacter::IsPlayerAlive()
+{
+	return  bIsAlive;
+}
 
 void APlayerCharacter::TorchLightDecay()
 {

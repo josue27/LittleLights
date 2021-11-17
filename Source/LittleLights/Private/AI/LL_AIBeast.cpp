@@ -5,8 +5,11 @@
 
 #include "AIController.h"
 #include "DrawDebugHelpers.h"
+#include "LLGamePlayFunctionLibrary.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Perception/PawnSensingComponent.h"
+
+static TAutoConsoleVariable<bool> CVarDebugAI(TEXT("ll.DebugAI"),false,TEXT("Enable spawning of bots via timer"),ECVF_Cheat);
 
 // Sets default values
 ALL_AIBeast::ALL_AIBeast()
@@ -48,10 +51,12 @@ void ALL_AIBeast::PlayerSeen(APawn* PlayerPawn)
 	{
 		return;
 	}
-	if(PawnSensingComp->HasLineOfSightTo(PlayerPawn))
+	
+	if(PawnSensingComp->HasLineOfSightTo(PlayerPawn) && ULLGamePlayFunctionLibrary::IsPlayerAlive(PlayerPawn))
 	{
 		SetTarget(PlayerPawn);
-		DrawDebugString(GetWorld(),PlayerPawn->GetActorLocation(),"Player Seen");
+		if(CVarDebugAI.GetValueOnGameThread())
+			DrawDebugString(GetWorld(),PlayerPawn->GetActorLocation(),"Player Seen");
 	}
 	
 }
