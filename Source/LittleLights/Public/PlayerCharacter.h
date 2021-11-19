@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "LL_AbilityComponent.h"
 #include "LL_GameplayInterface.h"
 
 #include "Camera/CameraComponent.h"
@@ -244,6 +245,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 		void PlayerFall();
 
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category="Abilities")
+	ULL_AbilityComponent* AbilityComponent;
+
 private:
 	void MovimientoForward(float AxisValue);
 	void MovimientoRight(float AxisValue);
@@ -272,8 +276,7 @@ private:
 		void SprintAction();
 	UFUNCTION()
 		void SprintCancelled();
-	UFUNCTION()
-		void SprintUpdate();
+	
 
 	
 

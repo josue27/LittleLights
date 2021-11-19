@@ -48,6 +48,7 @@ APlayerCharacter::APlayerCharacter()
 	FillLight->SetupAttachment(RootComponent);
 
 	InteractorComp = CreateDefaultSubobject<ULL_InteractorComponent>(TEXT("InteractoComp"));
+	AbilityComponent = CreateDefaultSubobject<ULL_AbilityComponent>(TEXT("AbilityComponent"));
 
 	bUseControllerRotationYaw = false;
 	bIsAlive = true;
@@ -68,7 +69,7 @@ void APlayerCharacter::BeginPlay()
 		
 	
 
-	VelocidadMovimiento = NormalMaxVelocity;
+
 	CurrentStamine = Stamine;
 
 	if (CurveFloat)
@@ -89,7 +90,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	//UpdateRotacion();
-	//SprintUpdate();
+	
 	CurveTimeline.TickTimeline(DeltaTime);
 
 	//LookingAt();
@@ -202,46 +203,17 @@ void APlayerCharacter::TorchLightingCompleted()
 
 void APlayerCharacter::SprintAction()
 {
-	if (CurrentStamine > 0 && bCanSprint)
-	{
-		VelocidadMovimiento = CurrentStamine > 0 ? SprintVelocity : NormalMaxVelocity;
-		CurrentStamine = FMath::Abs((GetWorld()->GetTimeSeconds() + CurrentStamine) - GetWorld()->GetTimeSeconds());
-		bSprint = true;
-
-	}
-	else
-	{
-
-		VelocidadMovimiento = NormalMaxVelocity;
-	}
+	AbilityComponent->StartAbilityByName(this,"Sprint");
 }
 
 void APlayerCharacter::SprintCancelled()
 {
-	VelocidadMovimiento = NormalMaxVelocity;
-	bSprint = false;
-	UE_LOG(LogTemp, Warning, TEXT("SprintCancelled"));
+	
+	AbilityComponent->StopAbilityByName(this,"Sprint");
 
 }
 
-void APlayerCharacter::SprintUpdate()
-{
-	if (!bSprint)
-	{
-		CurrentStamine = FMath::Clamp(CurrentStamine + GetWorld()->GetDeltaSeconds(), 0.0f, Stamine);
 
-		return;
-	}
-
-	CurrentStamine -= GetWorld()->GetDeltaSeconds();
-	if (CurrentStamine <= 0.0f)
-	{
-		VelocidadMovimiento = NormalMaxVelocity;
-		CurrentStamine = 0.0f;
-
-	}
-	UE_LOG(LogTemp, Warning, TEXT("CurrenStamine: %f"), CurrentStamine);
-}
 
 
 void APlayerCharacter::PlayerCatchByMonster_Implementation()
@@ -324,7 +296,7 @@ void APlayerCharacter::MovimientoForward(float AxisValue)
 		}
 
 	}
-	if (VelocidadMovimiento <= 0 || !bCanMove)
+	if ( !bCanMove)
 		return;
 	//TODO:Poner opcion para invertir el control para ver si eso soluciona que no tengamos que voltear el startplayer position
 	FRotator Rotation = Controller->GetControlRotation();
@@ -333,7 +305,7 @@ void APlayerCharacter::MovimientoForward(float AxisValue)
 	 FRotator RotationWithDiff(0, Rotation.Yaw - JoystickAnlgeDifference, 0);
 	// FVector Direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::X);
 	// AddMovementInput(Direction, AxisValue * VelocidadMovimiento * GetWorld()->DeltaTimeSeconds);
-	AddMovementInput(RotationWithDiff.Vector(), AxisValue * VelocidadMovimiento * GetWorld()->DeltaTimeSeconds);
+	AddMovementInput(RotationWithDiff.Vector(), AxisValue * VelocidadMovimiento  * GetWorld()->DeltaTimeSeconds);
 
 	//DEPRECATED(Because the initial configs in the BeginPlay Movement Calculations
 	// if (SpringArmRef != nullptr)
@@ -351,7 +323,7 @@ void APlayerCharacter::MovimientoRight(float AxisValue)
 			Balancing_X += AxisValue * BalancingSensitivity;
 		
 	}
-	if (VelocidadMovimiento <= 0 || !bCanMove)
+	if (!bCanMove)
 	{
 
 		return;
@@ -367,7 +339,7 @@ void APlayerCharacter::MovimientoRight(float AxisValue)
 	FVector Direction = FRotationMatrix(Yaw).GetScaledAxis(EAxis::Y);//Esto segun TomLooman
 
 
-	 AddMovementInput(Direction, AxisValue * VelocidadMovimiento * GetWorld()->DeltaTimeSeconds);
+	 AddMovementInput(Direction, AxisValue *  VelocidadMovimiento  * GetWorld()->DeltaTimeSeconds);
 	
 
 	//DEPRECATED(Because the initial configs in the BeginPlay and Movement Calculations
