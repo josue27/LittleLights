@@ -220,6 +220,11 @@ void APlayerCharacter::PlayerCatchByMonster_Implementation()
 {
 }
 
+void APlayerCharacter::AddTottemPiece(ATottem_Piece* Piece)
+{
+	TottemPieces.AddUnique(Piece);
+}
+
 bool APlayerCharacter::IsPlayerAlive()
 {
 	return  bIsAlive;
@@ -312,7 +317,7 @@ void APlayerCharacter::MovimientoForward(float AxisValue)
 	// {
 	// 	SpringArmRef->TargetOffset = GetActorForwardVector() * 120.0f;
 	// }
-	UE_LOG(LogTemp,Warning,TEXT("MOVIENDO"));
+	//UE_LOG(LogTemp,Warning,TEXT("MOVIENDO"));
 }
 
 void APlayerCharacter::MovimientoRight(float AxisValue)

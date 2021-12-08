@@ -5,6 +5,8 @@
 
 #include "DrawDebugHelpers.h"
 #include "LL_GameplayInterface.h"
+#include "Blueprint/UserWidget.h"
+#include "Widget/LL_WorldUserWidget.h"
 
 static TAutoConsoleVariable<bool> CVarDrawDebugInteraction(TEXT("ll.DrawDebugInteraction"),false,TEXT("Drawing Debug InteractiveComponent"),ECVF_Cheat);
 
@@ -30,15 +32,16 @@ void ULL_InteractorComponent::BeginPlay()
 }
 
 
+
 // Called every frame
 void ULL_InteractorComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	FindInteractable();
 }
 
-void ULL_InteractorComponent::PrimaryInteract()
+void ULL_InteractorComponent::FindInteractable()
 {
 	APawn* PlayerOwner = Cast<APawn>(GetOwner());
 
@@ -49,8 +52,9 @@ void ULL_InteractorComponent::PrimaryInteract()
 	FCollisionShape Shape;
 	Shape.SetSphere(RadiusRay);
 	FCollisionObjectQueryParams QueryParams;
+	QueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
 	
-	
+	InteractableActor = nullptr;
 	bool bInteractionHit = GetWorld()->SweepMultiByObjectType(Hits,Start,End,FQuat::Identity,QueryParams,Shape);
 	for(FHitResult Hit:Hits)
 	{
@@ -59,16 +63,55 @@ void ULL_InteractorComponent::PrimaryInteract()
 			DrawDebugSphere(GetWorld(),Hit.ImpactPoint,30.0f,16,FColor::Red,false,2.0f);
 
 		}
+		
 		AActor* Actor = Hit.GetActor();
 		if(Actor->Implements<ULL_GameplayInterface>())
 		{
+			InteractableActor = Actor;
 			
-			ILL_GameplayInterface::Execute_Interact(Actor,PlayerOwner);
 			UE_LOG(LogTemp,Warning,TEXT("Hitted with Interactive Object"));
 			break;
 		}
 	}
+	//Spawn Widget
+	if(InteractableActor)
+	{
+		if(InteractionWidgetInstance == nullptr && ensure(DefaultWidgetClass))
+		{
+			InteractionWidgetInstance = CreateWidget<ULL_WorldUserWidget>(GetWorld(),DefaultWidgetClass);
+			InteractionWidgetInstance->AttachedActor = InteractableActor;
+		}
+		if(InteractionWidgetInstance)
+		{
+			InteractionWidgetInstance->AttachedActor = InteractableActor;
+			if(!InteractionWidgetInstance->IsInViewport())
+			{
+				InteractionWidgetInstance->AddToViewport();
+			}
+		}
+	}else
+	{
+		if(InteractionWidgetInstance)
+		{
+			InteractionWidgetInstance->RemoveFromParent();
+		}
+	}
 	if(CVarDrawDebugInteraction.GetValueOnGameThread())
 		DrawDebugLine(GetWorld(),Start,End,FColor::Emerald,false,2.0f);
+	
+}
+
+void ULL_InteractorComponent::PrimaryInteract()
+{
+	if(InteractableActor)
+	{
+		APawn* OwnerPawn = Cast<APawn>(GetOwner());
+		ILL_GameplayInterface::Execute_Interact(InteractableActor,OwnerPawn);
+		if(InteractionWidgetInstance)
+		{
+			InteractionWidgetInstance->RemoveFromParent();
+		}
+	}
+	
 }
 

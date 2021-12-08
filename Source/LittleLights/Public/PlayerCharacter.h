@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "LL_AbilityComponent.h"
 #include "LL_GameplayInterface.h"
+#include "Tottem_Piece.h"
 
 #include "Camera/CameraComponent.h"
 #include "Components/SpotLightComponent.h"
@@ -184,6 +185,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hints")
 		FText TextHint;
 
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="Tottems")
+	TArray<ATottem_Piece*> TottemPieces;
+
+	UFUNCTION(BlueprintCallable,Category="Tottems")
+	void AddTottemPiece(ATottem_Piece* Piece);
+	
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	void PlayerCatchByMonster();
 

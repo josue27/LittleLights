@@ -27,8 +27,10 @@ protected:
 	UPROPERTY(BlueprintReadOnly,Category="Ability")
 	TArray<ULL_Ability*> Abilities;
 
+
 	UFUNCTION(BlueprintCallable)
 	void AddAbility(AActor* Instigator, TSubclassOf<ULL_Ability> AbilityClass);
+
 
 	
 

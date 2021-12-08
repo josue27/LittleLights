@@ -3,12 +3,20 @@
 
 #include "JumpOverZone.h"
 
+#include "PlayerCharacter.h"
+
 // Sets default values
 AJumpOverZone::AJumpOverZone()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+}
+
+void AJumpOverZone::Interact_Implementation(APawn* InstigatorPawn)
+{
+	ILL_GameplayInterface::Interact_Implementation(InstigatorPawn);
+	
 }
 
 // Called when the game starts or when spawned

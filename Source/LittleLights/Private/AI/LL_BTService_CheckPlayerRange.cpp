@@ -8,7 +8,7 @@
 #include "LLGamePlayFunctionLibrary.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
-static TAutoConsoleVariable<bool> CVarDebugAI(TEXT("ll.DebugAI"),false,TEXT("Enable spawning of bots via timer"),ECVF_Cheat);
+//static TAutoConsoleVariable<bool> CVarDebugAI(TEXT("ll.DebugAI"),false,TEXT("Enable spawning of bots via timer"),ECVF_Cheat);
 
 void ULL_BTService_CheckPlayerRange::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
@@ -35,13 +35,14 @@ void ULL_BTService_CheckPlayerRange::TickNode(UBehaviorTreeComponent& OwnerComp,
 						InLineOfSight = AIController->LineOfSightTo(TargetActor);
 					}
 					BBComp->SetValueAsBool(InRangeKey.SelectedKeyName,(InRange && InLineOfSight));
-
+/*
 					if(CVarDebugAI.GetValueOnGameThread())
 					{
 						
 					DrawDebugString(OwnerComp.GetWorld(),TargetActor->GetActorLocation(),FString::Printf(TEXT("InRange: %s | InLOS: %s"),InRange?TEXT("true"):TEXT("false"),InLineOfSight?TEXT("true"):TEXT("false")),nullptr,FColor::Red);
 					GEngine->AddOnScreenDebugMessage(-1,0.0f,FColor::White,FString::Printf(TEXT("InRange: %s | InLOS: %s"),InRange?TEXT("true"):TEXT("false"),InLineOfSight?TEXT("true"):TEXT("false")));
 					}
+					*/
 
 			
 

@@ -3,11 +3,25 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "LL_GameplayInterface.h"
 #include "GameFramework/Actor.h"
 #include "Tottem_Piece.generated.h"
 
+
+UENUM(BlueprintType)
+enum class TottemPieceType: uint8
+{
+	PieceA = 0 UMETA(DisplayName ="Piece A"),
+	PieceB = 1 UMETA(DisplayName ="Piece B"),
+	PieceC = 2 UMETA(DisplayName ="Piece C"),
+	PieceD = 3 UMETA(DisplayName ="Piece D"),
+	PieceE = 4 UMETA(DisplayName ="Piece E")
+
+	
+};
+
 UCLASS()
-class LITTLELIGHTS_API ATottem_Piece : public AActor
+class LITTLELIGHTS_API ATottem_Piece : public AActor, public ILL_GameplayInterface
 {
 	GENERATED_BODY()
 	
@@ -15,9 +29,18 @@ public:
 	// Sets default values for this actor's properties
 	ATottem_Piece();
 
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Tottem Piece")
+	TottemPieceType PieceType;
+	
+
+	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UFUNCTION(BlueprintNativeEvent)
+	void Deactivate();
 
 public:
 	

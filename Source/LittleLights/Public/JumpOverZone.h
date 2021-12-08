@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "LL_GameplayInterface.h"
 #include "GameFramework/Actor.h"
 #include "JumpOverZone.generated.h"
 
@@ -15,13 +16,15 @@ enum class EspecialMovementZoneType : uint8
 	CrossBalancing = 2 UMETA(DisplayName ="CrossBalancing")
 };
 UCLASS()
-class LITTLELIGHTS_API AJumpOverZone : public AActor
+class LITTLELIGHTS_API AJumpOverZone : public AActor, public  ILL_GameplayInterface
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
 	AJumpOverZone();
+
+	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 
 protected:
 	// Called when the game starts or when spawned

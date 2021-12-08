@@ -11,6 +11,7 @@ ULL_AbilityComponent::ULL_AbilityComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
+	
 }
 
 
@@ -43,6 +44,7 @@ void ULL_AbilityComponent::AddAbility(AActor* Instigator, TSubclassOf<ULL_Abilit
 	}
 	
 }
+
 
 void ULL_AbilityComponent::StartAbilityByName(AActor* Instigator, FName AbilityName)
 {
