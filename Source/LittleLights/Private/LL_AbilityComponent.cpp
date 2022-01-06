@@ -2,7 +2,7 @@
 
 
 #include "LL_AbilityComponent.h"
-
+#include "LL_Ability.h"
 // Sets default values for this component's properties
 ULL_AbilityComponent::ULL_AbilityComponent()
 {

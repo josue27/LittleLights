@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "LL_Ability.h"
+
 #include "Components/ActorComponent.h"
 #include "LL_AbilityComponent.generated.h"
 
-
+class ULL_Ability;
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class LITTLELIGHTS_API ULL_AbilityComponent : public UActorComponent
 {
@@ -16,6 +16,14 @@ class LITTLELIGHTS_API ULL_AbilityComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	ULL_AbilityComponent();
+	// Called every frame
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	UFUNCTION(BlueprintCallable,Category="Ability")
+	void StartAbilityByName(AActor* Instigator,FName AbilityName);
+        
+	UFUNCTION(BlueprintCallable,Category="Ability")
+	void StopAbilityByName(AActor* Instigator,FName AbilityName);
 
 protected:
 	// Called when the game starts
@@ -33,14 +41,4 @@ protected:
 
 
 	
-
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-	UFUNCTION(BlueprintCallable,Category="Ability")
-	void StartAbilityByName(AActor* Instigator,FName AbilityName);
-        
-	UFUNCTION(BlueprintCallable,Category="Ability")
-	void StopAbilityByName(AActor* Instigator,FName AbilityName);
 };

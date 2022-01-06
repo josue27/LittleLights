@@ -4,6 +4,7 @@
 #include "LLGamePlayFunctionLibrary.h"
 
 #include "PlayerCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 bool ULLGamePlayFunctionLibrary::IsPlayerAlive(AActor* PlayerActor)
 {
@@ -14,3 +15,11 @@ bool ULLGamePlayFunctionLibrary::IsPlayerAlive(AActor* PlayerActor)
 	}
 	return false;
 }
+
+float ULLGamePlayFunctionLibrary::TimeToLocation(float Velocity, FVector Start, FVector End)
+{
+	float Dist = FVector::Dist(Start,End);
+	return  Dist / Velocity;
+}
+
+

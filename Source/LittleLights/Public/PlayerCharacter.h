@@ -85,7 +85,8 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float VelocidadTest = 1.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float VelocidadRotacion = 1.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -185,10 +186,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hints")
 		FText TextHint;
 
-	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="Tottems")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Totems")
 	TArray<ATottem_Piece*> TottemPieces;
 
-	UFUNCTION(BlueprintCallable,Category="Tottems")
+	UFUNCTION(BlueprintCallable,Category="Totems")
 	void AddTottemPiece(ATottem_Piece* Piece);
 	
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
@@ -255,6 +256,9 @@ public:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category="Abilities")
 	ULL_AbilityComponent* AbilityComponent;
 
+	UFUNCTION(BlueprintCallable)
+		void TorchLightingCompleted();
+
 private:
 	void MovimientoForward(float AxisValue);
 	void MovimientoRight(float AxisValue);
@@ -277,8 +281,7 @@ private:
 
 	FTimerHandle DelayLightingTorch;
 
-	UFUNCTION(BlueprintCallable)
-		void TorchLightingCompleted();
+	
 	UFUNCTION()
 		void SprintAction();
 	UFUNCTION()

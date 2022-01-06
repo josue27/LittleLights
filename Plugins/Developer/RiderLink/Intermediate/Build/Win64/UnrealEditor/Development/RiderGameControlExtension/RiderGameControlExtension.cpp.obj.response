@@ -273,10 +273,7 @@
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"
-/FI"D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Intermediate\Build\Win64\LittleLightsEditor\Development\UnrealEd\SharedPCH.UnrealEd.RTTI.ShadowErrors.h"
-/FI"D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderGameControlExtension\Definitions.RiderGameControlExtension.h"
-/Yu"D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Intermediate\Build\Win64\LittleLightsEditor\Development\UnrealEd\SharedPCH.UnrealEd.RTTI.ShadowErrors.h"
-/Fp"D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Intermediate\Build\Win64\LittleLightsEditor\Development\UnrealEd\SharedPCH.UnrealEd.RTTI.ShadowErrors.h.pch"
+/FI"D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderGameControlExtension\Definitions.h"
 /Fo"D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderGameControlExtension\RiderGameControlExtension.cpp.obj"
 /Zc:inline
 /nologo

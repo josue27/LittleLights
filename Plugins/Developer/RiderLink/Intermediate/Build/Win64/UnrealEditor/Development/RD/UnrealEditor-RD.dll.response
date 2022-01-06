@@ -1,5 +1,5 @@
 /MANIFEST:EMBED
-/MANIFESTINPUT:C:\UE_5.0EA\Engine\Build\Windows\Resources\Default-Win64.manifest
+/MANIFESTINPUT:E:\UE_5.0EA\Engine\Build\Windows\Resources\Default-Win64.manifest
 /NOLOGO
 /DEBUG
 /errorReport:prompt
@@ -57,7 +57,6 @@
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\Protocol.cpp.obj"
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\RdId.cpp.obj"
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\IScheduler.cpp.obj"
-"D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\SingleThreadSchedulerBase.cpp.obj"
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\SimpleScheduler.cpp.obj"
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\SingleThreadScheduler.cpp.obj"
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\SynchronousScheduler.cpp.obj"
@@ -72,7 +71,6 @@
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\ByteBufferAsyncProcessor.cpp.obj"
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\PkgInputStream.cpp.obj"
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\PumpScheduler.cpp.obj"
-"D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\SocketWire.cpp.obj"
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\WireUtil.cpp.obj"
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\RdTextBuffer.cpp.obj"
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\ActiveSocket.cpp.obj"
@@ -88,8 +86,10 @@
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\stdout_sinks.cpp.obj"
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\thirdparty.cpp.obj"
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\RD.cpp.obj"
+"D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\SingleThreadSchedulerBase.cpp.obj"
+"D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\SocketWire.cpp.obj"
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\Default.rc2.res"
-"C:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\Core\UnrealEditor-Core.lib"
+"E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\Core\UnrealEditor-Core.lib"
 "delayimp.lib"
 "wininet.lib"
 "rpcrt4.lib"

@@ -160,7 +160,7 @@ void APlayerCharacter::SpawnLanternOrb()
 /// </summary>
 void APlayerCharacter::LightUpTorch(float AmountRefill)
 {
-	if (bLightingTorch || !Torch)
+	/*if (bLightingTorch || !Torch)
 	{
 		
 		return;
@@ -172,10 +172,10 @@ void APlayerCharacter::LightUpTorch(float AmountRefill)
 	FRotator RotateTo = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), FirePitTemp->GetActorLocation());
 	RotateTo.Pitch = GetActorRotation().Pitch;
 	RotateTo.Roll = GetActorRotation().Roll;
-	SetActorRotation(RotateTo);
+	SetActorRotation(RotateTo);*/
 	
 	//GetWorld()->GetTimerManager().SetTimer(DelayLightingTorch, this, &APlayerCharacter::TorchLightingCompleted, 4.0f, false);
-	TempRefillAmount = AmountRefill;
+	//TempRefillAmount = AmountRefill;
 	
 }
 void APlayerCharacter::TorchLightingCompleted()
@@ -183,6 +183,8 @@ void APlayerCharacter::TorchLightingCompleted()
 
 	if (Torch != nullptr)
 	{
+		TempRefillAmount = 30.0f;
+
 		if(TempRefillAmount > 0.0f)
 		{
 			Torch->StartDecay(TempRefillAmount,true);

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "LL_GameplayInterface.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
 #include "Tottem_Piece.generated.h"
 
@@ -32,9 +33,17 @@ public:
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Tottem Piece")
 	TottemPieceType PieceType;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite)
+	UStaticMeshComponent* MeshComponent;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite)
+	USphereComponent* SphereCollider;
+
 	
 
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
+
+	 FText GetInteractText_Implementation(APawn* InstigatorPawn) ;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -43,7 +52,8 @@ protected:
 	void Deactivate();
 
 public:
-	
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite)
+	FText InteractionMessage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bTaken = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

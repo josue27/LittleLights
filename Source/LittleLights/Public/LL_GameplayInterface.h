@@ -31,7 +31,10 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	void BeaconCompleted();
 
+	UFUNCTION(BlueprintCallable,BlueprintNativeEvent)
+	FText GetInteractText(APawn* InstigatorPawn);
 
+	
 	
 	
 };

@@ -1,5 +1,5 @@
 /MANIFEST:EMBED
-/MANIFESTINPUT:C:\UE_5.0EA\Engine\Build\Windows\Resources\Default-Win64.manifest
+/MANIFESTINPUT:E:\UE_5.0EA\Engine\Build\Windows\Resources\Default-Win64.manifest
 /NOLOGO
 /DEBUG
 /errorReport:prompt
@@ -33,10 +33,11 @@
 /NODEFAULTLIB:"LIBCD"
 /NODEFAULTLIB:"LIBCPD"
 /FUNCTIONPADMIN
-"D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Intermediate\Build\Win64\LittleLightsEditor\Development\Core\SharedPCH.Core.RTTI.ShadowErrors.h.obj"
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLink\Module.RiderLink.cpp.obj"
+"D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLink\ProtocolFactory.cpp.obj"
+"D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLink\RiderLink.cpp.obj"
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLink\Default.rc2.res"
-"C:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\Core\UnrealEditor-Core.lib"
+"E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\Core\UnrealEditor-Core.lib"
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\UnrealEditor-RD.lib"
 "delayimp.lib"
 "wininet.lib"

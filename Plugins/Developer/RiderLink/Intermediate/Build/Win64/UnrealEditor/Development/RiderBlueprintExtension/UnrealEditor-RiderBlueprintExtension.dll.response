@@ -1,5 +1,5 @@
 /MANIFEST:EMBED
-/MANIFESTINPUT:C:\UE_5.0EA\Engine\Build\Windows\Resources\Default-Win64.manifest
+/MANIFESTINPUT:E:\UE_5.0EA\Engine\Build\Windows\Resources\Default-Win64.manifest
 /NOLOGO
 /DEBUG
 /errorReport:prompt
@@ -33,19 +33,18 @@
 /NODEFAULTLIB:"LIBCD"
 /NODEFAULTLIB:"LIBCPD"
 /FUNCTIONPADMIN
-"D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Intermediate\Build\Win64\LittleLightsEditor\Development\UnrealEd\SharedPCH.UnrealEd.RTTI.ShadowErrors.h.obj"
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderBlueprintExtension\Module.RiderBlueprintExtension.cpp.obj"
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderBlueprintExtension\Default.rc2.res"
-"C:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\Core\UnrealEditor-Core.lib"
-"C:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\SlateCore\UnrealEditor-SlateCore.lib"
+"E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\Core\UnrealEditor-Core.lib"
+"E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\SlateCore\UnrealEditor-SlateCore.lib"
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLink\UnrealEditor-RiderLink.lib"
-"C:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\Slate\UnrealEditor-Slate.lib"
-"C:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\AssetRegistry\UnrealEditor-AssetRegistry.lib"
-"C:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\MessagingCommon\UnrealEditor-MessagingCommon.lib"
-"C:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\UnrealEd\UnrealEditor-UnrealEd.lib"
-"C:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\UnrealEdMessages\UnrealEditor-UnrealEdMessages.lib"
-"C:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\Engine\UnrealEditor-Engine.lib"
-"C:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\CoreUObject\UnrealEditor-CoreUObject.lib"
+"E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\Slate\UnrealEditor-Slate.lib"
+"E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\AssetRegistry\UnrealEditor-AssetRegistry.lib"
+"E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\MessagingCommon\UnrealEditor-MessagingCommon.lib"
+"E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\UnrealEd\UnrealEditor-UnrealEd.lib"
+"E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\UnrealEdMessages\UnrealEditor-UnrealEdMessages.lib"
+"E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\Engine\UnrealEditor-Engine.lib"
+"E:\UE_5.0EA\Engine\Intermediate\Build\Win64\UnrealEditor\Development\CoreUObject\UnrealEditor-CoreUObject.lib"
 "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\UnrealEditor-RD.lib"
 "delayimp.lib"
 "wininet.lib"

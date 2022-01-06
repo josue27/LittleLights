@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "LittleLights/LL_GameModeBase.h"
 #include "LLGamePlayFunctionLibrary.generated.h"
 
 /**
@@ -14,7 +15,10 @@ class LITTLELIGHTS_API ULLGamePlayFunctionLibrary : public UBlueprintFunctionLib
 {
 	GENERATED_BODY()
 	public:
-	UFUNCTION(BlueprintCallable,Category="Gameplay")
+	UFUNCTION(BlueprintCallable,Category="LLGameplay")
 	static bool IsPlayerAlive(AActor* PlayerActor);
+
+	UFUNCTION(BlueprintCallable,Category="LLGameplay")
+	static float TimeToLocation(float Velocity, FVector Start,FVector End);
 	
 };

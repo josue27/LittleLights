@@ -28,8 +28,8 @@ AFirePit::AFirePit()
 void AFirePit::BeginPlay()
 {
 	Super::BeginPlay();
-	SphereCollision->OnComponentBeginOverlap.AddDynamic(this,&AFirePit::PlayerInPit);
-	SphereCollision->OnComponentEndOverlap.AddDynamic(this,&AFirePit::PlayerLeftPit);
+	//SphereCollision->OnComponentBeginOverlap.AddDynamic(this,&AFirePit::PlayerInPit);
+	//SphereCollision->OnComponentEndOverlap.AddDynamic(this,&AFirePit::PlayerLeftPit);
 	
 }
 
@@ -40,7 +40,7 @@ void AFirePit::Tick(float DeltaTime)
 
 }
 
-void AFirePit::PlayerInPit(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult) 
+/*void AFirePit::PlayerInPit(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult) 
 {
 	APlayerCharacter* Player = Cast<APlayerCharacter>(OtherActor);
 	if(Player)
@@ -71,12 +71,17 @@ void AFirePit::PlayerLeftPit(UPrimitiveComponent* OverlappedComp,class AActor * 
 
 		UE_LOG(LogTemp,Warning,TEXT("Player left firepit"));
 	}
-}
+}*/
+
 void AFirePit::Interact_Implementation(APawn* InstigatorPawn)
 {
 	APlayerCharacter* Player = Cast<APlayerCharacter>(InstigatorPawn);
 	if(Player)
 	{
-		Player->LightUpTorch(RefillAmount);
+		ULL_AbilityComponent* AC = Cast<ULL_AbilityComponent>( Player->GetComponentByClass(ULL_AbilityComponent::StaticClass()));
+		if(AC)
+		{
+			AC->StartAbilityByName(InstigatorPawn,"LightOrb");
+		}
 	}
 }
