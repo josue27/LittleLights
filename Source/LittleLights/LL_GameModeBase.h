@@ -6,7 +6,6 @@
 #include "DoorBase.h"
 #include "Level_Manager_Base.h"
 #include "AI/LL_AIBeast.h"
-#include "EnvironmentQuery/EnvQuery.h"
 #include "EnvironmentQuery/EnvQueryInstanceBlueprintWrapper.h"
 #include "GameFramework/GameModeBase.h"
 #include "LL_GameModeBase.generated.h"
@@ -14,7 +13,6 @@
 /**
  * 
  */
-
 
 
 UCLASS()
@@ -38,6 +36,10 @@ protected:
 	bool StartWithDecayLight;
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	float Timetest =10.0f;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	float TimetestB =10.0f;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	float TimetestC =10.0f;
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="AIBeast")
 	UEnvQuery* SpawnBeastLocationQuery;
 
@@ -47,6 +49,7 @@ protected:
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	void StartSequence();
 
+	virtual void StartPlay() override;
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="AIBeast")
 	void SpawnBeast();

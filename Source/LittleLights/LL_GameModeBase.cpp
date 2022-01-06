@@ -14,11 +14,15 @@ ALL_GameModeBase::ALL_GameModeBase()
 	PrimaryActorTick.bCanEverTick = true;
 	//LevelManager =Cast<ALevel_Manager_Base>( UGameplayStatics::GetActorOfClass(GetWorld(),ALevel_Manager_Base::StaticClass()));
 	//HUDClass = AMainPlayer_DebugHUD::StaticClass();
-	StartSequence();
-	//StartBeastTimer();
-	FinalDoor = Cast<ADoorBase>( UGameplayStatics::GetActorOfClass(this,ADoorBase::StaticClass()));
+	
 
-	TimeToBeast = 20.0f;
+
+}
+void ALL_GameModeBase::StartPlay()
+{
+	Super::StartPlay();
+	StartSequence();
+	StartBeastTimer();
 }
 
 void ALL_GameModeBase::StartSequence_Implementation()
@@ -52,6 +56,7 @@ void ALL_GameModeBase::TottemCompleted_Implementation()
 	UE_LOG(LogTemp,Log,TEXT("Game mode received completition msg from Totem "));
 	
 }
+
 
 
 void ALL_GameModeBase::StartBeastTimer()
@@ -115,6 +120,9 @@ void ALL_GameModeBase::OnLocationQueryCompleted(UEnvQueryInstanceBlueprintWrappe
 void ALL_GameModeBase::BeaconCompleted_Implementation()
 {
 	UE_LOG(LogTemp,Warning,TEXT("Beacon completed received at GameMode"));
+
+	FinalDoor = Cast<ADoorBase>( UGameplayStatics::GetActorOfClass(this,ADoorBase::StaticClass()));
+
 	if(FinalDoor)
 	{
 		FinalDoor->bDoorUnlocked = true;
