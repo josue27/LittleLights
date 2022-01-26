@@ -8,6 +8,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Locations/LL_TargetPoint.h"
 #include "PlayerCharacter.h"
+#include "Blueprint/UserWidget.h"
+#include "Engine/AssetManager.h"
 
 ALL_GameModeBase::ALL_GameModeBase()
 {
@@ -30,7 +32,7 @@ void ALL_GameModeBase::StartSequence_Implementation()
 	//TODO: we need to get all actor of SpecialLocation and the check wick one is the start and the exit
 	//UGameplayStatics::GetAllActorsOfClass(GetWorld(),ALL_TargetPoint::StaticClass());
 	ALL_TargetPoint* StartTargetLocation = Cast<ALL_TargetPoint>(UGameplayStatics::GetActorOfClass(GetWorld(),ALL_TargetPoint::StaticClass()));
-	APlayerCharacter* Player = Cast<APlayerCharacter>( UGameplayStatics::GetPlayerPawn(GetWorld(),0));
+	Player = Cast<APlayerCharacter>( UGameplayStatics::GetPlayerPawn(GetWorld(),0));
 
 	if(StartTargetLocation)
 	{
@@ -45,7 +47,7 @@ void ALL_GameModeBase::StartSequence_Implementation()
 	}
 	//StartBeastTimer();
 
-	if(Player)
+	if(Player && StartWithDecayLight)
 	{
 		Player->TorchLightingCompleted();
 	}
@@ -70,6 +72,15 @@ void ALL_GameModeBase::StartBeastTimer()
 void ALL_GameModeBase::SpawnBeast_Debug()
 {
 	SpawnBeast_Implementation();
+}
+
+float ALL_GameModeBase::DeltaDistanceToBeast()
+{
+	if(Player && BeastAI)
+	{
+		float Distance = FVector::Distance(Player->GetActorLocation(),BeastAI->GetActorLocation());
+	}
+	return 1.0f;
 }
 
 void ALL_GameModeBase::SpawnBeast_Implementation()
@@ -110,21 +121,74 @@ void ALL_GameModeBase::OnLocationQueryCompleted(UEnvQueryInstanceBlueprintWrappe
 	TArray<FVector> Locations = QueryInstance->GetResultsAsLocations();
 	if(Locations.IsValidIndex(0))
 	{
+		UAssetManager* Manager = UAssetManager::GetIfValid();
+		if(Manager)
+		{
+			
+		}
 		FActorSpawnParameters Spawnparams;
 		Spawnparams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		BeastAI = GetWorld()->SpawnActor<AActor>(BeastAI_Class,Locations[0],FRotator::ZeroRotator,Spawnparams);
+
+		//Spawn hud
+		BeastState_Instance = CreateWidget(UGameplayStatics::GetPlayerController(GetWorld(),0),BeastState_WidgetClass);
+		if(BeastState_Instance)
+		{
+			BeastState_Instance->AddToViewport();
+		}
+
+		
 		LogOnScreen(GetWorld(),"End Beast spawn");
 	}
 	
 }
+
+
+
 void ALL_GameModeBase::BeaconCompleted_Implementation()
 {
 	UE_LOG(LogTemp,Warning,TEXT("Beacon completed received at GameMode"));
 
+	///Change state of exit gate to OPEN
 	FinalDoor = Cast<ADoorBase>( UGameplayStatics::GetActorOfClass(this,ADoorBase::StaticClass()));
-
 	if(FinalDoor)
 	{
 		FinalDoor->bDoorUnlocked = true;
+		LogOnScreen(GetWorld(),"Door Unlocked");
+	}
+	///Destroy the Beast
+	if(BeastAI)
+	{
+		BeastAI->Destroy();
+		LogOnScreen(GetWorld(),"Beast Destroyed");
+
+	}
+	//Send Msg to player
+
+	if(Player)
+	{
+		Execute_BeaconCompleted(Player);
+	}
+
+	///Instanciate a Widget for the player to know that the Totem is completed
+	/////DEPRECATED:better in BP
+	/*if(TotemCompleted_WidgetClass)
+	{
+		TotemCompleted_WidgetInstance = CreateWidget(UGameplayStatics::GetPlayerController(GetWorld(),0),TotemCompleted_WidgetClass);
+		if(TotemCompleted_WidgetInstance)
+		{
+			TotemCompleted_WidgetInstance->AddToViewport(0);
+			FTimerHandle RemoveWidgetTH;
+			GetWorldTimerManager().SetTimer(RemoveWidgetTH,this,&ALL_GameModeBase::RemoveWidget,3.0f);
+		}
+	}*/
+}
+
+void ALL_GameModeBase::RemoveWidget()
+{
+	if(TotemCompleted_WidgetInstance)
+	{
+		TotemCompleted_WidgetInstance->RemoveFromParent();
+		TotemCompleted_WidgetInstance = nullptr;
 	}
 }

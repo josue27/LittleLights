@@ -35,7 +35,6 @@ public:
 
 		std::timed_mutex lock;
 		mutable std::mutex socket_send_lock;
-		mutable std::mutex wire_send_lock;
 
 		std::thread thread{};
 

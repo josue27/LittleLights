@@ -38,12 +38,17 @@ public:
 	USceneComponent* SceneComponent;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Components")
 	UCapsuleComponent* CapsuleCollider;
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Tottem")
-	TArray<FTottemPieceState> TotemPieces;
-
 	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Totem")
+	TArray<FTottemPieceState> TotemPieces;
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="UI")
+	FText TextForInteraction;
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Totem")
+	bool TotemCompleted;
+	
+	virtual FText GetInteractText_Implementation(APawn* InstigatorPawn) override;
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 
 	virtual void BeaconCompleted_Implementation() override;

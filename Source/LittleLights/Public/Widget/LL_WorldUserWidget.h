@@ -24,7 +24,10 @@ class LITTLELIGHTS_API ULL_WorldUserWidget : public UUserWidget
 	public:
 	UPROPERTY(EditAnywhere,Category="UI")
 	FVector WorldOffset;
-
+	UPROPERTY(EditAnywhere,Category="UI")
+	bool ContainInsideWindow;
+	UPROPERTY(EditAnywhere,Category="UI")
+	float OffsetPosition = -50.0f;
 	UPROPERTY(BlueprintReadWrite,Category="UI",meta=(ExposeOnSpawn=true))
 	AActor* AttachedActor;
 	

@@ -83,7 +83,7 @@ void ULL_InteractorComponent::FindInteractable()
 		}
 		if(InteractionWidgetInstance)
 		{
-			InteractionWidgetInstance->AttachedActor = InteractableActor;
+			InteractionWidgetInstance->AttachedActor = InteractableActor;//duplicated??
 			if(!InteractionWidgetInstance->IsInViewport())
 			{
 				InteractionWidgetInstance->AddToViewport();

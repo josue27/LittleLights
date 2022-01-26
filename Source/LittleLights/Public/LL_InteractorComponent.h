@@ -23,7 +23,7 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Interactor Component")
 	float RadiusRay = 30.0f;
 
-	//UI that shows fro player
+	//UI that shows fot the player in 2Dpos
 	UPROPERTY(EditDefaultsOnly,Category="UI")
 	TSubclassOf<ULL_WorldUserWidget> DefaultWidgetClass;
 	UPROPERTY()

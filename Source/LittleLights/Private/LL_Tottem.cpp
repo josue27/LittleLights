@@ -22,6 +22,7 @@ ALL_Tottem::ALL_Tottem()
 
 }
 
+
 void ALL_Tottem::Interact_Implementation(APawn* InstigatorPawn)
 {
 	//ILL_GameplayInterface::Interact_Implementation(InstigatorPawn);
@@ -37,6 +38,15 @@ void ALL_Tottem::Interact_Implementation(APawn* InstigatorPawn)
 }
 
 
+FText ALL_Tottem::GetInteractText_Implementation(APawn* InstigatorPawn)
+{
+	if(TotemCompleted)
+	{
+		return NSLOCTEXT("InteractableActors","Totem","Totem completed");
+
+	}
+	return TextForInteraction;
+}
 // Called when the game starts or when spawned
 void ALL_Tottem::BeginPlay()
 {
@@ -85,7 +95,9 @@ void ALL_Tottem::TotemCompletion()
 	if(NumPiecesInPlace >= TotemPieces.Num())
 	{
 		ALL_GameModeBase* GM = Cast<ALL_GameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
-		ILL_GameplayInterface::Execute_BeaconCompleted(UGameplayStatics::GetGameMode(GM));
+		Execute_BeaconCompleted(GM);
+		Execute_BeaconCompleted(this);
+		TotemCompleted = true;
 	}
 	
 	
