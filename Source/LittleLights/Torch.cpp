@@ -2,11 +2,14 @@
 
 
 #include "Torch.h"
+
+#include "LL_GameModeBase.h"
 #include "Components/PointLightComponent.h"
 #include "Components/SpotLightComponent.h"
 #include "Engine/World.h"
 #include "Personaje.h"
 #include "PlayerCharacter.h"
+#include "Kismet/GameplayStatics.h"
 //#include "Kismet/GameplayStatics.h"
 // Sets default values
 ATorch::ATorch()
@@ -82,6 +85,12 @@ void ATorch::LightDecay()
 		{
 			Player->TorchOff();
 		}
+		ALL_GameModeBase* GM = Cast<ALL_GameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+		if(GM)
+		{
+			//GM->SpawnBeast();
+		}
+		
 		TorchLight->Intensity = 0.0f;
 		TorchLight->bAffectsWorld = false;
 		//TorchLight->AttenuationRadius = 0.0f;

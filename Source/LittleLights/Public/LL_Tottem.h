@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PlayerCharacter.h"
 #include "Tottem_Piece.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Actor.h"
@@ -54,6 +55,10 @@ public:
 	virtual void BeaconCompleted_Implementation() override;
 
 protected:
+
+
+	UPROPERTY(BlueprintReadWrite, Category="Totem")
+	APlayerCharacter* Player;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -65,6 +70,9 @@ protected:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void MovePieceAnim(AActor* TotemPiece);
+
+	UFUNCTION(BlueprintCallable)
+	void MovePieceAnimEnded();
 
 public:	
 	// Called every frame

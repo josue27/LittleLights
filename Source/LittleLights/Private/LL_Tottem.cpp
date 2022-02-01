@@ -21,13 +21,22 @@ ALL_Tottem::ALL_Tottem()
 	CapsuleCollider->SetupAttachment(SceneComponent);
 
 }
+// Called when the game starts or when spawned
+void ALL_Tottem::BeginPlay()
+{
+	Super::BeginPlay();
+	
+}
 
 
 void ALL_Tottem::Interact_Implementation(APawn* InstigatorPawn)
 {
 	//ILL_GameplayInterface::Interact_Implementation(InstigatorPawn);
+	if(Player== nullptr)
+	{
+		 Player = Cast<APlayerCharacter>(InstigatorPawn);
+	}
 
-	APlayerCharacter* Player = Cast<APlayerCharacter>(InstigatorPawn);
 	if(Player->TottemPieces.Num() > 0)
 	{
 		AddTotemPiece_Implementation(Player,Player->TottemPieces[0]);
@@ -47,12 +56,6 @@ FText ALL_Tottem::GetInteractText_Implementation(APawn* InstigatorPawn)
 	}
 	return TextForInteraction;
 }
-// Called when the game starts or when spawned
-void ALL_Tottem::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
 
 void ALL_Tottem::AddTotemPiece_Implementation(APawn* InstigatorActor,ATottem_Piece* TotemPiece)
 {
@@ -63,8 +66,8 @@ void ALL_Tottem::AddTotemPiece_Implementation(APawn* InstigatorActor,ATottem_Pie
 			ALL_PlayerState* PS = Cast<ALL_PlayerState>(InstigatorActor->GetPlayerState());
 			if(PS)
 			{
-				PS->AddTotemPiece();
-				UE_LOG(LogTemp,Warning,TEXT("NO PS"));
+				PS->RemoveTotemPiece();
+				UE_LOG(LogTemp,Warning,TEXT(" PS"));
 
 			}
 			TotemPieces[i].TotemPice = TotemPiece;
@@ -77,7 +80,8 @@ void ALL_Tottem::AddTotemPiece_Implementation(APawn* InstigatorActor,ATottem_Pie
 			break;
 		}
 	}
-	TotemCompletion();
+	
+
 }
 
 
@@ -107,6 +111,19 @@ void ALL_Tottem::BeaconCompleted_Implementation()
 {
 
 	LogOnScreen(GetWorld(),"Beacon completed");
+}
+
+void ALL_Tottem::MovePieceAnimEnded()
+{
+
+	if(Player->TottemPieces.Num() == 0)
+	{
+		TotemCompletion();
+	}else
+	{
+		//TODO:Warning this might be recursive
+		Interact_Implementation(Player);
+	}
 }
 
 // Called every frame

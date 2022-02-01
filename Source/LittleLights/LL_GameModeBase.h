@@ -64,8 +64,7 @@ protected:
 
 	virtual void StartPlay() override;
 	
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="AIBeast")
-	void SpawnBeast();
+
 	
 	UFUNCTION()
 	void StartBeastTimer();
@@ -86,6 +85,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="AIBeast")
 	TSubclassOf<AActor> BeastAI_Class;
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="AIBeast")
+	void SpawnBeast();
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite,Category="AIBeast")
 	AActor* BeastAI;
 

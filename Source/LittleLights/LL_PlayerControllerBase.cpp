@@ -43,13 +43,17 @@ void ALL_PlayerControllerBase::TogglePauseMenu()
 		PauseMenuInstance->RemoveFromParent();
 		PauseMenuInstance = nullptr;
 		ChangeToGameInput();
+		UGameplayStatics::SetGamePaused(GetWorld(),false);
+
 		return;
 	}
 	PauseMenuInstance = CreateWidget(this,PauseMenuClass);
 	if(PauseMenuInstance)
 	{
+		
 		PauseMenuInstance->AddToViewport(100);
 		ChangeToUIInput();
+		UGameplayStatics::SetGamePaused(GetWorld(),true);
 	}
 }
 

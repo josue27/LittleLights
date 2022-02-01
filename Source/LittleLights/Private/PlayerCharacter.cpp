@@ -19,6 +19,7 @@
 
 #include "Camera/CameraComponent.h"
 #include "LL_InteractorComponent.h"
+#include "LL_PlayerState.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -121,14 +122,14 @@ void APlayerCharacter::Tick(float DeltaTime)
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	PlayerInputComponent->BindAxis(TEXT("MoverAdelante"), this, &APlayerCharacter::MovimientoForward);
-	PlayerInputComponent->BindAxis(TEXT("MoverDerecha"), this, &APlayerCharacter::MovimientoRight);
+	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &APlayerCharacter::MovimientoForward);
+	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &APlayerCharacter::MovimientoRight);
 	PlayerInputComponent->BindAction(TEXT("InputFlare"), IE_Pressed, this, &APlayerCharacter::ShootFlare);
 	PlayerInputComponent->BindAction(TEXT("InteractInput"), IE_Pressed, this, &APlayerCharacter::ActionButtonCall);
 	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Pressed, this, &APlayerCharacter::SprintAction);
 	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Released, this, &APlayerCharacter::SprintCancelled);
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &APlayerCharacter::JumpButtonCall);
-
+	//PlayerInputComponent->BindAction(TEXT("Gamepad"))
 }
 
 
@@ -225,6 +226,11 @@ void APlayerCharacter::PlayerCatchByMonster_Implementation()
 void APlayerCharacter::AddTottemPiece(ATottem_Piece* Piece)
 {
 	TottemPieces.AddUnique(Piece);
+	ALL_PlayerState* PS = Cast<ALL_PlayerState>(GetPlayerState());
+	if(PS)
+	{
+		bool Added = PS->AddTotemPiece();
+	}
 }
 
 bool APlayerCharacter::IsPlayerAlive()

@@ -39,4 +39,8 @@ class LITTLELIGHTS_API ALL_PlayerControllerBase : public APlayerController
 	void TogglePauseMenu();
 	
 	virtual void SetupInputComponent() override;
+
+public:
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	bool UsingGamePad;
 };

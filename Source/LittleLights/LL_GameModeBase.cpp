@@ -63,7 +63,16 @@ void ALL_GameModeBase::TottemCompleted_Implementation()
 
 void ALL_GameModeBase::StartBeastTimer()
 {
-	GetWorldTimerManager().SetTimer(SpawnBeastTimerHandler,this,&ALL_GameModeBase::SpawnBeast_Implementation,TimeToBeast,false);
+	if(TimeToBeast >=0)
+	{
+		GetWorldTimerManager().SetTimer(SpawnBeastTimerHandler,this,&ALL_GameModeBase::SpawnBeast_Implementation,TimeToBeast,false);
+	}
+	else
+	{
+		UE_LOG(LogTemp,Warning,TEXT("No beast will spawn with timer"));
+		return;
+	}
+	
 
 }
 
