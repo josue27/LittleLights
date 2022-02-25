@@ -44,6 +44,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Jump Settings")
 		UCurveFloat* CurveFloat;
 
+	UPROPERTY(EditAnywhere,Category="LLPlayer Camera")
+	bool bUpdateFov;
+
 	UFUNCTION()
 		void RollForward();
 	UFUNCTION()
@@ -55,7 +58,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite,Category="Player State")
 	bool bIsAlive;//changed if captured o anything else;
 	
-	UFUNCTION(Category="Player Camera")
+	UFUNCTION( Category="LL Player Camera")
 	void UpdateFov();
 	
 

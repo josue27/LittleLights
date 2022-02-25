@@ -53,6 +53,7 @@ APlayerCharacter::APlayerCharacter()
 
 	bUseControllerRotationYaw = false;
 	bIsAlive = true;
+	bUpdateFov = true;
 }
 
 // Called when the game starts or when spawned
@@ -538,7 +539,7 @@ void APlayerCharacter::UpdateFov()
 {
 
 	
-	if(!Torch || !CameraComp)
+	if(!Torch || !CameraComp || !bUpdateFov)
 	{
 		return;
 	}

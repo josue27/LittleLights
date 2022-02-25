@@ -69,12 +69,16 @@ void ATorch::RestartLight()
 
 void ATorch::LightDecay()
 {
+	
+	float RemainingTime = FMath::Clamp((CurrentTime - GetWorld()->GetTimeSeconds()) / LightUpTime, 0.0f, 1.0f);
+	TorchLight->AttenuationRadius = FMath::Lerp(0.0f, 1000.0f, RemainingTime);
+
+
 	if (!bStartDecay || bLightOver)
 	{
 		return;
 	}
-	float RemainingTime = FMath::Clamp((CurrentTime - GetWorld()->GetTimeSeconds()) / LightUpTime, 0.0f, 1.0f);
-	TorchLight->AttenuationRadius = FMath::Lerp(0.0f, 1000.0f, RemainingTime);
+	
 	if (RemainingTime <= 0.0f)
 	{
 		bLightOver = true;
