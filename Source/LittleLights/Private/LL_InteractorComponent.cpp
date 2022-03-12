@@ -46,7 +46,7 @@ void ULL_InteractorComponent::FindInteractable()
 	APawn* PlayerOwner = Cast<APawn>(GetOwner());
 
 	FVector Start = PlayerOwner->GetActorLocation();
-	FVector End = Start + (PlayerOwner->GetActorForwardVector() * 200.0f);
+	FVector End = Start + (PlayerOwner->GetActorForwardVector() * DistanceRay);
 
 	TArray<FHitResult> Hits;
 	FCollisionShape Shape;

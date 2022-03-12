@@ -22,7 +22,8 @@ protected:
 	virtual void BeginPlay() override;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Interactor Component")
 	float RadiusRay = 30.0f;
-
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Interactor Component")
+	float DistanceRay = 200.0f;
 	//UI that shows fot the player in 2Dpos
 	UPROPERTY(EditDefaultsOnly,Category="UI")
 	TSubclassOf<ULL_WorldUserWidget> DefaultWidgetClass;
