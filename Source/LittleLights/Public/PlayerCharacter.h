@@ -160,7 +160,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bSprint;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool bIsCrossingUnder;
+		bool bIsCrossingUnder;		
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		UUserWidget* Gameplay_HUD;
