@@ -44,9 +44,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Jump Settings")
 		UCurveFloat* CurveFloat;
 
-	UPROPERTY(EditAnywhere,Category="LLPlayer Camera")
-	bool bUpdateFov;
-
+	
 	UFUNCTION()
 		void RollForward();
 	UFUNCTION()
@@ -89,6 +87,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LLPlayer Camera")
+		bool bUpdateFov;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float VelocidadRotacion = 1.0f;
@@ -261,6 +261,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void TorchLightingCompleted();
+	UFUNCTION(BlueprintNativeEvent)
+		void ResetCameraPosition();
 
 private:
 	void MovimientoForward(float AxisValue);

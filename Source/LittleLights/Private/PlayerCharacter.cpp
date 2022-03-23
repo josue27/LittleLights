@@ -189,16 +189,23 @@ void APlayerCharacter::TorchLightingCompleted()
 
 		if(TempRefillAmount > 0.0f)
 		{
-			Torch->StartDecay(TempRefillAmount,true);
+			Torch->StartDecay(TempRefillAmount,false);
+			ResetCameraPosition();
 		}else
 		{
-			Torch->StartDecay(DefaultTorchDecay,true);
+			Torch->StartDecay(DefaultTorchDecay,false);
+			ResetCameraPosition();
 		}
 		
 	}
 	bLightingTorch = false;
 	bCanMove = true;
 }
+
+void APlayerCharacter::ResetCameraPosition_Implementation()
+{
+}
+
 
 /// <summary>
 /// Function Called by LightUpTorch after SetTimer just to let the animation play

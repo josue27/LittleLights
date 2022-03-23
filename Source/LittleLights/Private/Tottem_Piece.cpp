@@ -51,6 +51,7 @@ void ATottem_Piece::BeginPlay()
 void ATottem_Piece::Deactivate_Implementation()
 {
 	RootComponent->SetVisibility(false,true);
+	SphereCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
 
 }
 

@@ -5,6 +5,7 @@
 
 #include "DrawDebugHelpers.h"
 #include "LL_GameplayInterface.h"
+#include "Tottem_Piece.h"
 #include "Blueprint/UserWidget.h"
 #include "Widget/LL_WorldUserWidget.h"
 
@@ -67,12 +68,19 @@ void ULL_InteractorComponent::FindInteractable()
 		AActor* Actor = Hit.GetActor();
 		if(Actor->Implements<ULL_GameplayInterface>())
 		{
+			ATottem_Piece* TP = Cast<ATottem_Piece>(Actor);
+			if(TP && TP->bTaken)
+			{
+				UE_LOG(LogTemp,Warning,TEXT("Hitted with Interactive Object already TAKEN"));
+				break;
+			}
 			InteractableActor = Actor;
 			
 			UE_LOG(LogTemp,Warning,TEXT("Hitted with Interactive Object"));
 			break;
 		}
 	}
+
 	//Spawn Widget
 	if(InteractableActor)
 	{

@@ -102,7 +102,7 @@ void ATorch::LightDecay()
 		{
 			SpotLight_Component->Intensity = 0.0f;
 		}
-		DeltaIntensity = 0.0f;
+		DeltaIntensity = RemainingTime;
 		UE_LOG(LogTemp, Warning, TEXT("Torch Light finished...notifying Player"));
 	}
 	else
