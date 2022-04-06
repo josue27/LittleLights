@@ -560,13 +560,14 @@ void APlayerCharacter::UpdateFov()
 		CameraComp->SetFieldOfView(CurrentFOV);
 		
 		//FillLight
-		float ConeAngleLerp = FMath::Lerp(20.0f,40.0f,DeltaIntensity);
-		FillLight->SetOuterConeAngle(ConeAngleLerp);
-		FillLight->SetInnerConeAngle(ConeAngleLerp-5);
-		FVector FillLightRelativeLoc = FillLight->GetRelativeLocation();
-		 FillLightRelativeLoc.X = FMath::Lerp(0.0f,400.0f,DeltaIntensity);
-		FillLight->SetRelativeLocation(FillLightRelativeLoc,false);
-		FillLight->SetWorldRotation(FillLightInitRotation);
+		//float ConeAngleLerp = FMath::Lerp(20.0f,40.0f,DeltaIntensity);
+		//FillLight->SetOuterConeAngle(ConeAngleLerp);
+		//FillLight->SetInnerConeAngle(ConeAngleLerp-5);
+		//FVector FillLightRelativeLoc = FillLight->GetRelativeLocation();
+		// FillLightRelativeLoc.X = FMath::Lerp(0.0f,400.0f,DeltaIntensity);
+		//FillLight->SetRelativeLocation(FillLightRelativeLoc,false);
+		//FillLight->SetWorldRotation(FillLightInitRotation);
+		
 	}else
 	{
 		CameraComp->SetFieldOfView(Fov_B);

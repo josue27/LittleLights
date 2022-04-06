@@ -15,6 +15,7 @@ void ULL_Orb_Ability::LightUpTorch(AActor* Instigator)
 	{
 		PC->bCanMove = false;//make function
 		PC->bLightingTorch = true;
+		PC->bUpdateFov = false;
 		// TODO: How to get the position of the pond for the rotation
 
 		//FRotator RotateTo = UKismetMathLibrary::FindLookAtRotation(PC->GetActorLocation(), ->GetActorLocation());
