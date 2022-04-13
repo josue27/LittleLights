@@ -26,14 +26,14 @@ void ULL_Ability::Update_Implementation(float DeltaTime)
 {
 }
 
-void ULL_Ability::StartAbility_Implementation(AActor* Instigator)
+void ULL_Ability::StartAbility_Implementation(AActor* Instigator,AActor* SecondActor)
 {
 	UE_LOG(LogTemp,Warning,TEXT("Ability : %s started"),*AbilityName.ToString());
 	bIsRunning =true;
 	
 }
 
-void ULL_Ability::StopAbility_Implementation(AActor* Instigator)
+void ULL_Ability::StopAbility_Implementation(AActor* Instigator,AActor* SecondActor )
 {
 	UE_LOG(LogTemp,Warning,TEXT("Ability : %s stoped"),*AbilityName.ToString());
 	bIsRunning = false;

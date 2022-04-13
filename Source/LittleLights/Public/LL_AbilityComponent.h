@@ -7,6 +7,9 @@
 #include "Components/ActorComponent.h"
 #include "LL_AbilityComponent.generated.h"
 
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnStamineChanged, AActor*, InstigatorActor, float, NewStamina, float, Delta);
+
 class ULL_Ability;
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class LITTLELIGHTS_API ULL_AbilityComponent : public UActorComponent
@@ -20,11 +23,13 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UFUNCTION(BlueprintCallable,Category="Ability")
-	void StartAbilityByName(AActor* Instigator,FName AbilityName);
+	void StartAbilityByName(AActor* Instigator,FName AbilityName, AActor* ActorInfo = nullptr);
         
 	UFUNCTION(BlueprintCallable,Category="Ability")
-	void StopAbilityByName(AActor* Instigator,FName AbilityName);
+	void StopAbilityByName(AActor* Instigator,FName AbilityName,  AActor* ActorInfo = nullptr);
 
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FOnStamineChanged OnStamineChanged;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

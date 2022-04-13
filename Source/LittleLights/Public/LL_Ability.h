@@ -25,10 +25,10 @@ class LITTLELIGHTS_API ULL_Ability : public UObject
 	FName AbilityName;
 
 	UFUNCTION(BlueprintNativeEvent,Category="Ability")
-	void StartAbility(AActor* Instigator);
+	void StartAbility(AActor* Instigator, AActor* SecondActor =nullptr);
 	
 	UFUNCTION(BlueprintNativeEvent,Category="Ability")
-	void StopAbility(AActor* Instigator);
+	void StopAbility(AActor* Instigator,AActor* SecondActor =nullptr);
 
 	UFUNCTION(BlueprintNativeEvent,Category="Ability")
 	bool CanStart(AActor* Instigator);

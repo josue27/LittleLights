@@ -53,6 +53,7 @@ protected:
 		void JumpCompleted();
 	
 
+	
 	UPROPERTY(BlueprintReadWrite,Category="Player State")
 	bool bIsAlive;//changed if captured o anything else;
 	
@@ -143,8 +144,9 @@ public:
 		float Stamine = 10.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float CurrentStamine = 0.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float SprintVelocity = 60.0f;
+	//Deprecated:using the ability settings
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		// SprintVelocity = 60.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float NormalMaxVelocity = 30.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

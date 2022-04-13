@@ -6,6 +6,7 @@
 #include "LL_Ability.h"
 #include "LL_Orb_Ability.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnOrbDeltaChanged,float,NewDeltaLeft);
 /**
  * 
  */
@@ -21,4 +22,7 @@ class LITTLELIGHTS_API ULL_Orb_Ability : public ULL_Ability
 
 	UFUNCTION(BlueprintCallable,Category="Orb")
 	void EndLighting();
+
+	UPROPERTY(BlueprintAssignable,BlueprintCallable)
+	FOnOrbDeltaChanged OnOrbDeltaChanged;
 };

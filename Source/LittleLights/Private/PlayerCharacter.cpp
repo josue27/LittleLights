@@ -378,7 +378,11 @@ void APlayerCharacter::MovimientoRight(float AxisValue)
 /// </summary>
 void APlayerCharacter::JumpButtonCall()
 {
-	
+	if(InteractorComp)
+	{
+		InteractorComp->PrimaryInteract();
+	}
+	return;
 	//Create LaneTrace to detect if in front of JumpOverObstacle || WalkUnderObstacle || BalancingObstalce
 	FVector LineStart = GetActorLocation();
 	FVector LineEnd = LineStart + (GetActorRotation().Vector() * JumpDistanceDetection);

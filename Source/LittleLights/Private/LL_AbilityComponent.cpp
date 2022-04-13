@@ -46,7 +46,7 @@ void ULL_AbilityComponent::AddAbility(AActor* Instigator, TSubclassOf<ULL_Abilit
 }
 
 
-void ULL_AbilityComponent::StartAbilityByName(AActor* Instigator, FName AbilityName)
+void ULL_AbilityComponent::StartAbilityByName(AActor* Instigator, FName AbilityName,AActor* ActorInfo )
 {
 	for(ULL_Ability* Ability : Abilities)
 	{
@@ -56,13 +56,13 @@ void ULL_AbilityComponent::StartAbilityByName(AActor* Instigator, FName AbilityN
 			{
 				continue;//remember to go back
 			}
-			Ability->StartAbility(Instigator);
+			Ability->StartAbility(Instigator,ActorInfo);
 			return;
 		}
 	}
 }
 
-void ULL_AbilityComponent::StopAbilityByName(AActor* Instigator, FName AbilityName)
+void ULL_AbilityComponent::StopAbilityByName(AActor* Instigator, FName AbilityName,AActor* ActorInfo )
 {
 	for(ULL_Ability* Ability : Abilities)
 	{
@@ -70,7 +70,7 @@ void ULL_AbilityComponent::StopAbilityByName(AActor* Instigator, FName AbilityNa
 		{
 			if(Ability->IsRunning())
 			{
-				Ability->StopAbility(Instigator);
+				Ability->StopAbility(Instigator,ActorInfo);
 				return;
 			}
 		}
