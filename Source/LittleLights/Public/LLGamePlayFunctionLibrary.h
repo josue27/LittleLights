@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/SplineComponent.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "LittleLights/LL_GameModeBase.h"
 #include "LLGamePlayFunctionLibrary.generated.h"
@@ -20,5 +21,8 @@ class LITTLELIGHTS_API ULLGamePlayFunctionLibrary : public UBlueprintFunctionLib
 
 	UFUNCTION(BlueprintCallable,Category="LLGameplay")
 	static float TimeToLocation(float Velocity, FVector Start,FVector End);
+
+	UFUNCTION(BlueprintCallable,Category="LLGameplay")
+	static  bool IsCloserToEnd(FVector PlayerPos,USplineComponent* Spline);
 	
 };

@@ -255,7 +255,7 @@ public:
 	UFUNCTION(Category = "Balancing")
 		void BalanceUpdate();
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 		void PlayerFall();
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category="Abilities")
