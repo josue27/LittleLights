@@ -22,6 +22,8 @@ public:
 	ATottem_Piece* TotemPice;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	AActor* TotemPiece_Dummy;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	bool Delivered;
 	
 };
 
@@ -34,6 +36,8 @@ public:
 	// Sets default values for this actor's properties
 	ALL_Tottem();
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Totem")
+	bool discovered;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Components")
 	USceneComponent* SceneComponent;
@@ -54,6 +58,9 @@ public:
 
 	virtual void BeaconCompleted_Implementation() override;
 
+	UFUNCTION(BlueprintCallable,BlueprintImplementableEvent)
+	void TotemDiscoveredEvent();
+
 protected:
 
 
@@ -63,12 +70,12 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION(BlueprintCallable,BlueprintNativeEvent)
-	void AddTotemPiece(APawn* InstigatorActor, ATottem_Piece* TotemPiece);
+	void AddTotemPiece(APlayerCharacter* InstigatorPlayer, ATottem_Piece* TotemPiece);
 
 	UFUNCTION(BlueprintCallable)
 	void TotemCompletion();
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void MovePieceAnim(AActor* TotemPiece);
 
 	UFUNCTION(BlueprintCallable)

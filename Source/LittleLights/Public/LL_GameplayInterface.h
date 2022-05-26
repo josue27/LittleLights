@@ -28,7 +28,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	void StartGame();
 
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void BeaconCompleted();
 
 	UFUNCTION(BlueprintCallable,BlueprintNativeEvent)

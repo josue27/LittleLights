@@ -36,13 +36,16 @@ void ALL_Tottem::Interact_Implementation(APawn* InstigatorPawn)
 	{
 		 Player = Cast<APlayerCharacter>(InstigatorPawn);
 	}
+	if(!discovered)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("Totem discovered "));
+		discovered = true;
+		TotemDiscoveredEvent();
 
-	if(Player->TottemPieces.Num() > 0)
+	}else if(Player->TottemPieces.Num() > 0)
 	{
 		AddTotemPiece_Implementation(Player,Player->TottemPieces[0]);
-		Player->TottemPieces.RemoveAt(0);
-		Player->TottemPieces.Sort();
-		UE_LOG(LogTemp,Warning,TEXT("Got Totem Piece from player "));
+		
 	}
 }
 
@@ -57,13 +60,17 @@ FText ALL_Tottem::GetInteractText_Implementation(APawn* InstigatorPawn)
 	return TextForInteraction;
 }
 
-void ALL_Tottem::AddTotemPiece_Implementation(APawn* InstigatorActor,ATottem_Piece* TotemPiece)
+void ALL_Tottem::AddTotemPiece_Implementation(APlayerCharacter* InstigatorPlayer,ATottem_Piece* TotemPiece)
 {
-	for(int32 i=0;i<TotemPieces.Num();i++)
+	UE_LOG(LogTemp,Warning,TEXT("Tottem pieces:%i"),TotemPieces.Num());
+	UE_LOG(LogTemp,Warning,TEXT("Adding totem piece"),TotemPieces.Num());
+
+	for(int32 i=0; i < TotemPieces.Num(); i++)
 	{
-		if(TotemPieces[i].PieceType == TotemPiece->PieceType && TotemPieces[i].TotemPice == nullptr)
+		//if type and there is no piece in place
+		if(TotemPiece->PieceType == TotemPieces[i].PieceType   && TotemPieces[i].TotemPice == nullptr)
 		{
-			ALL_PlayerState* PS = Cast<ALL_PlayerState>(InstigatorActor->GetPlayerState());
+			ALL_PlayerState* PS = Cast<ALL_PlayerState>(Player->GetPlayerState());
 			if(PS)
 			{
 				PS->RemoveTotemPiece();
@@ -71,17 +78,21 @@ void ALL_Tottem::AddTotemPiece_Implementation(APawn* InstigatorActor,ATottem_Pie
 
 			}
 			TotemPieces[i].TotemPice = TotemPiece;
+			TotemPieces[i].Delivered = true;
 			if(TotemPieces[i].TotemPiece_Dummy != nullptr)
 			{
 				MovePieceAnim(TotemPieces[i].TotemPiece_Dummy);
 			}
 			UE_LOG(LogTemp,Warning,TEXT("piece found and added to tottem"));
 
+			
+			InstigatorPlayer->TottemPieces.RemoveAt(0);
+			InstigatorPlayer->TottemPieces.Sort();
+			UE_LOG(LogTemp,Warning,TEXT("Got Totem Piece from player "));
+
 			break;
 		}
 	}
-	
-
 }
 
 
