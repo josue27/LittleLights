@@ -33,10 +33,11 @@ public:
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Tottem Piece")
 	TottemPieceType PieceType;
-
-	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	USceneComponent* SceneComponent;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UStaticMeshComponent* MeshComponent;
-	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	USphereComponent* SphereCollider;
 
 	
