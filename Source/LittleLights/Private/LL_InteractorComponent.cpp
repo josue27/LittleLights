@@ -4,6 +4,7 @@
 #include "LL_InteractorComponent.h"
 
 #include "DrawDebugHelpers.h"
+#include "LLGamePlayFunctionLibrary.h"
 #include "LL_GameplayInterface.h"
 #include "PlayerCharacter.h"
 #include "Tottem_Piece.h"
@@ -69,22 +70,23 @@ void ULL_InteractorComponent::FindInteractable()
 		AActor* Actor = Hit.GetActor();
 		if(Actor->Implements<ULL_GameplayInterface>() && !Cast<APlayerCharacter>(Actor))
 		{
-			ATottem_Piece* TP = Cast<ATottem_Piece>(Actor);
-			if(TP && TP->bTaken)
-			{
-				UE_LOG(LogTemp,Warning,TEXT("Hitted with Interactive Object already TAKEN"));
-				break;
-			}
+			
+			
 			InteractableActor = Actor;
 			
 			//UE_LOG(LogTemp,Warning,TEXT("Hitted with Interactive Object"));
 			break;
 		}
 	}
-
+	//IF the actor is a TottemPiece we check this, if is true that means that is another type of actor o it is grabbable
+	/*if(!ULLGamePlayFunctionLibrary::IsTotemPieceGrabable(InteractableActor))
+	{
+		InteractableActor = nullptr;
+	}*/
 	//Spawn Widget
 	if(InteractableActor)
 	{
+		
 		if(InteractionWidgetInstance == nullptr && ensure(DefaultWidgetClass))
 		{
 			InteractionWidgetInstance = CreateWidget<ULL_WorldUserWidget>(GetWorld(),DefaultWidgetClass);
@@ -96,6 +98,11 @@ void ULL_InteractorComponent::FindInteractable()
 			if(!InteractionWidgetInstance->IsInViewport())
 			{
 				InteractionWidgetInstance->AddToViewport();
+			}
+			InteractionWidgetInstance->TextOfInteraction = ILL_GameplayInterface::Execute_GetInteractText(InteractableActor,PlayerOwner);
+			if(InteractionWidgetInstance->TextOfInteraction.IsEmpty())
+			{
+				InteractionWidgetInstance->RemoveFromParent();
 			}
 		}
 	}else
@@ -115,6 +122,29 @@ void ULL_InteractorComponent::PrimaryInteract()
 	if(InteractableActor)
 	{
 		APawn* OwnerPawn = Cast<APawn>(GetOwner());
+
+		//IF is a Totem Piece
+		ATottem_Piece* TP = Cast<ATottem_Piece>(InteractableActor);
+		if(TP )
+		{
+			if(TP->bTaken)
+			{
+				UE_LOG(LogTemp,Warning,TEXT("Hitted with Totem Object already TAKEN"));
+			
+				return;
+
+			}
+			if(!TP->bIsVisible)
+			{
+				UE_LOG(LogTemp,Warning,TEXT("Hitted with Totem not visible"));
+			
+				return;
+			}
+			
+		
+		}
+
+		
 		ILL_GameplayInterface::Execute_Interact(InteractableActor,OwnerPawn);
 		if(InteractionWidgetInstance)
 		{

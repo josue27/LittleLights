@@ -85,3 +85,20 @@ void AFirePit::Interact_Implementation(APawn* InstigatorPawn)
 		}
 	}
 }
+
+FText AFirePit::GetInteractText_Implementation(APawn* InstigatorPawn)
+{
+	APlayerCharacter* Player = Cast<APlayerCharacter>(InstigatorPawn);
+
+	
+	if(Player )
+	{
+		//this is not working because
+		return InteractionMessage;
+
+	}
+
+	
+	return FText::GetEmpty();
+	//return ILL_GameplayInterface::GetInteractText_Implementation(InstigatorPawn);
+}

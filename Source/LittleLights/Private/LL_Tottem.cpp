@@ -52,6 +52,7 @@ void ALL_Tottem::Interact_Implementation(APawn* InstigatorPawn)
 
 FText ALL_Tottem::GetInteractText_Implementation(APawn* InstigatorPawn)
 {
+
 	if(TotemCompleted)
 	{
 		return NSLOCTEXT("InteractableActors","Totem","Totem completed");
@@ -111,7 +112,7 @@ void ALL_Tottem::TotemCompletion()
 	{
 		ALL_GameModeBase* GM = Cast<ALL_GameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 		Execute_BeaconCompleted(GM);
-		Execute_BeaconCompleted(this);
+		//Execute_BeaconCompleted(this);
 		TotemCompleted = true;
 	}
 	
@@ -123,7 +124,7 @@ void ALL_Tottem::BeaconCompleted_Implementation()
 
 	LogOnScreen(GetWorld(),"Beacon completed");
 }
-
+//Called in blueprint for the moment
 void ALL_Tottem::MovePieceAnimEnded()
 {
 

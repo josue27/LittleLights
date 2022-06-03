@@ -33,5 +33,30 @@ bool ULLGamePlayFunctionLibrary::IsCloserToEnd(FVector PlayerPos, USplineCompone
 	}
 	return true;
 }
+//If the actor is a totem piece we check if it is taken or visible, by default false 
+bool ULLGamePlayFunctionLibrary::IsTotemPieceGrabable(AActor* Totempiece)
+{
+	ATottem_Piece* TP = Cast<ATottem_Piece>(Totempiece);
+	if(TP )
+	{
+		if(TP->bTaken)
+		{
+			UE_LOG(LogTemp,Warning,TEXT("Hitted with Totem Object already TAKEN"));
+			
+			return false;
+
+		}
+		if(!TP->bIsVisible)
+		{
+			UE_LOG(LogTemp,Warning,TEXT("Hitted with Totem not visible"));
+			
+			return false;
+		}
+			
+		
+	}
+	//if is true that means that is another type of actor BUT we still want to tell this is grabable
+	return true;
+}
 
 

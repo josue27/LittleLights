@@ -15,6 +15,7 @@ class LITTLELIGHTS_API AFirePit : public AActor, public  ILL_GameplayInterface
 	GENERATED_BODY()
 
 	void Interact_Implementation(APawn* InstigatorPawn) override;
+	FText GetInteractText_Implementation(APawn* InstigatorPawn) override;
 public:	
 	// Sets default values for this actor's properties
 	AFirePit();
@@ -35,6 +36,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	USphereComponent* SphereCollision;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	FText InteractionMessage;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Pond")
 	float RefillAmount = 30.0f;

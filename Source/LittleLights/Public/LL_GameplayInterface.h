@@ -34,7 +34,6 @@ public:
 	UFUNCTION(BlueprintCallable,BlueprintNativeEvent)
 	FText GetInteractText(APawn* InstigatorPawn);
 
-	
-	
+
 	
 };

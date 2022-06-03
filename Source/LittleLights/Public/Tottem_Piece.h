@@ -31,8 +31,10 @@ public:
 	ATottem_Piece();
 
 
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Tottem Piece")
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Totem Piece")
 	TottemPieceType PieceType;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Totem Piece")
+	bool bIsVisible;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	USceneComponent* SceneComponent;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
