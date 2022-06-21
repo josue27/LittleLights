@@ -24,7 +24,8 @@
 /I "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Source\RiderLink\Public\Model\RdEditorProtocol"
 /I "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Source\RiderLink\Public"
 /I "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Source\RiderBlueprintExtension\Public"
-/I "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\INCLUDE"
+/I ThirdParty\mimalloc\include
+/I "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\INCLUDE"
 /I "C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.2\include\um"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"
@@ -32,9 +33,11 @@
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"
 /FI"D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLoggingExtension\Definitions.h"
 /Fo"D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLoggingExtension\Module.RiderLoggingExtension.cpp.obj"
+/sourceDependencies "D:\ParallelsGames\LittleLights\ProyectoUE4\LittleLights 5.0\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLoggingExtension\Module.RiderLoggingExtension.cpp.json"
 /Zc:inline
 /nologo
 /Oi
+/FC
 /c
 /Gw
 /Gy
@@ -52,6 +55,7 @@
 /GF
 /errorReport:prompt
 /EHsc
+/DPLATFORM_EXCEPTIONS_DISABLED=0
 /Z7
 /MD
 /bigobj
@@ -68,3 +72,4 @@
 /TP
 /GR
 /W4
+/std:c++17
