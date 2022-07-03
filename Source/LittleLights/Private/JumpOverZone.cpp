@@ -3,7 +3,9 @@
 
 #include "JumpOverZone.h"
 
+#include "LLGamePlayFunctionLibrary.h"
 #include "PlayerCharacter.h"
+#include "LittleLights/LittleLights.h"
 
 // Sets default values
 AJumpOverZone::AJumpOverZone()
@@ -27,6 +29,9 @@ void AJumpOverZone::Interact_Implementation(APawn* InstigatorPawn)
 				case EspecialMovementZoneType::Crouch:
 					AC->StartAbilityByName(InstigatorPawn,"Crouch",this);
 					UE_LOG(LogTemp,Warning,TEXT("%s Sent Crouch ability"),*GetNameSafe(this));
+					ULLGamePlayFunctionLibrary::ScreenLog(TEXT("%s Sent Crouch ability"));
+					LogOnScreen(this,FString(TEXT("%s Sent Crouch ability")));
+					
 				break;
 				case EspecialMovementZoneType::CrossBalancing:
 					AC->StartAbilityByName(InstigatorPawn,"CrossBalancing",this);
@@ -43,6 +48,16 @@ void AJumpOverZone::Interact_Implementation(APawn* InstigatorPawn)
 		}
 			
 	}
+}
+
+FText AJumpOverZone::GetInteractText_Implementation(APawn* InstigatorPawn)
+{
+	APlayerCharacter* Player = Cast<APlayerCharacter>(InstigatorPawn);
+	if(Player && !InteractionMessage.IsEmpty())
+	{
+		return InteractionMessage;
+	}
+	return FText::GetEmpty();
 }
 
 // Called when the game starts or when spawned

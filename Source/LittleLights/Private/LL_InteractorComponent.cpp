@@ -100,6 +100,7 @@ void ULL_InteractorComponent::FindInteractable()
 				InteractionWidgetInstance->AddToViewport();
 			}
 			InteractionWidgetInstance->TextOfInteraction = ILL_GameplayInterface::Execute_GetInteractText(InteractableActor,PlayerOwner);
+			//If there is no text remove | Todo: Should we paste a default text?
 			if(InteractionWidgetInstance->TextOfInteraction.IsEmpty())
 			{
 				InteractionWidgetInstance->RemoveFromParent();

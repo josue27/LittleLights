@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "LL_AbilityComponent.h"
-#include "UObject/NoExportTypes.h"
+
 #include "LL_Ability.generated.h"
 
 /**

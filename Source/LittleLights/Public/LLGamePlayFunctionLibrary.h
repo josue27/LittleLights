@@ -28,5 +28,7 @@ class LITTLELIGHTS_API ULLGamePlayFunctionLibrary : public UBlueprintFunctionLib
 	UFUNCTION(BlueprintCallable,Category="LLGameplay")
 	static  bool IsTotemPieceGrabable(AActor* Totempiece);
 
+	UFUNCTION()
+	static void ScreenLog(FString text,FColor Color = FColor::White);
 
 };

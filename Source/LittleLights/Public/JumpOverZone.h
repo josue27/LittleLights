@@ -26,6 +26,7 @@ public:
 
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 
+	virtual FText GetInteractText_Implementation(APawn* InstigatorPawn) override;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -33,6 +34,9 @@ protected:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		EspecialMovementZoneType MovementZone_Type;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite)
+	FText InteractionMessage;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -48,7 +52,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bIsBalancing = false;
 
-public:
+
 	UFUNCTION(BlueprintImplementableEvent)
 		void MovePlayerAlongSpline(float axisValue);
 	UFUNCTION(BlueprintImplementableEvent)

@@ -46,7 +46,7 @@ public:
 
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 
-	 FText GetInteractText_Implementation(APawn* InstigatorPawn) ;
+	 FText GetInteractText_Implementation(APawn* InstigatorPawn) override;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

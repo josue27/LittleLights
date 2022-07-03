@@ -59,4 +59,12 @@ bool ULLGamePlayFunctionLibrary::IsTotemPieceGrabable(AActor* Totempiece)
 	return true;
 }
 
+void ULLGamePlayFunctionLibrary::ScreenLog(FString text, FColor Color)
+{
+	if(GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1,15.0f,Color,text);
+	}
+}
+
 
