@@ -3,6 +3,8 @@
 
 #include "LL_AbilityComponent.h"
 #include "LL_Ability.h"
+#include "LittleLights/LittleLights.h"
+
 // Sets default values for this component's properties
 ULL_AbilityComponent::ULL_AbilityComponent()
 {
@@ -71,6 +73,9 @@ void ULL_AbilityComponent::StopAbilityByName(AActor* Instigator, FName AbilityNa
 			if(Ability->IsRunning())
 			{
 				Ability->StopAbility(Instigator,ActorInfo);
+				//FString compstring =  FString::Printf((TEXT("Stop ability:%s"), AbilityName));
+				LogOnScreen(this, FString(TEXT("Ability stopped")));
+
 				return;
 			}
 		}

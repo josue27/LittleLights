@@ -95,8 +95,7 @@ public:
 		float VelocidadRotacion = 1.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float VelocidadMovimiento = 1.0f;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-		UArrowComponent* PosicionSpawnBengala;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 		UArrowComponent* TorchPosition;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -107,12 +106,10 @@ public:
 		bool bCanMove = true;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bCanSprint = true;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool bFlaresEnabled = false;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bStartWithLight = true;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TSubclassOf<AActor> Flare;
+	
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<ATorch> TorchClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -223,15 +220,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void ActionButtonCall();
 	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable)
-		void MovePlayerTo(FVector Location, float Speed = 150.0f);
+		void MovePlayerTo(FVector Location, float Speed = 150.0f,bool bNotify = false);
 	
-
+	UFUNCTION(BlueprintCallable,Category="LL_Player")
+		void ResetWalkSpeed(float speed=600.0f);
 #pragma region EspecialMovements
 
 	UFUNCTION(BlueprintCallable)
 		void JumpOver(class AJumpOverZone* TempZone);
-	UFUNCTION(BlueprintCallable)
-		void CrouchUnder(class AJumpOverZone* TempZone);
+
 	UFUNCTION(BlueprintCallable)
 		void CrossBalancing(class AJumpOverZone* TempZone);
 
@@ -267,20 +264,16 @@ public:
 		void ResetCameraPosition();
 
 private:
-	void MovimientoForward(float AxisValue);
-	void MovimientoRight(float AxisValue);
-	void RotacionHorizontal(float AxisValue);
-	void UpdateRotacion();
-	UFUNCTION()
-		void ShootFlare();
-
-
+	void ForwardMovement(float AxisValue);
+	void RightMovement(float AxisValue);
+	void CameraHorizontalRotation(float AxisValue);
+	void UpdateRotation();
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class UUserWidget> GameplayHUD_Class;
 
 
-	FQuat RotacionFinal;
+	FQuat EndRotation;
 
 
 	float TempRefillAmount;

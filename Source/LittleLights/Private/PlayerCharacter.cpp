@@ -31,8 +31,7 @@ APlayerCharacter::APlayerCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0, 540, 0);
 	//Use controller rotation yaw = false en los class defaults
-	PosicionSpawnBengala = CreateDefaultSubobject<UArrowComponent>(TEXT("PosicionSpawnBengala"));
-	PosicionSpawnBengala->SetupAttachment(RootComponent);
+	
 	TorchPosition = CreateDefaultSubobject<UArrowComponent>(TEXT("TorhcSpawnPos"));
 	TorchPosition->SetupAttachment(RootComponent);
 	
@@ -61,6 +60,8 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+
+	//Should we start with lantern in hour hands?
 	if (TorchClass != nullptr && bStartWithLight)
 	{
 		SpawnLanternOrb();
@@ -123,9 +124,8 @@ void APlayerCharacter::Tick(float DeltaTime)
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &APlayerCharacter::MovimientoForward);
-	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &APlayerCharacter::MovimientoRight);
-	PlayerInputComponent->BindAction(TEXT("InputFlare"), IE_Pressed, this, &APlayerCharacter::ShootFlare);
+	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &APlayerCharacter::ForwardMovement);
+	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &APlayerCharacter::RightMovement);
 	PlayerInputComponent->BindAction(TEXT("InteractInput"), IE_Pressed, this, &APlayerCharacter::ActionButtonCall);
 	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Pressed, this, &APlayerCharacter::SprintAction);
 	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Released, this, &APlayerCharacter::SprintCancelled);
@@ -278,6 +278,11 @@ void APlayerCharacter::ActionButtonCall()
 	}
 }
 
+void APlayerCharacter::ResetWalkSpeed(float speed)
+{
+	GetCharacterMovement()->MaxWalkSpeed = speed;
+}
+
 void APlayerCharacter::JumpOver(class AJumpOverZone* TempZone)
 {
 	if (bJumpingOver) return;
@@ -306,7 +311,7 @@ void APlayerCharacter::BalanceUpdate()
 {
 }
 
-void APlayerCharacter::MovimientoForward(float AxisValue)
+void APlayerCharacter::ForwardMovement(float AxisValue)
 {
 	if (!bCanMove && bBalancing)
 	{
@@ -336,7 +341,7 @@ void APlayerCharacter::MovimientoForward(float AxisValue)
 	//UE_LOG(LogTemp,Warning,TEXT("MOVIENDO"));
 }
 
-void APlayerCharacter::MovimientoRight(float AxisValue)
+void APlayerCharacter::RightMovement(float AxisValue)
 {
 	if (!bCanMove && bBalancing)
 	{
@@ -373,71 +378,17 @@ void APlayerCharacter::MovimientoRight(float AxisValue)
 }
 
 /// <summary>
-/// When user press jump, it doesn't jump , first cast a linetrace to see if is in front of a JumpOverZone(EspecialMovementZone) and there 
-/// if it is, take different actions, jumpover, crouch, etc.
+/// DISABLED: we are using the "Interction" button binding, may we should remove this
+/// When user press jump, it checks if its hitting an
 /// </summary>
 void APlayerCharacter::JumpButtonCall()
 {
-	if(InteractorComp)
+	/*if(InteractorComp)
 	{
 		InteractorComp->PrimaryInteract();
 	}
-	return;
-	//Create LaneTrace to detect if in front of JumpOverObstacle || WalkUnderObstacle || BalancingObstalce
-	FVector LineStart = GetActorLocation();
-	FVector LineEnd = LineStart + (GetActorRotation().Vector() * JumpDistanceDetection);
-	FHitResult Hit;
-	FCollisionQueryParams TraceParams;
-	//This is important or wont trace line
-	TraceParams.AddIgnoredActor(this);
-	TraceParams.AddIgnoredActor(GetOwner());
+	return;*/
 
-	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, LineStart, LineEnd, ECC_Visibility, TraceParams);
-
-	DrawDebugLine(GetWorld(), LineStart, LineEnd, FColor::Red, false, 3.0f);
-
-	if (bHit)
-	{
-		DrawDebugBox(GetWorld(), Hit.ImpactPoint, FVector(5, 5, 5), FColor::Red, false, 3.0f);
-
-		AJumpOverZone* EspecialMovementZone = Cast<AJumpOverZone>(Hit.GetActor());
-		if (EspecialMovementZone != nullptr)
-		{
-			//If in front of JumpOverObstacle
-			if (EspecialMovementZone->MovementZone_Type == EspecialMovementZoneType::JumpOver)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("In JumpOver Zone"));
-
-				JumpOver(EspecialMovementZone);
-			}
-			else if (EspecialMovementZone->MovementZone_Type == EspecialMovementZoneType::Crouch)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("In Crouch Zone"));
-				CrouchUnder(EspecialMovementZone);
-			}
-			else if (EspecialMovementZone->MovementZone_Type == EspecialMovementZoneType::CrossBalancing)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("In Balancing Zone"));
-
-				CrossBalancing(EspecialMovementZone);
-			}
-			else
-			{
-
-				RollForward();
-			}
-
-		}
-	}
-	else
-	{
-		RollForward();
-
-	}
-
-
-	//else
-		//RollForward
 }
 
 void APlayerCharacter::LookingAt()
@@ -448,41 +399,22 @@ void APlayerCharacter::LookingAt()
 
 
 
-void APlayerCharacter::RotacionHorizontal(float AxisValue)
+void APlayerCharacter::CameraHorizontalRotation(float AxisValue)
 {
-	float CantidadRotacion = AxisValue * VelocidadRotacion * GetWorld()->GetDeltaSeconds();
-	FRotator RotacionZ = FRotator(0, CantidadRotacion, 0);
-	RotacionFinal = FQuat(RotacionZ);
+	float RotationAmount = AxisValue * VelocidadRotacion * GetWorld()->GetDeltaSeconds();
+	FRotator RotationZ = FRotator(0, RotationAmount, 0);
+	EndRotation = FQuat(RotationZ);
 	AddControllerYawInput(AxisValue * VelocidadRotacion * GetWorld()->GetDeltaSeconds());
 	// AddActorLocalRotation(RotacionFinal,true);
 }
 
-void APlayerCharacter::UpdateRotacion()
+void APlayerCharacter::UpdateRotation()
 {
-	AddActorLocalRotation(RotacionFinal, true);
+	AddActorLocalRotation(EndRotation, true);
 
 }
 
-void APlayerCharacter::ShootFlare()
-{
-	if (!bFlaresEnabled || GetBengalas() <= 0)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Not enough flares or not enabled"));
-		return;
-	}
-	if (Flare == nullptr)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Not flare set to be spawned"));
 
-		return;
-	}
-	FVector PosSpawn = PosicionSpawnBengala->GetComponentLocation();
-	FRotator RotSpawn = PosicionSpawnBengala->GetComponentRotation();
-	AActor* SpawnedFlare = GetWorld()->SpawnActor<AActor>(Flare, PosSpawn, RotSpawn);
-
-	BengalasDisponibles -= 1;
-	UE_LOG(LogTemp, Warning, TEXT("Shooted Flare"));
-}
 
 
 void APlayerCharacter::RollForward()
@@ -499,18 +431,7 @@ void APlayerCharacter::RollForward()
 	GetWorld()->GetTimerManager().SetTimer(DelayForJumpAnimation, this, &APlayerCharacter::JumpCompleted, DelayForCompletedJump, false);*/
 	//VelocidadMovimiento = NormalMaxVelocity;
 }
-void APlayerCharacter::CrouchUnder(AJumpOverZone* TempZone)
-{
-	if (bIsCrossingUnder) return;
 
-	Temp_JumpOverZone = TempZone;
-
-	bIsCrossingUnder = true;//for animation BP
-	bCanMove = false;
-	//Jump();
-	if (Temp_JumpOverZone)
-		Temp_JumpOverZone->StartJumpOver(EspecialMovementZoneType::Crouch, this);
-}
 void APlayerCharacter::CrossBalancing(AJumpOverZone* TempZone)
 {
 	/*Jump();*/

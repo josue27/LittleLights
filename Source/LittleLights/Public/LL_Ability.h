@@ -33,7 +33,7 @@ class LITTLELIGHTS_API ULL_Ability : public UObject
 	UFUNCTION(BlueprintNativeEvent,Category="Ability")
 	bool CanStart(AActor* Instigator);
 
-	UFUNCTION(BlueprintNativeEvent,Category="Ability")
+	UFUNCTION(BlueprintCallable,Category="Ability")
 	bool IsRunning();
 
 	UFUNCTION(BlueprintCallable,Category="Ability Tags")
