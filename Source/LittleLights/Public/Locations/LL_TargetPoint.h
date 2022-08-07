@@ -25,6 +25,8 @@ class LITTLELIGHTS_API ALL_TargetPoint : public ATargetPoint
 	protected:
 	ALL_TargetPoint();
 
-	
+public:
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category="LLTargetPoint")
+		LocationType TargetLocationType;
 	
 };

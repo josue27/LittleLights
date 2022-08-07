@@ -42,10 +42,17 @@ APlayerCharacter::APlayerCharacter()
 	SpringArmComponent->bInheritYaw = false;
 	SpringArmComponent->bEnableCameraLag = true;
 	SpringArmComponent->SetupAttachment(RootComponent);
+	SpringArmComp_FillLight = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp_FillLight"));
+	SpringArmComp_FillLight->bDoCollisionTest = false;
+	SpringArmComp_FillLight->bInheritPitch = false;
+	SpringArmComp_FillLight->bInheritRoll = false;
+	SpringArmComp_FillLight->bInheritYaw = false;
+
+	
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->SetupAttachment(SpringArmComponent);
 	FillLight = CreateDefaultSubobject<USpotLightComponent>(TEXT("FillLight"));
-	FillLight->SetupAttachment(RootComponent);
+	FillLight->SetupAttachment(SpringArmComp_FillLight);
 
 	InteractorComp = CreateDefaultSubobject<ULL_InteractorComponent>(TEXT("InteractoComp"));
 	AbilityComponent = CreateDefaultSubobject<ULL_AbilityComponent>(TEXT("AbilityComponent"));
@@ -67,6 +74,7 @@ void APlayerCharacter::BeginPlay()
 		SpawnLanternOrb();
 	}
 
+	//TODO:DELETE??
 	FillLightInitRotation = FillLight->GetComponentRotation();
 
 		

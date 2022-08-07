@@ -79,6 +79,8 @@ protected:
 	USpotLightComponent* FillLight;
 	UPROPERTY(BlueprintReadWrite,Category="Player Camera")
 	FRotator FillLightInitRotation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Camera")
+	USpringArmComponent* SpringArmComp_FillLight;
 
 
 public:
@@ -223,7 +225,7 @@ public:
 		void MovePlayerTo(FVector Location, float Speed = 150.0f,bool bNotify = false);
 	
 	UFUNCTION(BlueprintCallable,Category="LL_Player")
-		void ResetWalkSpeed(float speed=600.0f);
+		void ResetWalkSpeed(float speed=400.0f);
 #pragma region EspecialMovements
 
 	UFUNCTION(BlueprintCallable)
