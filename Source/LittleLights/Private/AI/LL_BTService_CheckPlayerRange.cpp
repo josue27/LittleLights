@@ -6,6 +6,7 @@
 #include "AIController.h"
 #include "DrawDebugHelpers.h"
 #include "LLGamePlayFunctionLibrary.h"
+
 #include "BehaviorTree/BlackboardComponent.h"
 
 //static TAutoConsoleVariable<bool> CVarDebugAI(TEXT("ll.DebugAI"),false,TEXT("Enable spawning of bots via timer"),ECVF_Cheat);
@@ -22,6 +23,7 @@ void ULL_BTService_CheckPlayerRange::TickNode(UBehaviorTreeComponent& OwnerComp,
 		if(TargetActor && ULLGamePlayFunctionLibrary::IsPlayerAlive(TargetActor))
 		{
 			AAIController* AIController = OwnerComp.GetAIOwner();
+			
 			if(ensure(AIController))
 			{
 				APawn* AIPawn = AIController->GetPawn();
@@ -51,6 +53,10 @@ void ULL_BTService_CheckPlayerRange::TickNode(UBehaviorTreeComponent& OwnerComp,
 		}else
 		{
 			BBComp->SetValueAsBool(InRangeKey.SelectedKeyName,false);
+			if (!ULLGamePlayFunctionLibrary::IsPlayerAlive(TargetActor))
+			{
+				//BBComp->SetValueAsBool("")
+			}
 
 		}
 	}

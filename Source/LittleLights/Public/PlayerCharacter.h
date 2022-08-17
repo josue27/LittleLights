@@ -57,7 +57,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite,Category="Player State")
 	bool bIsAlive;//changed if captured o anything else;
 	
-	UFUNCTION( Category="LL Player Camera")
+	UFUNCTION( Category="LLPLayer| Player Camera")
 	void UpdateFov();
 	
 
@@ -67,17 +67,17 @@ protected:
 		float JumpDistance = 5.0f;
 	FTimerHandle DelayForJumpAnimation;
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Player Camera")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LLPLayer|Player Camera")
 	UCameraComponent* CameraComp;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Player Camera")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LLPLayer|Player Camera")
 	USpringArmComponent* SpringArmComponent;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite ,Category="Player Camera")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite ,Category="LLPLayer|Player Camera")
 	float Fov_B = 60.0f;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite ,Category="Player Camera")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite ,Category="LLPLayer|Player Camera")
 	float Fov_A = 45.0f;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite ,Category="Player Camera")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite ,Category="LLPLayer|Player Camera")
 	USpotLightComponent* FillLight;
-	UPROPERTY(BlueprintReadWrite,Category="Player Camera")
+	UPROPERTY(BlueprintReadWrite,Category="LLPLayer|Player Camera")
 	FRotator FillLightInitRotation;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Camera")
 	USpringArmComponent* SpringArmComp_FillLight;
@@ -90,7 +90,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LLPlayer Camera")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LLPLayer|Player Camera")
 		bool bUpdateFov;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -152,11 +152,11 @@ public:
 		bool bLightingTorch;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bWithFlares;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Settings")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|Jump Settings")
 		bool bCanJump = true;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Settings")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|Jump Settings")
 		bool bJumping;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Settings")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|Jump Settings")
 		float JumpDistanceDetection = 200.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bSprint;
@@ -165,35 +165,35 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		UUserWidget* Gameplay_HUD;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hints")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|Hints")
 		bool bShowHints = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		USpringArmComponent* SpringArmRef = nullptr;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Over settings")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|Jump Over settings")
 		bool bInJumpOverZone = false;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Over settings")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|Jump Over settings")
 		bool bJumpingOver = false;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Over settings")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|Jump Over settings")
 		AJumpOverZone* Temp_JumpOverZone = nullptr;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Over settings")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|Jump Over settings")
 		bool bBalancing = false;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Over settings Balancing")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|Jump Over settings Balancing")
 		float Balancing_X;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Over settings Balancing")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|Jump Over settings Balancing")
 		float BalancingSensitivity = 0.01f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Over settings Balancing")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|Jump Over settings Balancing")
 		float UnbalanceVelocity = 0.001f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Jump Over settings Balancing")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|Jump Over settings Balancing")
 		bool bLostBalance;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hints")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|Hints")
 		FText TextHint;
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Totems")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LLPLayer|Totems")
 	TArray<ATottem_Piece*> TottemPieces;
 
-	UFUNCTION(BlueprintCallable,Category="Totems")
+	UFUNCTION(BlueprintCallable,Category="LLPLayer|Totems")
 	void AddTottemPiece(ATottem_Piece* Piece);
 	
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
@@ -224,7 +224,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable)
 		void MovePlayerTo(FVector Location, float Speed = 150.0f,bool bNotify = false);
 	
-	UFUNCTION(BlueprintCallable,Category="LL_Player")
+	UFUNCTION(BlueprintCallable,Category="LLPLayer|LL_Player")
 		void ResetWalkSpeed(float speed=400.0f);
 #pragma region EspecialMovements
 
@@ -245,19 +245,19 @@ public:
 	/// <summary>
 	/// Evaluates what is the PlayerCharacater is looking at so it can display something in HUD(or not)
 	/// </summary>
-	UFUNCTION(BlueprintCallable, Category = "HUD")
+	UFUNCTION(BlueprintCallable, Category = "LLPLayer|HUD")
 		void LookingAt();
 
-	UFUNCTION(BlueprintCallable, Category ="Lantern")
+	UFUNCTION(BlueprintCallable, Category ="LLPLayer|Lantern")
 		void SpawnLanternOrb();
 
-	UFUNCTION(Category = "Balancing")
+	UFUNCTION(Category = "LLPLayer|Balancing")
 		void BalanceUpdate();
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 		void PlayerFall();
 
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category="Abilities")
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category="LLPLayer|Abilities")
 	ULL_AbilityComponent* AbilityComponent;
 
 	UFUNCTION(BlueprintCallable)

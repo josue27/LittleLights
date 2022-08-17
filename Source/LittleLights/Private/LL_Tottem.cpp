@@ -36,6 +36,8 @@ void ALL_Tottem::Interact_Implementation(APawn* InstigatorPawn)
 	{
 		 Player = Cast<APlayerCharacter>(InstigatorPawn);
 	}
+	if (Player == nullptr)return;
+
 	if(!discovered)
 	{
 		UE_LOG(LogTemp,Warning,TEXT("Totem discovered "));

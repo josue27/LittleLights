@@ -141,13 +141,16 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	//PlayerInputComponent->BindAction(TEXT("Gamepad"))
 }
 
-
+//DEPRECATED
+//This mechanic is no longer in use
 int32 APlayerCharacter::GetBengalas()
 {
 	return BengalasDisponibles;
 }
 
-
+/// <summary>
+/// Called when user press the action button to light up de torch if any
+/// </summary>
 void APlayerCharacter::SpawnLanternOrb()
 {
 	if (TorchClass == nullptr)
