@@ -36,7 +36,7 @@ public:
 	// Sets default values for this actor's properties
 	ALL_Tottem();
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Totem")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LL Totem")
 	bool discovered;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Components")
@@ -47,10 +47,10 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Totem")
 	TArray<FTottemPieceState> TotemPieces;
 	
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="UI")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LL Totem|UI")
 	FText TextForInteraction;
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Totem")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LL Totem")
 	bool TotemCompleted;
 	
 	virtual FText GetInteractText_Implementation(APawn* InstigatorPawn) override;
@@ -64,8 +64,11 @@ public:
 protected:
 
 
-	UPROPERTY(BlueprintReadWrite, Category="Totem")
+	UPROPERTY(BlueprintReadWrite, Category="LL Totem")
 	APlayerCharacter* Player;
+
+	UPROPERTY(BlueprintReadWrite, Category = "LL Totem | UI")
+		UUserWidget* DiscoverTotemWidget;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

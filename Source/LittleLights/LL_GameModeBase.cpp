@@ -29,22 +29,27 @@ void ALL_GameModeBase::StartPlay()
 
 void ALL_GameModeBase::StartSequence_Implementation()
 {
+	
 	//TODO: we need to get all actor of SpecialLocation and the check wick one is the start and the exit
 	//UGameplayStatics::GetAllActorsOfClass(GetWorld(),ALL_TargetPoint::StaticClass());
 	ALL_TargetPoint* StartTargetLocation = Cast<ALL_TargetPoint>(UGameplayStatics::GetActorOfClass(GetWorld(),ALL_TargetPoint::StaticClass()));
 	Player = Cast<APlayerCharacter>( UGameplayStatics::GetPlayerPawn(GetWorld(),0));
-
-	if(StartTargetLocation)
+	
+	if (EnableIntroMovement)
 	{
-		if(Player)
+		if(StartTargetLocation)
 		{
-			Player->MovePlayerTo(StartTargetLocation->GetActorLocation());
-		}
-	}else
-	{
-		LogOnScreen(GetWorld(),"No Start Target found",FColor::Yellow);
-		UE_LOG(LogTemp,Warning,TEXT("Could not start the sequence"))
+				if(Player)
+				{
+					Player->MovePlayerTo(StartTargetLocation->GetActorLocation());
+				}
+			}else
+			{
+				LogOnScreen(GetWorld(),"No Start Target found",FColor::Yellow);
+				UE_LOG(LogTemp,Warning,TEXT("Could not start the sequence"))
+			}	
 	}
+	
 	//StartBeastTimer();
 
 	if(Player && StartWithDecayLight)
@@ -82,6 +87,23 @@ void ALL_GameModeBase::SpawnBeast_Debug()
 {
 	SpawnBeast_Implementation();
 }
+
+void ALL_GameModeBase::LevelCompleted()
+{
+	CurrentGameState = EGameState::LevelCompleted;
+	TArray<AActor*> CallableActors;
+	UGameplayStatics::GetAllActorsWithInterface(this, ULL_GameplayInterface::StaticClass(), CallableActors);
+	for (AActor* CallableActor : CallableActors)
+	{
+
+		ILL_GameplayInterface::Execute_BeaconCompleted(CallableActor);
+
+	}
+
+	LightUpMoon();
+}
+
+
 
 float ALL_GameModeBase::DeltaDistanceToBeast()
 {
@@ -152,6 +174,17 @@ void ALL_GameModeBase::OnLocationQueryCompleted(UEnvQueryInstanceBlueprintWrappe
 	
 }
 
+void ALL_GameModeBase::GameStart()
+{
+	if (Player)
+	{
+		if (Player->Implements<ULL_GameplayInterface>())
+		{
+			ILL_GameplayInterface::Execute_StartGame(Player);
+		}
+	}
+}
+
 
 
 void ALL_GameModeBase::BeaconCompleted_Implementation()
@@ -191,6 +224,26 @@ void ALL_GameModeBase::BeaconCompleted_Implementation()
 			GetWorldTimerManager().SetTimer(RemoveWidgetTH,this,&ALL_GameModeBase::RemoveWidget,3.0f);
 		}
 	}*/
+}
+
+void ALL_GameModeBase::PlayerEndedIntroMovement()
+{
+	if (!Player)
+		return;
+	UE_LOG(LogTemp, Warning, TEXT("Player ended intro movement"));
+	Player->EnableInput(UGameplayStatics::GetPlayerController(this, 0));
+	Player->ResetWalkSpeed();
+	GameStart();
+}
+
+void ALL_GameModeBase::PlayerIntroMovement()
+{
+
+	if (ensure(Player) && PlayerIntroDestiny)
+	{
+		Player->MovePlayerTo(PlayerIntroDestiny->GetActorLocation());
+	}
+
 }
 
 void ALL_GameModeBase::RemoveWidget()

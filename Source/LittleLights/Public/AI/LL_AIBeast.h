@@ -25,6 +25,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere,Category="AI")
 	FName TargetKeyName ="TargetPlayer";	
+
+	
+
 	UFUNCTION()
 	void PlayerSeen(APawn* PlayerPawn);
 
@@ -43,11 +46,16 @@ protected:
 
 	
 public:	
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "LLBeast")
+		bool bIsAttacking;
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BasicAttackSequence();
+
+
 
 };
 

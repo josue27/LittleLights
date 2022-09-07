@@ -36,11 +36,13 @@ void ALL_Tottem::Interact_Implementation(APawn* InstigatorPawn)
 	{
 		 Player = Cast<APlayerCharacter>(InstigatorPawn);
 	}
+	if (Player == nullptr)return;
+
 	if(!discovered)
 	{
 		UE_LOG(LogTemp,Warning,TEXT("Totem discovered "));
 		discovered = true;
-		TotemDiscoveredEvent();
+		TotemDiscoveredEvent();//implentation in BP
 
 	}else if(Player->TottemPieces.Num() > 0)
 	{
@@ -96,6 +98,22 @@ void ALL_Tottem::AddTotemPiece_Implementation(APlayerCharacter* InstigatorPlayer
 	}
 }
 
+//Called in blueprint for the moment
+void ALL_Tottem::MovePieceAnimEnded()
+{
+	//This is because we want all the pieces animation to finish and
+	//by logic the last one will be removed and TottemPieces will be 0 so we could
+	//check the completition
+	if(Player->TottemPieces.Num() == 0)
+	{
+		TotemCompletion();
+
+	}else
+	{
+		//TODO:Warning this might be recursive
+		Interact_Implementation(Player);
+	}
+}
 
 void ALL_Tottem::TotemCompletion()
 {
@@ -111,8 +129,10 @@ void ALL_Tottem::TotemCompletion()
 	if(NumPiecesInPlace >= TotemPieces.Num())
 	{
 		ALL_GameModeBase* GM = Cast<ALL_GameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+		//remember that you have to call this in each actor that has implemented this cause this is an interface not a MulticasEvent
 		Execute_BeaconCompleted(GM);
-		//Execute_BeaconCompleted(this);
+		Execute_BeaconCompleted(this);
+		
 		TotemCompleted = true;
 	}
 	
@@ -123,19 +143,6 @@ void ALL_Tottem::BeaconCompleted_Implementation()
 {
 
 	LogOnScreen(GetWorld(),"Beacon completed");
-}
-//Called in blueprint for the moment
-void ALL_Tottem::MovePieceAnimEnded()
-{
-
-	if(Player->TottemPieces.Num() == 0)
-	{
-		TotemCompletion();
-	}else
-	{
-		//TODO:Warning this might be recursive
-		Interact_Implementation(Player);
-	}
 }
 
 // Called every frame

@@ -26,40 +26,43 @@ protected:
 	UPROPERTY()
 	ALevel_Manager_Base* LevelManager;
 
-	UPROPERTY(BlueprintReadWrite,Category="Door")
+	UPROPERTY(BlueprintReadWrite,Category="LLGameMode|FinalDoor")
 	ADoorBase* FinalDoor;
 
-	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Test")
-	float TestB;
-
-	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="AIBeast")
+	
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="LLGameMode|AIBeast")
 	TSubclassOf<UUserWidget> BeastState_WidgetClass;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Category = "LLGameMode|AIBeast")
 	UUserWidget* BeastState_Instance;
 	
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Time")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LLGameMode|Time")
 	float TimeToBeast = 20.0f;//time until the beast is spawned since level started
 
-	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="LLGameMode|LightOrb")
 	bool StartWithDecayLight;
 	
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="AIBeast")
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="LLGameMode|AIBeast")
 	UEnvQuery* SpawnBeastLocationQuery;
 
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="UI")
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="LLGameMode|UI")
 	TSubclassOf<UUserWidget> TotemCompleted_WidgetClass;
 
 	
-	UPROPERTY(BlueprintReadWrite,Category="UI")
+	UPROPERTY(BlueprintReadWrite, Category = "LLGameMode|UI")
 	UUserWidget* TotemCompleted_WidgetInstance;
 
-	UPROPERTY(BlueprintReadWrite,Category="Player")
+	UPROPERTY(BlueprintReadWrite, Category = "LLGameMode|Player")
 	APlayerCharacter* Player;
 	FTimerHandle SpawnBeastTimerHandler;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLGameMode|Player")
+		bool EnableIntroMovement;
+	
+	
 	///////////
 
-	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "LLGameMode")
 	void StartSequence();
 
 	virtual void StartPlay() override;
@@ -72,6 +75,13 @@ protected:
 	UFUNCTION()
 	void OnLocationQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryInstance, EEnvQueryStatus::Type QueryStatus);
 
+	UFUNCTION(BlueprintCallable)
+		void GameStart();
+
+	UFUNCTION(BlueprintCallable)
+		void PlayerEndedIntroMovement();
+	UFUNCTION(BlueprintCallable)
+		void PlayerIntroMovement();
 	
 
 	UFUNCTION()
@@ -79,28 +89,43 @@ protected:
 	
 	virtual void BeaconCompleted_Implementation() override;
 
-	public:
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="LLGameMode | Player")
+		float TorchLightUpTime = 0.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLGameMode | Level Manager")
+		EGameState CurrentGameState;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		AActor* PlayerIntroDestiny;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UMaterialParameterCollection* FogMaterialParameter;
+
 	UFUNCTION(Exec)
 	void SpawnBeast_Debug();
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="AIBeast")
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "LLGameMode|AIBeast")
 	TSubclassOf<AActor> BeastAI_Class;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="AIBeast")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "LLGameMode|AIBeast")
 	void SpawnBeast();
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite,Category="AIBeast")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "LLGameMode|AIBeast")
 	AActor* BeastAI;
 
-	
+	UFUNCTION(BlueprintCallable)
+		void LevelCompleted();
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void LightUpMoon();
 
 
-	
 
 
-	UFUNCTION(BlueprintNativeEvent,BlueprintCallable,Category="GameMode")
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable,Category="LLGameMode|GameMode")
 	void TottemCompleted();
 
 
-	UFUNCTION(BlueprintCallable,Category="AIBeast")
+	UFUNCTION(BlueprintCallable,Category="LLGameMode|AIBeast")
 	float DeltaDistanceToBeast();
 
 	

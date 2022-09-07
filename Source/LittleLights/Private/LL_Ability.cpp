@@ -49,9 +49,11 @@ bool ULL_Ability::CanStart_Implementation(AActor* Instigator)
 	return  true;
 }
 
-bool ULL_Ability::IsRunning_Implementation()
+
+
+bool ULL_Ability::IsRunning()
 {
-	return  bIsRunning;
+	return bIsRunning;
 }
 
 ULL_AbilityComponent* ULL_Ability::GetOwningComponent()

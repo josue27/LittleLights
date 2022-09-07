@@ -24,16 +24,18 @@ EBTNodeResult::Type ULLBeastBasicAttack_BTTaskNode::ExecuteTask(UBehaviorTreeCom
 		{
 			EBTNodeResult::Failed;
 		}
-		
+		ALL_AIBeast* BeastAI = Cast<ALL_AIBeast>(AIController->GetPawn());
 		if(!ULLGamePlayFunctionLibrary::IsPlayerAlive(TargetActor))
 		{
+			if (BeastAI) BeastAI->bIsAttacking = false;
 			EBTNodeResult::Failed;
 		}
 		
-		ALL_AIBeast* BeastAI = Cast<ALL_AIBeast>(AIController->GetPawn());
+	
 		if(BeastAI)
 		{
 			BeastAI->BasicAttackSequence();
+			BeastAI->bIsAttacking = true;
 			UE_LOG(LogTemp,Warning,TEXT("Beast attacked player"));
 
 		}
