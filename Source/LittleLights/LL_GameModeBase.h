@@ -35,15 +35,17 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, Category = "LLGameMode|AIBeast")
 	UUserWidget* BeastState_Instance;
-	
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="LLGameMode|AIBeast")
+	UEnvQuery* SpawnBeastLocationQuery;
+
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LLGameMode|Time")
 	float TimeToBeast = 20.0f;//time until the beast is spawned since level started
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="LLGameMode|LightOrb")
 	bool StartWithDecayLight;
 	
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="LLGameMode|AIBeast")
-	UEnvQuery* SpawnBeastLocationQuery;
+	
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="LLGameMode|UI")
 	TSubclassOf<UUserWidget> TotemCompleted_WidgetClass;
@@ -109,6 +111,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "LLGameMode|AIBeast")
 	void SpawnBeast();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "LLGameMode|AIBeast")
 	AActor* BeastAI;
 

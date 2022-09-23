@@ -8,6 +8,7 @@
 
 class UPointLightComponent;
 class USpotLightComponent;
+
 UCLASS()
 class LITTLELIGHTS_API ATorch : public AActor
 {
@@ -57,7 +58,7 @@ public:
 		USpotLightComponent* SpotLight_Component;
 
 	UFUNCTION(BlueprintCallable)
-		void StartDecay(float NewLightUpTime, bool bStarToDecay = false);
+		void StartDecay(float NewLightUpTime = 30.0f, bool bStarToDecay = false);
 	UFUNCTION(BlueprintCallable)
 		void RestartLight();
 	UFUNCTION(BlueprintCallable)

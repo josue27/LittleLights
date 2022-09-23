@@ -9,6 +9,7 @@
 #include "Engine/World.h"
 #include "Personaje.h"
 #include "PlayerCharacter.h"
+
 #include "Kismet/GameplayStatics.h"
 //#include "Kismet/GameplayStatics.h"
 // Sets default values
@@ -50,11 +51,8 @@ void ATorch::Tick(float DeltaTime)
 
 void ATorch::StartDecay(float NewLightUpTime, bool bStarToDecay)
 {
-	if (NewLightUpTime != 0)
-	{
-		LightUpTime = NewLightUpTime;
-	}
-
+	
+	LightUpTime = NewLightUpTime;
 	RestartLight();
 	bStartDecay = bStarToDecay;
 }
@@ -69,7 +67,7 @@ void ATorch::RestartLight()
 
 void ATorch::LightDecay()
 {
-	
+	//to get a value between 0 and 1
 	float RemainingTime = FMath::Clamp((CurrentTime - GetWorld()->GetTimeSeconds()) / LightUpTime, 0.0f, 1.0f);
 	TorchLight->AttenuationRadius = FMath::Lerp(0.0f, 1000.0f, RemainingTime);
 
@@ -102,7 +100,7 @@ void ATorch::LightDecay()
 		{
 			SpotLight_Component->Intensity = 0.0f;
 		}
-		DeltaIntensity = RemainingTime;
+		//DeltaIntensity = RemainingTime;
 		UE_LOG(LogTemp, Warning, TEXT("Torch Light finished...notifying Player"));
 	}
 	else
@@ -113,8 +111,17 @@ void ATorch::LightDecay()
 
 			SpotLight_Component->Intensity = FMath::Lerp(0.0f, InitialIntensity, RemainingTime);
 		}
-		DeltaIntensity = RemainingTime;
 	}
+	DeltaIntensity = RemainingTime;
+
+	APlayerCharacter* PC = Cast<APlayerCharacter>(GetOwner());
+	ULL_AbilityComponent* AC = Cast<ULL_AbilityComponent>(PC->AbilityComponent);
+	if (AC)
+	{
+
+		AC->OnOrbRemainingTimeChanged.Broadcast(this, DeltaIntensity, 1.0f);
+	}
+
 }
 
 void ATorch::TurnOnOrb()

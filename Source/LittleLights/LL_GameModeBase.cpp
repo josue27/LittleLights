@@ -9,6 +9,7 @@
 #include "Locations/LL_TargetPoint.h"
 #include "PlayerCharacter.h"
 #include "Blueprint/UserWidget.h"
+#include "Torch.h"
 #include "Engine/AssetManager.h"
 
 ALL_GameModeBase::ALL_GameModeBase()
@@ -41,9 +42,9 @@ void ALL_GameModeBase::StartSequence_Implementation()
 		{
 				if(Player)
 				{
-					Player->MovePlayerTo(StartTargetLocation->GetActorLocation());
+					Player->MovePlayerTo(StartTargetLocation->GetActorLocation(),150.0f,true);
 				}
-			}else
+		}else
 			{
 				LogOnScreen(GetWorld(),"No Start Target found",FColor::Yellow);
 				UE_LOG(LogTemp,Warning,TEXT("Could not start the sequence"))
@@ -52,9 +53,15 @@ void ALL_GameModeBase::StartSequence_Implementation()
 	
 	//StartBeastTimer();
 
-	if(Player && StartWithDecayLight)
+	if(Player)
 	{
-		Player->TorchLightingCompleted();
+		if (Player->Torch)
+		{
+		
+			Player->Torch->TurnOnOrb();
+		}
+	
+
 	}
 }
 
@@ -229,10 +236,21 @@ void ALL_GameModeBase::BeaconCompleted_Implementation()
 void ALL_GameModeBase::PlayerEndedIntroMovement()
 {
 	if (!Player)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NO PLAYER IN GAMEMODE"));
 		return;
+	}
 	UE_LOG(LogTemp, Warning, TEXT("Player ended intro movement"));
 	Player->EnableInput(UGameplayStatics::GetPlayerController(this, 0));
 	Player->ResetWalkSpeed();
+	if (Player->Torch)
+	{
+
+		Player->Torch->StartDecay(StartWithDecayLight,true);
+		UE_LOG(LogTemp, Warning, TEXT("GM: Lighting orb"));
+
+	}
+
 	GameStart();
 }
 
