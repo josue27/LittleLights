@@ -6,8 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "LL_Orb.generated.h"
 
-class UPointLightComponent;
-class USpotLightComponent;
+
 
 UCLASS()
 class LITTLELIGHTS_API ALL_Orb : public AActor
@@ -32,30 +31,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UStaticMeshComponent* TorchMesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		UPointLightComponent* TorchLight;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UMaterial* OrbLiquidMaterial;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float MaxIntensity;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float MinIntensity;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float LightDecayVelocity = 1.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float InitialIntensity = 3000.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float  CurrentTime = 0.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float LightUpTime = 10.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool bStartDecay = false;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool bLightOver = false;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float DeltaIntensity = 1.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		USpotLightComponent* SpotLight_Component;
+	
 
 };

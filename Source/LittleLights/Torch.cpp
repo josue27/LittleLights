@@ -116,6 +116,7 @@ void ATorch::LightDecay()
 
 	APlayerCharacter* PC = Cast<APlayerCharacter>(GetOwner());
 	ULL_AbilityComponent* AC = Cast<ULL_AbilityComponent>(PC->AbilityComponent);
+	
 	if (AC)
 	{
 

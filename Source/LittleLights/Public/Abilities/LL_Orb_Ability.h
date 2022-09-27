@@ -10,18 +10,28 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnOrbDeltaChanged,float,NewDeltaLef
 /**
  * 
  */
+class ALL_Orb;
+class APlayerCharacter;
 UCLASS()
 class LITTLELIGHTS_API ULL_Orb_Ability : public ULL_Ability
 {
 	GENERATED_BODY()
 
-	public:
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ALL_Orb* OrbMesh;
 
-	UFUNCTION(BlueprintCallable,Category="Orb")
+	UFUNCTION(BlueprintCallable, Category = "LL Ability | Orb")
+	void SpawnOrb(APlayerCharacter* PC);
+
+	UFUNCTION(BlueprintCallable,Category="LL Ability | Orb")
 	void LightUpTorch(AActor* Instigator);
 
-	UFUNCTION(BlueprintCallable,Category="Orb")
+	UFUNCTION(BlueprintCallable,Category="LL Ability | Orb")
 	void EndLighting();
+
+	UFUNCTION(BlueprintCallable, Category = "LL Ability | Orb")
+	void LightDecay();
 
 	UPROPERTY(BlueprintAssignable,BlueprintCallable)
 	FOnOrbDeltaChanged OnOrbDeltaChanged;

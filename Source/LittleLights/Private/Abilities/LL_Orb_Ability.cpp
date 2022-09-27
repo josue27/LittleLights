@@ -7,6 +7,10 @@
 #include "Kismet/KismetMathLibrary.h"
 
 
+void ULL_Orb_Ability::SpawnOrb(APlayerCharacter* PC)
+{
+}
+
 void ULL_Orb_Ability::LightUpTorch(AActor* Instigator)
 {
 
@@ -39,5 +43,13 @@ void ULL_Orb_Ability::EndLighting()
 
 	//TODO:We shoudl recieve the call from the AnimationBP(get the component and the stopbyname ) then here we get the owner of the comp or the ABP and set the proper variables
 	
+}
+
+void ULL_Orb_Ability::LightDecay()
+{
+	if (AbilityComponent == nullptr)return;
+
+	AbilityComponent->OnOrbRemainingTimeChanged.Broadcast(AbilityComponent->GetOwner(), 1.0f, 1.0f);
+
 }
 
