@@ -74,14 +74,14 @@ void ULL_ToolsComponent::StartOrbDecay()
 void ULL_ToolsComponent::StartOrbRefill(float Amount)
 {
 	if (Orb == nullptr)return;
-
+	Orb->StopDecay();
 	TempRefillAmount = Amount;
 	APlayerCharacter* PC = Cast<APlayerCharacter>(GetOwner());
 	if (PC)
 	{
 		PC->StopCharacter();
 		PC->bLightingTorch = true;
-		PC->bUpdateFov = false;
+		//PC->bUpdateFov = false;
 	}
 
 }
@@ -105,7 +105,7 @@ void ULL_ToolsComponent::OrbRefillFinished()
 			PC->bLightingTorch = false;	
 			PC->ContinueMovement();
 			PC->ResetCameraPosition();
-			PC->bUpdateFov = true;
+			//PC->bUpdateFov = true;
 		}	
 
 
