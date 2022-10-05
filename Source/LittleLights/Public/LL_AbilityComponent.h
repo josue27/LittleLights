@@ -9,7 +9,6 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnStamineChanged, AActor*, InstigatorActor, float, NewStamina, float, Delta);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnOrbRemainingTimeChanged, AActor*, InstigatorActor, float, NewDuration, float, Delta);
 
 class ULL_Ability;
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -32,8 +31,7 @@ public:
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnStamineChanged OnStamineChanged;
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable)
-	FOnOrbRemainingTimeChanged OnOrbRemainingTimeChanged;
+	
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

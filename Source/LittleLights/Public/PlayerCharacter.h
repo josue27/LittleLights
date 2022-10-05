@@ -21,6 +21,7 @@ class UCurveFloat;
 class USpringArmComponent;
 class AJumpOverZone;
 class ULL_InteractorComponent;
+class ULL_ToolsComponent;
 
 UCLASS()
 class LITTLELIGHTS_API APlayerCharacter : public ACharacter, public ILL_GameplayInterface
@@ -58,7 +59,7 @@ protected:
 	bool bIsAlive;//changed if captured o anything else;
 	
 	UFUNCTION( Category="LLPLayer| Player Camera")
-	void UpdateFov();
+	void UpdateFov(AActor* InstigatorActor, float DeltaRemainingTime);
 	
 
 	UPROPERTY(EditAnywhere, Category = "Jump Settings")
@@ -81,7 +82,7 @@ protected:
 	FRotator FillLightInitRotation;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Camera")
 	USpringArmComponent* SpringArmComp_FillLight;
-
+	
 
 public:
 	// Called every frame
@@ -202,8 +203,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool IsPlayerAlive();
 
-	UFUNCTION()
-		void TorchLightDecay();
+
 
 	UFUNCTION(BlueprintImplementableEvent)
 		void AddHUD();
@@ -259,6 +259,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category="LLPLayer|Abilities")
 	ULL_AbilityComponent* AbilityComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPlayer|Player Tools")
+		ULL_ToolsComponent* ToolsComponent;
+	
 
 	UFUNCTION(BlueprintCallable)
 		void TorchLightingCompleted();

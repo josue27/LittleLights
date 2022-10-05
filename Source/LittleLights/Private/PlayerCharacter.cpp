@@ -16,7 +16,7 @@
 #include "JumpOverZone.h"
 #include "Level_Manager_Base.h"
 #include "DrawDebugHelpers.h"
-
+#include "LLComponents/LL_ToolsComponent.h"
 #include "Camera/CameraComponent.h"
 #include "LL_InteractorComponent.h"
 #include "LL_PlayerState.h"
@@ -56,7 +56,8 @@ APlayerCharacter::APlayerCharacter()
 
 	InteractorComp = CreateDefaultSubobject<ULL_InteractorComponent>(TEXT("InteractoComp"));
 	AbilityComponent = CreateDefaultSubobject<ULL_AbilityComponent>(TEXT("AbilityComponent"));
-
+	ToolsComponent = CreateDefaultSubobject<ULL_ToolsComponent>(TEXT("ToolsComponent"));
+	ToolsComponent->PlayerCharacter = this;
 	bUseControllerRotationYaw = false;
 	bIsAlive = true;
 	bUpdateFov = true;
@@ -68,17 +69,17 @@ void APlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 
 
-	//Should we start with lantern in hour hands?
-	if (TorchClass != nullptr && bStartWithLight)
-	{
-		SpawnLanternOrb();
-	}
+	
 
 	//TODO:DELETE??
 	FillLightInitRotation = FillLight->GetComponentRotation();
 
 		
-	
+	//Bind delta orb remainig time to the FOV
+	if (ToolsComponent)
+	{
+		ToolsComponent->OnOrbRemainingTimeChanged.AddDynamic(this, &APlayerCharacter::UpdateFov);
+	}
 
 
 	CurrentStamine = Stamine;
@@ -105,7 +106,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 	CurveTimeline.TickTimeline(DeltaTime);
 
 	//LookingAt();
-	UpdateFov();
+	//UpdateFov();//DELETE?
 
 	if (bBalancing)
 	{
@@ -149,26 +150,15 @@ int32 APlayerCharacter::GetBengalas()
 }
 
 /// <summary>
+/// DEPRECATED
 /// Called when user press the action button to light up de torch if any
 /// </summary>
 void APlayerCharacter::SpawnLanternOrb()
 {
-	if (TorchClass == nullptr)
-	{
-		UE_LOG(LogTemp,Warning,TEXT("No Torchclass specified, ignoring spawn of Lantern"))
-		return;
-	}
-	FVector TorchPos = TorchPosition->GetComponentLocation();
-	FRotator TorchRotation = TorchPosition->GetComponentRotation();
-	//Torch = GetWorld()->SpawnActor<ATorch>(TorchClass, TorchPos, TorchRotation);
-	Torch = GetWorld()->SpawnActor<ATorch>(TorchClass);
-	Torch->SetOwner(this);
-	//Torch->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
-	Torch->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("RightHandSocket"));
-	//Torch->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
-	//Torch->SetActorLocationAndRotation(TorchPos, TorchRotation);
+	
 }
 /// <summary>
+/// DEPRECATED
 /// Called when user press the action button to light up de torch if any
 /// </summary>
 void APlayerCharacter::LightUpTorch(float AmountRefill)
@@ -191,8 +181,11 @@ void APlayerCharacter::LightUpTorch(float AmountRefill)
 	//TempRefillAmount = AmountRefill;
 	
 }
+
+//DEPRECATED: moved to LL_ToolsComponent and LL_Orb
 void APlayerCharacter::TorchLightingCompleted()
 {
+	
 
 	if (Torch != nullptr)
 	{
@@ -235,9 +228,6 @@ void APlayerCharacter::SprintCancelled()
 
 }
 
-
-
-
 void APlayerCharacter::PlayerCatchByMonster_Implementation()
 {
 }
@@ -257,13 +247,6 @@ bool APlayerCharacter::IsPlayerAlive()
 	return  bIsAlive;
 }
 
-void APlayerCharacter::TorchLightDecay()
-{
-
-	if (Torch == nullptr)
-		return;
-
-}
 
 void APlayerCharacter::StopCharacter()
 {
@@ -344,12 +327,7 @@ void APlayerCharacter::ForwardMovement(float AxisValue)
 	// AddMovementInput(Direction, AxisValue * VelocidadMovimiento * GetWorld()->DeltaTimeSeconds);
 	AddMovementInput(RotationWithDiff.Vector(), AxisValue * VelocidadMovimiento  * GetWorld()->DeltaTimeSeconds);
 
-	//DEPRECATED(Because the initial configs in the BeginPlay Movement Calculations
-	// if (SpringArmRef != nullptr)
-	// {
-	// 	SpringArmRef->TargetOffset = GetActorForwardVector() * 120.0f;
-	// }
-	//UE_LOG(LogTemp,Warning,TEXT("MOVIENDO"));
+
 }
 
 void APlayerCharacter::RightMovement(float AxisValue)
@@ -377,13 +355,7 @@ void APlayerCharacter::RightMovement(float AxisValue)
 
 
 	 AddMovementInput(Direction, AxisValue *  VelocidadMovimiento  * GetWorld()->DeltaTimeSeconds);
-	
 
-	//DEPRECATED(Because the initial configs in the BeginPlay and Movement Calculations
-	// if (SpringArmRef != nullptr)
-	// {
-	// 	SpringArmRef->TargetOffset = GetActorForwardVector() * 120.0f;
-	//}
 
 	
 }
@@ -478,38 +450,14 @@ void APlayerCharacter::JumpCompleted()
 
 
 
-void APlayerCharacter::UpdateFov()
+void APlayerCharacter::UpdateFov(AActor* InstigatorActor, float DeltaRemainingTime)
 {
-
-	
-	if(!Torch || !CameraComp || !bUpdateFov)
-	{
-		return;
-	}
-	float DeltaIntensity = Torch->DeltaIntensity;
-	if(Torch->bStartDecay)//ojo startdecay se vuelve false cuando se acaba el fuego, checar esa logica porque si no lo camara se regresa
-	{
-		//SpringArm
-		SpringArmComponent->TargetOffset = GetActorForwardVector() * 120.0f;
-		//Camera
-		float CurrentFOV = FMath::Lerp(Fov_A,Fov_B,DeltaIntensity);
-		CameraComp->SetFieldOfView(CurrentFOV);
-		
-		//FillLight
-		//float ConeAngleLerp = FMath::Lerp(20.0f,40.0f,DeltaIntensity);
-		//FillLight->SetOuterConeAngle(ConeAngleLerp);
-		//FillLight->SetInnerConeAngle(ConeAngleLerp-5);
-		//FVector FillLightRelativeLoc = FillLight->GetRelativeLocation();
-		// FillLightRelativeLoc.X = FMath::Lerp(0.0f,400.0f,DeltaIntensity);
-		//FillLight->SetRelativeLocation(FillLightRelativeLoc,false);
-		//FillLight->SetWorldRotation(FillLightInitRotation);
-		
-	}else
-	{
-		CameraComp->SetFieldOfView(Fov_B);
-		
-	}
-	
+	//SpringArm
+	SpringArmComponent->TargetOffset = GetActorForwardVector() * 120.0f;
+	//Camera
+	float CurrentFOV = FMath::Lerp(Fov_A, Fov_B, DeltaRemainingTime);
+	CameraComp->SetFieldOfView(CurrentFOV);
+	return;
 	
 }
 

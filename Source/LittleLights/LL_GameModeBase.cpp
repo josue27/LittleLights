@@ -11,6 +11,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Torch.h"
 #include "Engine/AssetManager.h"
+#include "LLComponents/LL_ToolsComponent.h"
 
 ALL_GameModeBase::ALL_GameModeBase()
 {
@@ -243,10 +244,11 @@ void ALL_GameModeBase::PlayerEndedIntroMovement()
 	UE_LOG(LogTemp, Warning, TEXT("Player ended intro movement"));
 	Player->EnableInput(UGameplayStatics::GetPlayerController(this, 0));
 	Player->ResetWalkSpeed();
-	if (Player->Torch)
+	if (Player->ToolsComponent)
 	{
 
-		Player->Torch->StartDecay(StartWithDecayLight,true);
+		Player->ToolsComponent->StartOrbDecay();
+		
 		UE_LOG(LogTemp, Warning, TEXT("GM: Lighting orb"));
 
 	}

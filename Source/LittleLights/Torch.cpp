@@ -117,12 +117,7 @@ void ATorch::LightDecay()
 	APlayerCharacter* PC = Cast<APlayerCharacter>(GetOwner());
 	ULL_AbilityComponent* AC = Cast<ULL_AbilityComponent>(PC->AbilityComponent);
 	
-	if (AC)
-	{
-
-		AC->OnOrbRemainingTimeChanged.Broadcast(this, DeltaIntensity, 1.0f);
-	}
-
+	
 }
 
 void ATorch::TurnOnOrb()

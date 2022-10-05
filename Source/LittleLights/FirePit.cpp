@@ -5,6 +5,7 @@
 #include "Components/PointLightComponent.h"
 #include "Components/SphereComponent.h"
 #include "PlayerCharacter.h"
+#include "LLComponents/LL_ToolsComponent.h"
 #include "Personaje.h"
 
 
@@ -40,48 +41,17 @@ void AFirePit::Tick(float DeltaTime)
 
 }
 
-/*void AFirePit::PlayerInPit(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult) 
-{
-	APlayerCharacter* Player = Cast<APlayerCharacter>(OtherActor);
-	if(Player)
-	{
-		// Player->LightUpTorch();
-		
-		Player->bInFirePit = true;
-		Player->FirePitTemp = this;
-		Player->bShowHints = true;
-		Player->ShowHint(true, FString(TEXT("Press E or Square to lightup torch")) );
-
-		UE_LOG(LogTemp,Warning,TEXT("Player on firepit"));
-	}
-}
-void AFirePit::PlayerLeftPit(UPrimitiveComponent* OverlappedComp,class AActor * OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	//OtherActor->IsA<APersonaje>() == true;//this could also work before casting
-	APlayerCharacter* Player = Cast<APlayerCharacter>(OtherActor);
-	if(Player)
-	{
-		// Player->LightUpTorch();
-	
-			Player->bInFirePit = false;
-			Player->FirePitTemp = nullptr;
-			Player->bShowHints = false;
-
-
-
-		UE_LOG(LogTemp,Warning,TEXT("Player left firepit"));
-	}
-}*/
 
 void AFirePit::Interact_Implementation(APawn* InstigatorPawn)
 {
 	APlayerCharacter* Player = Cast<APlayerCharacter>(InstigatorPawn);
 	if(Player)
 	{
-		ULL_AbilityComponent* AC = Cast<ULL_AbilityComponent>( Player->GetComponentByClass(ULL_AbilityComponent::StaticClass()));
-		if(AC)
+		ULL_ToolsComponent* TC = Cast<ULL_ToolsComponent>(Player->ToolsComponent);
+		//ULL_AbilityComponent* AC = Cast<ULL_AbilityComponent>( Player->GetComponentByClass(ULL_AbilityComponent::StaticClass()));
+		if(TC)
 		{
-			AC->StartAbilityByName(InstigatorPawn,"LightOrb");
+			TC->StartOrbRefill(RefillAmount);
 		}
 	}
 }

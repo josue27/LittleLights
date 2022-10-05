@@ -49,7 +49,7 @@ void ULL_Orb_Ability::LightDecay()
 {
 	if (AbilityComponent == nullptr)return;
 
-	AbilityComponent->OnOrbRemainingTimeChanged.Broadcast(AbilityComponent->GetOwner(), 1.0f, 1.0f);
+	
 
 }
 
