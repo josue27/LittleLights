@@ -20,7 +20,7 @@ EBTNodeResult::Type ULLBeastBasicAttack_BTTaskNode::ExecuteTask(UBehaviorTreeCom
 	if(ensure(AIController))
 	{
 		AActor* TargetActor = Cast<AActor>(AIController->GetBlackboardComponent()->GetValueAsObject("TargetActor"));
-		if(TargetActor == nullptr)
+		if(TargetActor == nullptr || ULLGamePlayFunctionLibrary::IsPlayerAlive(TargetActor) == false)
 		{
 			EBTNodeResult::Failed;
 		}

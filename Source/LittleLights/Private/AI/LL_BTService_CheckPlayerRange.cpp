@@ -36,7 +36,13 @@ void ULL_BTService_CheckPlayerRange::TickNode(UBehaviorTreeComponent& OwnerComp,
 					{
 						InLineOfSight = AIController->LineOfSightTo(TargetActor);
 					}
-					BBComp->SetValueAsBool(InRangeKey.SelectedKeyName,(InRange && InLineOfSight));
+					else if (!InRange)
+					{
+						ALL_AIBeast* BeastAI = Cast<ALL_AIBeast>(AIController->GetPawn());
+						if(BeastAI) BeastAI->bIsAttacking = false;
+					}
+					//BBComp->SetValueAsBool(InRangeKey.SelectedKeyName,(InRange && InLineOfSight));
+					BBComp->SetValueAsBool(InRangeKey.SelectedKeyName,(InRange));
 /*
 					if(CVarDebugAI.GetValueOnGameThread())
 					{
@@ -53,6 +59,13 @@ void ULL_BTService_CheckPlayerRange::TickNode(UBehaviorTreeComponent& OwnerComp,
 		}else
 		{
 			BBComp->SetValueAsBool(InRangeKey.SelectedKeyName,false);
+			AAIController* AIController = OwnerComp.GetAIOwner();
+			if (ensure(AIController))
+			{
+
+				ALL_AIBeast* BeastAI = Cast<ALL_AIBeast>(AIController->GetPawn());
+				BeastAI->bIsAttacking = false;
+			}
 			if (!ULLGamePlayFunctionLibrary::IsPlayerAlive(TargetActor))
 			{
 				//BBComp->SetValueAsBool("")

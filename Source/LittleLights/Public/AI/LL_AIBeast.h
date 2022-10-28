@@ -20,16 +20,17 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere,Category="Components")
-	UPawnSensingComponent* PawnSensingComp;
 
-	UPROPERTY(VisibleAnywhere,Category="AI")
+
+	UPROPERTY(EditAnywhere,Category="AI")
 	FName TargetKeyName ="TargetPlayer";	
 
 	
 
 	UFUNCTION()
-	void PlayerSeen(APawn* PlayerPawn);
+		void PlayerSeen(APawn* PlayerPawn);
+	UFUNCTION()
+	void PlayerHear(APawn* PlayerPawn,  const FVector& Location, float Volume);
 
 	UFUNCTION()
 	void SetTarget(AActor* Actor);

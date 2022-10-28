@@ -5,6 +5,7 @@
 #include "PlayerCharacter.h"
 #include "Tools/LL_Orb.h"
 #include "Engine/SkeletalMeshSocket.h"
+#include "LittleLights/LittleLights.h"
 
 // Sets default values for this component's properties
 ULL_ToolsComponent::ULL_ToolsComponent()
@@ -83,7 +84,7 @@ void ULL_ToolsComponent::StartOrbRefill(float Amount)
 		PC->bLightingTorch = true;
 		//PC->bUpdateFov = false;
 	}
-
+	LogOnScreen(GetWorld(),"Orb refill started");
 }
 
 void ULL_ToolsComponent::RefillOrb(float Amount)
@@ -91,12 +92,16 @@ void ULL_ToolsComponent::RefillOrb(float Amount)
 	if (Orb)
 	{
 		Orb->RefillOrb(Amount);
+		Orb->StartDecay();
+
 	}
+	LogOnScreen(GetWorld(), "Orb refilled");
+
 }
 
 void ULL_ToolsComponent::OrbRefillFinished()
 {
-	if (Orb == nullptr)return;
+	
 	RefillOrb(TempRefillAmount);
 
 	APlayerCharacter* PC = Cast<APlayerCharacter>(GetOwner());
@@ -108,6 +113,7 @@ void ULL_ToolsComponent::OrbRefillFinished()
 			//PC->bUpdateFov = true;
 		}	
 
+		LogOnScreen(GetWorld(), "Orb refilled finish called");
 
 	
 

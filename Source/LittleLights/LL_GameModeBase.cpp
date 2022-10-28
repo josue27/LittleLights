@@ -246,7 +246,7 @@ void ALL_GameModeBase::PlayerEndedIntroMovement()
 	Player->ResetWalkSpeed();
 	if (Player->ToolsComponent)
 	{
-
+		Player->ToolsComponent->RefillOrb(30.0f);
 		Player->ToolsComponent->StartOrbDecay();
 		
 		UE_LOG(LogTemp, Warning, TEXT("GM: Lighting orb"));

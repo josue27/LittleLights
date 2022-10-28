@@ -452,6 +452,7 @@ void APlayerCharacter::JumpCompleted()
 
 void APlayerCharacter::UpdateFov(AActor* InstigatorActor, float DeltaRemainingTime)
 {
+	if (!bUpdateFov)return;
 	//SpringArm
 	SpringArmComponent->TargetOffset = GetActorForwardVector() * 120.0f;
 	//Camera

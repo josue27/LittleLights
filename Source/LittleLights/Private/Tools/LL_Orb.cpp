@@ -34,21 +34,14 @@ void ALL_Orb::Tick(float DeltaTime)
 	{
 		UpdateLight(DeltaTime);
 	}
-	else
-	{
-		if (ToolsComponent)
-		{
-
-			ToolsComponent->OnOrbRemainingTimeChanged.Broadcast(this, 1.0f);
-		}
-	}
+	
 }
 
 void ALL_Orb::UpdateLight(float DeltaTime)
 {
 	RemainingDeltaTime = FMath::Clamp((RemainingLightTime - GetWorld()->GetTimeSeconds()) / MaxLightUpTime, 0.0f, 1.0f);
 	
-	
+	RemainingDeltaTime = FMath::FInterpTo(RemainingDeltaTime, 0.f, DeltaTime, 0.5f);
 	if (ToolsComponent)
 	{
 
@@ -70,7 +63,14 @@ void ALL_Orb::StopDecay()
 
 void ALL_Orb::RefillOrb(float Amount)
 {
-	RemainingLightTime = FMath::Clamp(Amount,1.f,MaxLightUpTime)+ GetWorld()->GetTimeSeconds();
+
+	//TODO:this is wrong but works for us now	
+	//RemainingLightTime = FMath::Clamp(Amount, 1.f, MaxLightUpTime) + GetWorld()->GetTimeSeconds();
+	
+
+	//this should work 
+	float AmountToAdd = FMath::Clamp(Amount + RemainingLightTime, 1.f, MaxLightUpTime);
+	RemainingLightTime = AmountToAdd + GetWorld()->GetTimeSeconds();
 
 }
 

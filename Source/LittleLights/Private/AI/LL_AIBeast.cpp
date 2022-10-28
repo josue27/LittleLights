@@ -17,13 +17,13 @@ ALL_AIBeast::ALL_AIBeast()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComp"));
+
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 void ALL_AIBeast::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	PawnSensingComp->OnSeePawn.AddDynamic(this,&ALL_AIBeast::PlayerSeen);
+	
 	
 }
 // Called when the game starts or when spawned
@@ -39,10 +39,10 @@ void ALL_AIBeast::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	
-	if(TargetActorTemp && !PawnSensingComp->HasLineOfSightTo(TargetActorTemp))
-	{
-		ResetTarget(TargetActorTemp);
-	}
+	//if(TargetActorTemp && !PawnSensingComp->HasLineOfSightTo(TargetActorTemp))
+	//{
+	//	ResetTarget(TargetActorTemp);
+	//}
 }
 
 void ALL_AIBeast::PlayerSeen(APawn* PlayerPawn)
@@ -52,12 +52,12 @@ void ALL_AIBeast::PlayerSeen(APawn* PlayerPawn)
 		return;
 	}
 	
-	if(PawnSensingComp->HasLineOfSightTo(PlayerPawn) && ULLGamePlayFunctionLibrary::IsPlayerAlive(PlayerPawn))
-	{
-		SetTarget(PlayerPawn);
-		if(CVarDebugAI.GetValueOnGameThread())
-			DrawDebugString(GetWorld(),PlayerPawn->GetActorLocation(),"Player Seen");
-	}
+
+	
+}
+
+void ALL_AIBeast::PlayerHear(APawn* PlayerPawn, const FVector& Location, float Volume)
+{
 	
 }
 
