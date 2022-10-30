@@ -57,4 +57,10 @@ class LITTLELIGHTS_API ULL_Ability : public UObject
 	UPROPERTY(BlueprintReadOnly)
 	ULL_AbilityComponent* AbilityComponent;
 	
+	UPROPERTY(EditDefaultsOnly, Category = "LL Ability | Tags")
+		FGameplayTagContainer GrantsTags;//add tags when using this ability
+	UPROPERTY(EditDefaultsOnly, Category = "LL Ability | Tags")
+		FGameplayTagContainer BlockedTags;//tags that blocks this ability
+
+
 };

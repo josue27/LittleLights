@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 
 #include "Components/ActorComponent.h"
+#include "GameplayTagContainer.h"
 #include "LL_AbilityComponent.generated.h"
 
 
@@ -17,6 +18,8 @@ class LITTLELIGHTS_API ULL_AbilityComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LL Ability | Tags")
+	FGameplayTagContainer ActiveGameplayTags;
 	// Sets default values for this component's properties
 	ULL_AbilityComponent();
 	// Called every frame

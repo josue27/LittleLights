@@ -56,6 +56,8 @@ void ULL_AbilityComponent::StartAbilityByName(AActor* Instigator, FName AbilityN
 		{
 			if(!Ability->CanStart(Instigator))
 			{
+				FString FailedMsg = FString::Printf(TEXT("Failed to run: %s"), *AbilityName.ToString());
+				GEngine->AddOnScreenDebugMessage(-1,2.0f, FColor::Red, FailedMsg);
 				continue;//remember to go back
 			}
 			Ability->StartAbility(Instigator,ActorInfo);
@@ -96,6 +98,11 @@ void ULL_AbilityComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 		{
 			Ability->Update(DeltaTime);
 		}
+	}
+	if (GEngine)
+	{
+		FString DebugMsg = GetNameSafe(GetOwner()) + " : " + ActiveGameplayTags.ToStringSimple();
+		GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, DebugMsg);
 	}
 }
 

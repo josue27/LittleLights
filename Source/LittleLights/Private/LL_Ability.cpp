@@ -10,6 +10,8 @@ void ULL_Ability::Initialize(ULL_AbilityComponent* AbilityComp)
 	{
 		AbilityComponent = AbilityComp;
 	}
+
+
 }
 
 UWorld* ULL_Ability::GetWorld() const
@@ -30,22 +32,34 @@ void ULL_Ability::StartAbility_Implementation(AActor* Instigator,AActor* SecondA
 {
 	UE_LOG(LogTemp,Warning,TEXT("Ability : %s started"),*AbilityName.ToString());
 	bIsRunning =true;
-	
+	//appendtags let us add a whole container, instead of add one by one
+	AbilityComponent->ActiveGameplayTags.AppendTags(GrantsTags);
 }
 
 void ULL_Ability::StopAbility_Implementation(AActor* Instigator,AActor* SecondActor )
 {
 	UE_LOG(LogTemp,Warning,TEXT("Ability : %s stoped"),*AbilityName.ToString());
 	bIsRunning = false;
-
+	//removetags let us remove a whole container, instead of remove one by one
+	AbilityComponent->ActiveGameplayTags.RemoveTags(GrantsTags);
 }
 
 bool ULL_Ability::CanStart_Implementation(AActor* Instigator)
 {
+	
 	if(IsRunning())
 	{
 		return  false;
 	}
+
+	if (AbilityComponent)
+	{
+		if (AbilityComponent->ActiveGameplayTags.HasAny(BlockedTags))
+		{
+			return false;
+		}
+	}
+
 	return  true;
 }
 
