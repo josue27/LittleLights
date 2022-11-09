@@ -39,10 +39,10 @@ void ALL_AIBeast::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	
-	//if(TargetActorTemp && !PawnSensingComp->HasLineOfSightTo(TargetActorTemp))
-	//{
-	//	ResetTarget(TargetActorTemp);
-	//}
+	/*if(TargetActorTemp && !PawnSensingComp->HasLineOfSightTo(TargetActorTemp))
+	{
+		ResetTarget(TargetActorTemp);
+	}*/
 }
 
 void ALL_AIBeast::PlayerSeen(APawn* PlayerPawn)
