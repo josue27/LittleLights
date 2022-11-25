@@ -22,7 +22,7 @@ class USpringArmComponent;
 class AJumpOverZone;
 class ULL_InteractorComponent;
 class ULL_ToolsComponent;
-
+class UAIPerceptionStimuliSourceComponent;
 UCLASS()
 class LITTLELIGHTS_API APlayerCharacter : public ACharacter, public ILL_GameplayInterface
 {
@@ -80,9 +80,11 @@ protected:
 	USpotLightComponent* FillLight;
 	UPROPERTY(BlueprintReadWrite,Category="LLPLayer|Player Camera")
 	FRotator FillLightInitRotation;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Camera")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LL|Player Camera")
 	USpringArmComponent* SpringArmComp_FillLight;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|AI")
+		UAIPerceptionStimuliSourceComponent* AIPerceptionStimuliSource;
 
 public:
 	// Called every frame
@@ -269,6 +271,16 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 		void ResetCameraPosition();
 
+	UFUNCTION(BlueprintCallable)
+		void StepAnimationGiven();
+
+	UFUNCTION(BlueprintCallable)
+		void MakeStepNoise();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPlayer|AI")
+		int32 MinStepsGivenForSound = 2;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPlayer|AI")
+		int32 MaxStepsGivenForSound = 4;
 private:
 	void ForwardMovement(float AxisValue);
 	void RightMovement(float AxisValue);
@@ -281,6 +293,8 @@ private:
 
 	FQuat EndRotation;
 
+	int32 stepsGiven;
+	int32 stepsForSound = 10;
 
 	float TempRefillAmount;
 	friend class AMainPlayer_DebugHUD;

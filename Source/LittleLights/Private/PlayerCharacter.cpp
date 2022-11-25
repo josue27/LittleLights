@@ -20,7 +20,9 @@
 #include "Camera/CameraComponent.h"
 #include "LL_InteractorComponent.h"
 #include "LL_PlayerState.h"
-
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Perception/PawnSensingComponent.h"
+#include "Perception/AISense_Hearing.h"
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
@@ -58,6 +60,9 @@ APlayerCharacter::APlayerCharacter()
 	AbilityComponent = CreateDefaultSubobject<ULL_AbilityComponent>(TEXT("AbilityComponent"));
 	ToolsComponent = CreateDefaultSubobject<ULL_ToolsComponent>(TEXT("ToolsComponent"));
 	ToolsComponent->PlayerCharacter = this;
+
+	AIPerceptionStimuliSource = CreateDefaultSubobject< UAIPerceptionStimuliSourceComponent>(TEXT("AIPerceptionStimuliSourceComponent"));
+
 	bUseControllerRotationYaw = false;
 	bIsAlive = true;
 	bUpdateFov = true;
@@ -94,7 +99,8 @@ void APlayerCharacter::BeginPlay()
 
 
 	}
-	
+	stepsForSound = FMath::RandRange(MinStepsGivenForSound, MaxStepsGivenForSound);
+
 }
 
 // Called every frame
@@ -467,4 +473,27 @@ void APlayerCharacter::UpdateFov(AActor* InstigatorActor, float DeltaRemainingTi
 void APlayerCharacter::StartGame_Implementation()
 {
 	bCanMove = true;
+}
+
+
+void APlayerCharacter::StepAnimationGiven()
+{
+	stepsGiven++;
+
+	if (stepsGiven >= stepsForSound)
+	{
+		MakeStepNoise();
+	}
+}
+void APlayerCharacter::MakeStepNoise()
+{
+	stepsGiven = 0;
+	stepsForSound = FMath::RandRange(MinStepsGivenForSound, MaxStepsGivenForSound);
+	
+	UAISense_Hearing::ReportNoiseEvent(GetWorld(), GetActorLocation(),10.f,this);
+
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue,"Sound Made");
+	}
 }
