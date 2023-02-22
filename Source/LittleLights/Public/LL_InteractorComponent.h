@@ -16,7 +16,8 @@ class LITTLELIGHTS_API ULL_InteractorComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	ULL_InteractorComponent();
-
+	UPROPERTY(BlueprintReadWrite)
+	bool bCanInteract;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

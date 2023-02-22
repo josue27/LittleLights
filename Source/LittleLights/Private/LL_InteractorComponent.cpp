@@ -31,7 +31,7 @@ void ULL_InteractorComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
+	bCanInteract = true;
 }
 
 
@@ -40,8 +40,8 @@ void ULL_InteractorComponent::BeginPlay()
 void ULL_InteractorComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	FindInteractable();
+	if(bCanInteract)
+		FindInteractable();
 }
 
 void ULL_InteractorComponent::FindInteractable()
@@ -145,7 +145,7 @@ void ULL_InteractorComponent::PrimaryInteract()
 		
 		}
 
-		
+		//It mightbe a special zone , pond or something else(for the moment)
 		ILL_GameplayInterface::Execute_Interact(InteractableActor,OwnerPawn);
 		if(InteractionWidgetInstance)
 		{

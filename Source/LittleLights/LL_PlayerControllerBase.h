@@ -7,6 +7,8 @@
 #include "LL_PlayerControllerBase.generated.h"
 
 class UUserWidget;
+class ALLGame_HUD;
+class ULL_WorldUserWidget;
 /**
  * 
  */
@@ -15,8 +17,9 @@ class LITTLELIGHTS_API ALL_PlayerControllerBase : public APlayerController
 {
 	GENERATED_BODY()
 
-	protected:
-
+protected:
+		UPROPERTY(EditDefaultsOnly, Category = "LL | UI")
+			ALLGame_HUD* LL_GameHUD;
 
 	UPROPERTY(EditDefaultsOnly,Category="UI")
 	TSubclassOf<UUserWidget> PauseMenuClass;
@@ -40,7 +43,21 @@ class LITTLELIGHTS_API ALL_PlayerControllerBase : public APlayerController
 	
 	virtual void SetupInputComponent() override;
 
+	UFUNCTION(BlueprintCallable, Category = " LL | Player Controller")
+		void UpdateHUDBeastDistance(float deltaDistance);
+
+	UPROPERTY(EditDefaultsOnly, Category = "LL | UI")
+		TSubclassOf<ULL_WorldUserWidget> DefaultWidgetClass;
+	UPROPERTY()
+		ULL_WorldUserWidget* InteractionWidgetInstance = nullptr;
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	bool UsingGamePad;
+
+	UFUNCTION(BlueprintCallable)
+		void ShowKeyToPressUI(FString keymsg,AActor* ActorToAttach);
+	UFUNCTION(BlueprintCallable)
+		void RemoveKeyToPressUI();
+
+	
 };

@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Base_HUD_Widget.generated.h"
 
+class UProgressbar;
 /**
  * 
  */
@@ -20,4 +21,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float DeltaStamine;
 	
+	UPROPERTY(EditAnywhere, meta = (Bindwidget))
+		UProgressbar* BeastAlertImg;
+
+	////
+
+	UFUNCTION(BlueprintCallable)
+		void UpdateBeastDistance(float distance);
 };

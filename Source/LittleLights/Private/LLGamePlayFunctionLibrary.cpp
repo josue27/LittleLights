@@ -22,6 +22,7 @@ float ULLGamePlayFunctionLibrary::TimeToLocation(float Velocity, FVector Start, 
 	return  Dist / Velocity;
 }
 
+//TODO: Change name of this function or make it take 2 FVectors not 1 and 1 spline comp,
 ///Returns true if player is closer to end point of the given spline
 bool ULLGamePlayFunctionLibrary::IsCloserToEnd(FVector PlayerPos, USplineComponent* Spline)
 {

@@ -13,6 +13,10 @@
 #include "GameFramework/HUD.h"
 #include "Components/TimelineComponent.h"
 #include "PlayerCharacter.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAutomaticMovementEnded, APlayerCharacter*, PlayerCharacter);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnKeyPressed, FKey, KeyPressed);
+
 class ATorch;
 class UArrowComponent;
 class AFirePit;
@@ -33,6 +37,14 @@ public:
 	// Sets default values for this character's properties
 	APlayerCharacter();
 
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FOnAutomaticMovementEnded OnAutomaticMovementEnded;
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FOnKeyPressed OnKeyPressed;
+
+	UFUNCTION(BlueprintCallable)
+		void DisableInteraction(bool disable);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

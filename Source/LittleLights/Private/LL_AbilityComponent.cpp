@@ -38,7 +38,7 @@ void ULL_AbilityComponent::AddAbility(AActor* Instigator, TSubclassOf<ULL_Abilit
 		return;
 	}
 	//Create object to ADD
-	ULL_Ability* NewAbility = NewObject<ULL_Ability>(GetOwner(),AbilityClass);
+	ULL_Ability* NewAbility = NewObject<ULL_Ability>(Instigator,AbilityClass);
 	if(NewAbility)
 	{
 		NewAbility->Initialize(this);

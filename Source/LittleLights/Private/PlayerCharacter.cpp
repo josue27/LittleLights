@@ -146,6 +146,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Released, this, &APlayerCharacter::SprintCancelled);
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &APlayerCharacter::JumpButtonCall);
 	//PlayerInputComponent->BindAction(TEXT("Gamepad"))
+	
 }
 
 //DEPRECATED
@@ -495,5 +496,13 @@ void APlayerCharacter::MakeStepNoise()
 	if (GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue,"Sound Made");
+	}
+}
+
+void APlayerCharacter::DisableInteraction(bool disable)
+{
+	if (InteractorComp)
+	{
+		InteractorComp->bCanInteract = !disable;
 	}
 }

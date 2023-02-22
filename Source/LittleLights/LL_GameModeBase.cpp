@@ -115,11 +115,13 @@ void ALL_GameModeBase::LevelCompleted()
 
 float ALL_GameModeBase::DeltaDistanceToBeast()
 {
+	
 	if(Player && BeastAI)
 	{
 		float Distance = FVector::Distance(Player->GetActorLocation(),BeastAI->GetActorLocation());
+		return Distance;
 	}
-	return 1.0f;
+	return 1.f;
 }
 
 void ALL_GameModeBase::SpawnBeast_Implementation()

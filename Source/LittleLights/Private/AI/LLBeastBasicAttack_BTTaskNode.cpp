@@ -19,13 +19,13 @@ EBTNodeResult::Type ULLBeastBasicAttack_BTTaskNode::ExecuteTask(UBehaviorTreeCom
 
 	if(ensure(AIController))
 	{
-		AActor* TargetActor = Cast<AActor>(AIController->GetBlackboardComponent()->GetValueAsObject("TargetActor"));
-		if(TargetActor == nullptr || ULLGamePlayFunctionLibrary::IsPlayerAlive(TargetActor) == false)
+		APlayerCharacter* TargetActor = Cast<APlayerCharacter>(AIController->GetBlackboardComponent()->GetValueAsObject("TargetActor"));
+		if(TargetActor == nullptr || !TargetActor->IsPlayerAlive())
 		{
 			EBTNodeResult::Failed;
 		}
 		ALL_AIBeast* BeastAI = Cast<ALL_AIBeast>(AIController->GetPawn());
-		if(!ULLGamePlayFunctionLibrary::IsPlayerAlive(TargetActor))
+		if(!TargetActor->IsPlayerAlive() )
 		{
 			if (BeastAI) BeastAI->bIsAttacking = false;
 			EBTNodeResult::Failed;
