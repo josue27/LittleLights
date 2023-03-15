@@ -59,5 +59,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void RemoveKeyToPressUI();
 
+	UFUNCTION(BlueprintCallable)
+		void ShowTotemPiecesHUD(bool bShow);
+
+	UFUNCTION(BlueprintCallable)
+		void TotemPiecesDeliveredHUD();
+
 	
 };

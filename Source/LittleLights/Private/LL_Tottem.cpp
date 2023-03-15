@@ -8,7 +8,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "LittleLights/LittleLights.h"
 #include "LittleLights/LL_GameModeBase.h"
-
+#include "LittleLights/LL_PlayerControllerBase.h"
+#include "Kismet/GameplayStatics.h"
+#include "LL_PlayerState.h"
 // Sets default values
 ALL_Tottem::ALL_Tottem()
 {
@@ -25,7 +27,11 @@ ALL_Tottem::ALL_Tottem()
 void ALL_Tottem::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	LLPlayerState = LLPlayerState ==nullptr? Cast<ALL_PlayerState>(UGameplayStatics::GetPlayerState(this, 0)) : LLPlayerState;
+	if (LLPlayerState)
+	{
+		LLPlayerState->LevelPiecesToFind = TotemPieces.Num();
+	}
 }
 
 
@@ -35,15 +41,23 @@ void ALL_Tottem::Interact_Implementation(APawn* InstigatorPawn)
 	if(Player== nullptr)
 	{
 		 Player = Cast<APlayerCharacter>(InstigatorPawn);
+
 	}
 	if (Player == nullptr)return;
+
+
+
 
 	if(!discovered)
 	{
 		UE_LOG(LogTemp,Warning,TEXT("Totem discovered "));
 		discovered = true;
 		TotemDiscoveredEvent();//implentation in BP
-
+		LLPlayerController = LLPlayerController == nullptr ? Cast<ALL_PlayerControllerBase>(UGameplayStatics::GetPlayerController(this,0)): LLPlayerController;
+		if (LLPlayerController)
+		{
+			LLPlayerController->ShowTotemPiecesHUD(true);
+		}
 	}else if(Player->TottemPieces.Num() > 0)
 	{
 		AddTotemPiece_Implementation(Player,Player->TottemPieces[0]);
@@ -67,6 +81,7 @@ void ALL_Tottem::AddTotemPiece_Implementation(APlayerCharacter* InstigatorPlayer
 {
 	UE_LOG(LogTemp,Warning,TEXT("Tottem pieces:%i"),TotemPieces.Num());
 	UE_LOG(LogTemp,Warning,TEXT("Adding totem piece"),TotemPieces.Num());
+	LLPlayerController = LLPlayerController == nullptr ? Cast<ALL_PlayerControllerBase>(UGameplayStatics::GetPlayerController(this, 0)) : LLPlayerController;
 
 	for(int32 i=0; i < TotemPieces.Num(); i++)
 	{
@@ -78,6 +93,7 @@ void ALL_Tottem::AddTotemPiece_Implementation(APlayerCharacter* InstigatorPlayer
 			{
 				PS->RemoveTotemPiece();
 				UE_LOG(LogTemp,Warning,TEXT(" PS"));
+				LLPlayerController->TotemPiecesDeliveredHUD();
 
 			}
 			TotemPieces[i].TotemPice = TotemPiece;
@@ -104,15 +120,18 @@ void ALL_Tottem::MovePieceAnimEnded()
 	//This is because we want all the pieces animation to finish and
 	//by logic the last one will be removed and TottemPieces will be 0 so we could
 	//check the completition
+
 	if(Player->TottemPieces.Num() == 0)
 	{
 		TotemCompletion();
+
 
 	}else
 	{
 		//TODO:Warning this might be recursive
 		Interact_Implementation(Player);
 	}
+	
 }
 
 void ALL_Tottem::TotemCompletion()
@@ -134,6 +153,9 @@ void ALL_Tottem::TotemCompletion()
 		Execute_BeaconCompleted(this);
 		
 		TotemCompleted = true;
+
+		LLPlayerController = LLPlayerController == nullptr ? Cast<ALL_PlayerControllerBase>(UGameplayStatics::GetPlayerController(this, 0)) : LLPlayerController;
+		LLPlayerController->ShowTotemPiecesHUD(true);
 	}
 	
 	

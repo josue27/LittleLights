@@ -20,6 +20,7 @@ protected:
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="LevelState")
 	int32 levelPieces = 0;
 
+
 	public:
 	
 	UPROPERTY(BlueprintAssignable,Category="LevelState")
@@ -34,6 +35,7 @@ protected:
 	UFUNCTION(BlueprintCallable,Category="State")
 	bool RemoveTotemPiece();
 
-	
-	
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "LevelState")
+		int32 LevelPiecesToFind = 0;
 };

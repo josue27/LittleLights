@@ -27,6 +27,8 @@ class AJumpOverZone;
 class ULL_InteractorComponent;
 class ULL_ToolsComponent;
 class UAIPerceptionStimuliSourceComponent;
+class ALL_GameModeBase;
+class ALL_AIBeast;
 UCLASS()
 class LITTLELIGHTS_API APlayerCharacter : public ACharacter, public ILL_GameplayInterface
 {
@@ -85,19 +87,31 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LLPLayer|Player Camera")
 	USpringArmComponent* SpringArmComponent;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite ,Category="LLPLayer|Player Camera")
-	float Fov_B = 60.0f;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite ,Category="LLPLayer|Player Camera")
-	float Fov_A = 45.0f;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite ,Category="LLPLayer|Player Camera")
 	USpotLightComponent* FillLight;
 	UPROPERTY(BlueprintReadWrite,Category="LLPLayer|Player Camera")
 	FRotator FillLightInitRotation;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LL|Player Camera")
 	USpringArmComponent* SpringArmComp_FillLight;
+	UPROPERTY(EditAnywhere)
+		bool bChangeArmLength = true;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|Player Camera")
+		float Fov_B = 60.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|Player Camera")
+		float Fov_A = 45.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|Player Camera")
+		float ArmLength_A = 7000.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|Player Camera")
+		float ArmLength_B = 5000.f;
+
+	float FillLight_InitialOuterConeAngle;
+	float FillLight_InitialInnerConeAngle;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|AI")
 		UAIPerceptionStimuliSourceComponent* AIPerceptionStimuliSource;
-
+	UPROPERTY(BlueprintreadWrite)
+		ALL_GameModeBase* LLGameMode;
+	UPROPERTY(BlueprintreadWrite)
+		ALL_AIBeast* Beast;
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

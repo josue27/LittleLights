@@ -24,7 +24,11 @@ public:
 	UPROPERTY(meta =(BindWidget))
 		UImage* BeastAlertImg;
 
-	
 
+	UFUNCTION(BlueprintNativeEvent)
+		void ShowTotemPieceHUD(bool bShow);
+	
+	UFUNCTION(BlueprintNativeEvent)
+		void TotemPieceDeliveredHUD();
 	
 };

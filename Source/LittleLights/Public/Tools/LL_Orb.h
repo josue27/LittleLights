@@ -33,7 +33,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UMaterial* OrbLiquidMaterial;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UMaterialInstanceDynamic* InstanceLiquidMaterial;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UStaticMeshComponent* LiquidMesh;
 	UFUNCTION()
 		void UpdateLight(float DeltaTime);
 
@@ -53,7 +56,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float MaxLightUpTime;//MAX??
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float RemainingDeltaTime;
 
 	bool bStartDecay;

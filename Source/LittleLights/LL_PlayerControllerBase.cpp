@@ -113,3 +113,19 @@ void ALL_PlayerControllerBase::RemoveKeyToPressUI()
 		InteractionWidgetInstance->RemoveFromParent();
 	}
 }
+
+void ALL_PlayerControllerBase::ShowTotemPiecesHUD(bool bShow)
+{
+	if (LL_GameHUD)
+	{
+		LL_GameHUD->PlayerOverlay->ShowTotemPieceHUD(bShow);
+	}
+}
+
+void ALL_PlayerControllerBase::TotemPiecesDeliveredHUD()
+{
+	if (LL_GameHUD)
+	{
+		LL_GameHUD->PlayerOverlay->TotemPieceDeliveredHUD();
+	}
+}

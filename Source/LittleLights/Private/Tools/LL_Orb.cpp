@@ -14,7 +14,11 @@ ALL_Orb::ALL_Orb()
 	TorchMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Torch Mesh"));
 	TorchMesh->SetupAttachment(Root);
 
-	
+	if (LiquidMesh)
+	{
+
+		InstanceLiquidMaterial = UMaterialInstanceDynamic::Create(LiquidMesh->GetMaterial(0), this);
+	}
 }
 
 // Called when the game starts or when spawned
@@ -46,6 +50,10 @@ void ALL_Orb::UpdateLight(float DeltaTime)
 	{
 
 		ToolsComponent->OnOrbRemainingTimeChanged.Broadcast(this, RemainingDeltaTime);
+	}
+	if (InstanceLiquidMaterial)
+	{
+		//InstanceLiquidMaterial->SetVectorParameterValue(FName(TEXT("Emissive_Ctrl"),);
 	}
 	
 }

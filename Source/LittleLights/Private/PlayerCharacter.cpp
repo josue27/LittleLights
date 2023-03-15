@@ -23,7 +23,13 @@
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "Perception/PawnSensingComponent.h"
 #include "Perception/AISense_Hearing.h"
-// Sets default values
+#include "AI/LL_AIBeast.h"
+#include "LittleLights/LL_GameModeBase.h"
+
+//TODO: Debug sobre los estados de la bestia mejor tenerlos ahi en debug
+//Debug de posible rutas de la bestia??
+static TAutoConsoleVariable<bool> CVarShowBeastLoc(TEXT("ll.ShowDistancePlayerBeast"), false, TEXT("Enable debug ray to show direction and distance of the beast from player"), ECVF_Cheat);
+
 APlayerCharacter::APlayerCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -49,6 +55,7 @@ APlayerCharacter::APlayerCharacter()
 	SpringArmComp_FillLight->bInheritPitch = false;
 	SpringArmComp_FillLight->bInheritRoll = false;
 	SpringArmComp_FillLight->bInheritYaw = false;
+	SpringArmComp_FillLight->SetupAttachment(RootComponent);
 
 	
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
@@ -77,7 +84,7 @@ void APlayerCharacter::BeginPlay()
 	
 
 	//TODO:DELETE??
-	FillLightInitRotation = FillLight->GetComponentRotation();
+	//FillLightInitRotation = FillLight->GetComponentRotation();
 
 		
 	//Bind delta orb remainig time to the FOV
@@ -101,6 +108,13 @@ void APlayerCharacter::BeginPlay()
 	}
 	stepsForSound = FMath::RandRange(MinStepsGivenForSound, MaxStepsGivenForSound);
 
+	if (FillLight)
+	{
+		FillLight_InitialOuterConeAngle = FillLight->OuterConeAngle;
+		FillLight_InitialInnerConeAngle = FillLight->InnerConeAngle;
+	}
+	UpdateFov(this, 1.f);
+	Beast = Beast == nullptr ? Cast<ALL_AIBeast>(UGameplayStatics::GetActorOfClass(GetWorld(), ALL_AIBeast::StaticClass())) : Beast;
 }
 
 // Called every frame
@@ -130,6 +144,22 @@ void APlayerCharacter::Tick(float DeltaTime)
 		else
 		{
 			bLostBalance = false;
+
+		}
+	}
+
+	bool ShowBestLoc = CVarShowBeastLoc.GetValueOnGameThread();
+	if (ShowBestLoc)
+	{
+		LLGameMode = LLGameMode == nullptr ? Cast<ALL_GameModeBase>(UGameplayStatics::GetGameMode(this)) : LLGameMode;
+		if (LLGameMode && Beast)
+		{
+			
+			DrawDebugLine(GetWorld(), GetActorLocation(), Beast->GetActorLocation(),FColor::Orange,false);
+		}
+		else
+		{
+			Beast = Beast == nullptr ? Cast<ALL_AIBeast>(UGameplayStatics::GetActorOfClass(GetWorld(), ALL_AIBeast::StaticClass())) : Beast;
 
 		}
 	}
@@ -373,11 +403,7 @@ void APlayerCharacter::RightMovement(float AxisValue)
 /// </summary>
 void APlayerCharacter::JumpButtonCall()
 {
-	/*if(InteractorComp)
-	{
-		InteractorComp->PrimaryInteract();
-	}
-	return;*/
+	
 	AbilityComponent->StartAbilityByName(this, "RollForward");
 
 }
@@ -416,11 +442,6 @@ void APlayerCharacter::RollForward()
 	}
 	bJumping = true;
 
-
-	//DEPRECATED: we change it to recieve a notify from animation
-	/*CurveTimeline.PlayFromStart();
-	GetWorld()->GetTimerManager().SetTimer(DelayForJumpAnimation, this, &APlayerCharacter::JumpCompleted, DelayForCompletedJump, false);*/
-	//VelocidadMovimiento = NormalMaxVelocity;
 }
 
 void APlayerCharacter::CrossBalancing(AJumpOverZone* TempZone)
@@ -463,10 +484,31 @@ void APlayerCharacter::UpdateFov(AActor* InstigatorActor, float DeltaRemainingTi
 	if (!bUpdateFov)return;
 	//SpringArm
 	SpringArmComponent->TargetOffset = GetActorForwardVector() * 120.0f;
-	//Camera
-	float CurrentFOV = FMath::Lerp(Fov_A, Fov_B, DeltaRemainingTime);
-	CameraComp->SetFieldOfView(CurrentFOV);
-	return;
+	if (bChangeArmLength && SpringArmComponent)
+	{
+		float CurrentArmLength = FMath::Lerp(ArmLength_A, ArmLength_B, DeltaRemainingTime);
+		SpringArmComponent->TargetArmLength = CurrentArmLength;
+	}
+	else
+	{
+
+		//Camera
+		float CurrentFOV = FMath::Lerp(Fov_A, Fov_B, DeltaRemainingTime);
+		CameraComp->SetFieldOfView(CurrentFOV);
+	}
+
+	if (FillLight)
+	{
+		//DeltaTimeRemainingTime
+		//ArmLength_B = OuterConeAngle
+		//	ArmLenght_A = FinalOuterConeAngle
+		float FinalOuterConeAngle = (FillLight_InitialOuterConeAngle * ArmLength_A) / ArmLength_B;
+		FillLight->OuterConeAngle = FMath::Lerp( FinalOuterConeAngle, FillLight_InitialOuterConeAngle, DeltaRemainingTime);
+		float FinalInnerConeAngle = (FillLight_InitialInnerConeAngle * ArmLength_A) / ArmLength_B;
+		FillLight->InnerConeAngle = FMath::Lerp( FinalInnerConeAngle, FillLight_InitialInnerConeAngle, DeltaRemainingTime);
+		
+	}
+	
 	
 }
 

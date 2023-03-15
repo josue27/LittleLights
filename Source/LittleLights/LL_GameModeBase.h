@@ -131,5 +131,6 @@ public:
 	UFUNCTION(BlueprintCallable,Category="LLGameMode|AIBeast")
 	float DeltaDistanceToBeast();
 
-	
+	UFUNCTION(Exec)
+		void StartOrbDecay();
 };

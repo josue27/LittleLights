@@ -276,3 +276,21 @@ void ALL_GameModeBase::RemoveWidget()
 		TotemCompleted_WidgetInstance = nullptr;
 	}
 }
+
+void ALL_GameModeBase::StartOrbDecay()
+{
+	if (!Player)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NO PLAYER IN GAMEMODE"));
+		return;
+	}
+
+	if (Player->ToolsComponent)
+	{
+		Player->ToolsComponent->RefillOrb(30.0f);
+		Player->ToolsComponent->StartOrbDecay();
+
+		UE_LOG(LogTemp, Warning, TEXT("GM: Lighting orb"));
+
+	}
+}

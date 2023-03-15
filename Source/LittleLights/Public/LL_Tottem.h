@@ -9,6 +9,8 @@
 #include "GameFramework/Actor.h"
 #include "LL_Tottem.generated.h"
 
+class ALL_PlayerControllerBase;
+class ALL_PlayerState;
 
 USTRUCT(BlueprintType)
 struct FTottemPieceState
@@ -83,7 +85,11 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void MovePieceAnimEnded();
-
+private:
+	UPROPERTY()
+		ALL_PlayerControllerBase* LLPlayerController;
+	UPROPERTY()
+		ALL_PlayerState* LLPlayerState;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

@@ -17,6 +17,10 @@ bool ALL_PlayerState::AddTotemPiece()
 	return true;
 }
 
+/// <summary>
+/// When the player insert a piece of totem to the totem
+/// </summary>
+/// <returns></returns>
 bool ALL_PlayerState::RemoveTotemPiece()
 {
 	if(levelPieces <= 0)
