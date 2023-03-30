@@ -11,7 +11,7 @@
 
 class ALL_PlayerControllerBase;
 class ALL_PlayerState;
-
+class AStaticMeshActor;
 USTRUCT(BlueprintType)
 struct FTottemPieceState
 {
@@ -22,10 +22,15 @@ public:
 	TottemPieceType PieceType;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	ATottem_Piece* TotemPice;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	AStaticMeshActor* TotemPiecePlaced;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	AActor* TotemPiece_Dummy;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	bool Delivered;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector EndPosition;
+	
 	
 };
 
@@ -45,6 +50,8 @@ public:
 	USceneComponent* SceneComponent;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Components")
 	UCapsuleComponent* CapsuleCollider;
+
+
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Totem")
 	TArray<FTottemPieceState> TotemPieces;
@@ -62,6 +69,9 @@ public:
 
 	UFUNCTION(BlueprintCallable,BlueprintImplementableEvent)
 	void TotemDiscoveredEvent();
+
+	UFUNCTION(CallInEditor)
+		void SetEndPositions();
 
 protected:
 
@@ -81,7 +91,7 @@ protected:
 	void TotemCompletion();
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-	void MovePieceAnim(AActor* TotemPiece);
+	void MovePieceAnim(AActor* TotemPiece, FVector EndLocation);
 
 	UFUNCTION(BlueprintCallable)
 	void MovePieceAnimEnded();

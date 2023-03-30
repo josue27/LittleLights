@@ -26,6 +26,8 @@ void ULL_ToolsComponent::BeginPlay()
 	if (bStartWithOrb)
 	{
 		SpawnOrb();
+		//RefillOrb(30.f,false);
+
 	}
 	
 }
@@ -87,12 +89,12 @@ void ULL_ToolsComponent::StartOrbRefill(float Amount)
 	LogOnScreen(GetWorld(),"Orb refill started");
 }
 
-void ULL_ToolsComponent::RefillOrb(float Amount)
+void ULL_ToolsComponent::RefillOrb(float Amount, bool bStartDecay)
 {
 	if (Orb)
 	{
 		Orb->RefillOrb(Amount);
-		Orb->StartDecay();
+		if(bStartDecay) StartOrbDecay();
 
 	}
 	LogOnScreen(GetWorld(), "Orb refilled");
@@ -117,6 +119,15 @@ void ULL_ToolsComponent::OrbRefillFinished()
 
 	
 
+}
+
+float ULL_ToolsComponent::GetDeltaRemainOrb()
+{
+	if (Orb)
+	{
+		return Orb->RemainingDeltaTime;
+	}
+	return 0.0f;
 }
 
 #pragma endregion 

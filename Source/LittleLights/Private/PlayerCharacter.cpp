@@ -25,6 +25,7 @@
 #include "Perception/AISense_Hearing.h"
 #include "AI/LL_AIBeast.h"
 #include "LittleLights/LL_GameModeBase.h"
+#include "Tools/LL_Orb.h"
 
 //TODO: Debug sobre los estados de la bestia mejor tenerlos ahi en debug
 //Debug de posible rutas de la bestia??
@@ -88,9 +89,10 @@ void APlayerCharacter::BeginPlay()
 
 		
 	//Bind delta orb remainig time to the FOV
-	if (ToolsComponent)
+	if (ToolsComponent && ToolsComponent->Orb)
 	{
-		ToolsComponent->OnOrbRemainingTimeChanged.AddDynamic(this, &APlayerCharacter::UpdateFov);
+		//ToolsComponent->OnOrbRemainingTimeChanged.AddDynamic(this, &APlayerCharacter::UpdateFov);
+		UpdateFov(this, ToolsComponent->Orb->RemainingDeltaTime);
 	}
 
 
@@ -163,6 +165,11 @@ void APlayerCharacter::Tick(float DeltaTime)
 
 		}
 	}
+	if (ToolsComponent )
+	{
+		
+		UpdateFov(this, ToolsComponent->GetDeltaRemainOrb());
+	}
 }
 
 // Called to bind functionality to input
@@ -200,22 +207,7 @@ void APlayerCharacter::SpawnLanternOrb()
 /// </summary>
 void APlayerCharacter::LightUpTorch(float AmountRefill)
 {
-	/*if (bLightingTorch || !Torch)
-	{
-		
-		return;
-	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Restarting Torch light"));
-	bCanMove = false;//make function
-	bLightingTorch = true;
-	FRotator RotateTo = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), FirePitTemp->GetActorLocation());
-	RotateTo.Pitch = GetActorRotation().Pitch;
-	RotateTo.Roll = GetActorRotation().Roll;
-	SetActorRotation(RotateTo);*/
-	
-	//GetWorld()->GetTimerManager().SetTimer(DelayLightingTorch, this, &APlayerCharacter::TorchLightingCompleted, 4.0f, false);
-	//TempRefillAmount = AmountRefill;
 	
 }
 
@@ -481,6 +473,7 @@ void APlayerCharacter::JumpCompleted()
 
 void APlayerCharacter::UpdateFov(AActor* InstigatorActor, float DeltaRemainingTime)
 {
+	bOrbOff = DeltaRemainingTime < 0.1f;
 	if (!bUpdateFov)return;
 	//SpringArm
 	SpringArmComponent->TargetOffset = GetActorForwardVector() * 120.0f;

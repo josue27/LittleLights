@@ -44,6 +44,14 @@ void ALL_GameModeBase::StartSequence_Implementation()
 				if(Player)
 				{
 					Player->MovePlayerTo(StartTargetLocation->GetActorLocation(),150.0f,true);
+					if (Player->ToolsComponent)
+					{
+						Player->ToolsComponent->RefillOrb(30.0f);
+
+
+						UE_LOG(LogTemp, Warning, TEXT("GM: Lighting orb"));
+
+					}
 				}
 		}else
 			{
@@ -54,16 +62,7 @@ void ALL_GameModeBase::StartSequence_Implementation()
 	
 	//StartBeastTimer();
 
-	if(Player)
-	{
-		if (Player->Torch)
-		{
-		
-			Player->Torch->TurnOnOrb();
-		}
 	
-
-	}
 }
 
 void ALL_GameModeBase::TottemCompleted_Implementation()
@@ -222,18 +221,7 @@ void ALL_GameModeBase::BeaconCompleted_Implementation()
 		Execute_BeaconCompleted(Player);
 	}
 
-	///Instanciate a Widget for the player to know that the Totem is completed
-	/////DEPRECATED:better in BP
-	/*if(TotemCompleted_WidgetClass)
-	{
-		TotemCompleted_WidgetInstance = CreateWidget(UGameplayStatics::GetPlayerController(GetWorld(),0),TotemCompleted_WidgetClass);
-		if(TotemCompleted_WidgetInstance)
-		{
-			TotemCompleted_WidgetInstance->AddToViewport(0);
-			FTimerHandle RemoveWidgetTH;
-			GetWorldTimerManager().SetTimer(RemoveWidgetTH,this,&ALL_GameModeBase::RemoveWidget,3.0f);
-		}
-	}*/
+	
 }
 
 void ALL_GameModeBase::PlayerEndedIntroMovement()
@@ -249,7 +237,7 @@ void ALL_GameModeBase::PlayerEndedIntroMovement()
 	if (Player->ToolsComponent)
 	{
 		Player->ToolsComponent->RefillOrb(30.0f);
-		Player->ToolsComponent->StartOrbDecay();
+		
 		
 		UE_LOG(LogTemp, Warning, TEXT("GM: Lighting orb"));
 

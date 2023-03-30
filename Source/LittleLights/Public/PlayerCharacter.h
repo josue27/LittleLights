@@ -47,6 +47,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void DisableInteraction(bool disable);
+
+	UPROPERTY(BlueprintReadWrite)
+		bool bOrbOff = false;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

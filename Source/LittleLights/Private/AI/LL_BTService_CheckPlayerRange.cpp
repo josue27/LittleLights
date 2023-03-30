@@ -43,7 +43,7 @@ void ULL_BTService_CheckPlayerRange::TickNode(UBehaviorTreeComponent& OwnerComp,
 					}
 					//BBComp->SetValueAsBool(InRangeKey.SelectedKeyName,(InRange && InLineOfSight));
 					BBComp->SetValueAsBool(InRangeKey.SelectedKeyName,(InRange));
-/*
+/*z`
 					if(CVarDebugAI.GetValueOnGameThread())
 					{
 						

@@ -8,7 +8,7 @@
 #include "GameFramework/Actor.h"
 #include "Tottem_Piece.generated.h"
 
-
+class UParticleSystem;
 UENUM(BlueprintType)
 enum class TottemPieceType: uint8
 {
@@ -42,11 +42,14 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	USphereComponent* SphereCollider;
 
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UParticleSystem* GrabbedParticleSystem;
 
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 
 	 FText GetInteractText_Implementation(APawn* InstigatorPawn) override;
+
+	 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

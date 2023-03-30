@@ -7,6 +7,8 @@
 #include "LL_AIBeast.generated.h"
 
 class UPawnSensingComponent;
+class APlayerCharacter;
+class AAIController;
 UCLASS()
 class LITTLELIGHTS_API ALL_AIBeast : public ACharacter
 {
@@ -44,8 +46,11 @@ protected:
 
 	virtual void PostInitializeComponents() override;
 
-
+	UPROPERTY()
+		APlayerCharacter* LLPlayer;
 	
+	UPROPERTY()
+		AAIController* AIC;
 public:	
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "LLBeast")

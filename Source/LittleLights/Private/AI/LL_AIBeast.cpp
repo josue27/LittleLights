@@ -7,6 +7,8 @@
 #include "DrawDebugHelpers.h"
 #include "LLGamePlayFunctionLibrary.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "PlayerCharacter.h"
 #include "Perception/PawnSensingComponent.h"
 
 static TAutoConsoleVariable<bool> CVarDebugAI(TEXT("ll.DebugAI"),false,TEXT("Enable spawning of bots via timer"),ECVF_Cheat);
@@ -30,7 +32,9 @@ void ALL_AIBeast::PostInitializeComponents()
 void ALL_AIBeast::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	LLPlayer = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerController(GetWorld(),0)->GetPawn());
+	AIC = nullptr ? Cast<AAIController>(GetController()) : AIC;
 }
 
 // Called every frame
@@ -43,6 +47,15 @@ void ALL_AIBeast::Tick(float DeltaTime)
 	{
 		ResetTarget(TargetActorTemp);
 	}*/
+	if (LLPlayer )
+	{
+		AIC = nullptr ? Cast<AAIController>(GetController()) : AIC;
+		if (AIC)
+		{
+			AIC->GetBlackboardComponent()->SetValueAsBool("CanChasePlayer", LLPlayer->bOrbOff);
+
+		}
+	}
 }
 
 void ALL_AIBeast::PlayerSeen(APawn* PlayerPawn)
@@ -65,7 +78,7 @@ void ALL_AIBeast::SetTarget(AActor* Actor)
 {
 
 	
-	AAIController* AIC = Cast<AAIController>(GetController());
+	AIC = nullptr ? Cast<AAIController>(GetController()) : AIC;
 	if(AIC)
 	{
 		// if(AIC->GetBlackboardComponent()->GetValueAsBool("InRange"))
@@ -83,7 +96,8 @@ void ALL_AIBeast::SetTarget(AActor* Actor)
 
 void ALL_AIBeast::ResetTarget(AActor* Actor)
 {
-	AAIController* AIC = Cast<AAIController>(GetController());
+	AIC = nullptr ? Cast<AAIController>(GetController()) : AIC;
+
 	if(AIC)
 	{
 		AIC->GetBlackboardComponent()->ClearValue(TargetKeyName);

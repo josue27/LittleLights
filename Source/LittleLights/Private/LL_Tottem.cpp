@@ -10,6 +10,7 @@
 #include "LittleLights/LL_GameModeBase.h"
 #include "LittleLights/LL_PlayerControllerBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "Engine/StaticMeshActor.h"
 #include "LL_PlayerState.h"
 // Sets default values
 ALL_Tottem::ALL_Tottem()
@@ -31,6 +32,14 @@ void ALL_Tottem::BeginPlay()
 	if (LLPlayerState)
 	{
 		LLPlayerState->LevelPiecesToFind = TotemPieces.Num();
+	}
+
+	for (FTottemPieceState& TootemPiece : TotemPieces)
+	{
+		if (TootemPiece.TotemPiecePlaced) {
+			TootemPiece.TotemPiecePlaced->SetActorHiddenInGame(true);
+			TootemPiece.TotemPiecePlaced->SetActorEnableCollision(false);
+		}
 	}
 }
 
@@ -83,10 +92,10 @@ void ALL_Tottem::AddTotemPiece_Implementation(APlayerCharacter* InstigatorPlayer
 	UE_LOG(LogTemp,Warning,TEXT("Adding totem piece"),TotemPieces.Num());
 	LLPlayerController = LLPlayerController == nullptr ? Cast<ALL_PlayerControllerBase>(UGameplayStatics::GetPlayerController(this, 0)) : LLPlayerController;
 
-	for(int32 i=0; i < TotemPieces.Num(); i++)
+	for(int32 i = 0; i < TotemPieces.Num(); i++)
 	{
 		//if type and there is no piece in place
-		if(TotemPiece->PieceType == TotemPieces[i].PieceType   && TotemPieces[i].TotemPice == nullptr)
+		if(TotemPiece->PieceType == TotemPieces[i].PieceType   && !TotemPieces[i].Delivered)
 		{
 			ALL_PlayerState* PS = Cast<ALL_PlayerState>(Player->GetPlayerState());
 			if(PS)
@@ -96,16 +105,23 @@ void ALL_Tottem::AddTotemPiece_Implementation(APlayerCharacter* InstigatorPlayer
 				LLPlayerController->TotemPiecesDeliveredHUD();
 
 			}
-			TotemPieces[i].TotemPice = TotemPiece;
+			//TotemPieces[i].TotemPice = TotemPiece;
 			TotemPieces[i].Delivered = true;
-			if(TotemPieces[i].TotemPiece_Dummy != nullptr)
+			/*if(TotemPieces[i].TotemPiece_Dummy != nullptr)
 			{
 				MovePieceAnim(TotemPieces[i].TotemPiece_Dummy);
+			}*/
+			if (TotemPieces[i].TotemPiecePlaced != nullptr)
+			{
+
+				TotemPieces[i].TotemPiecePlaced->SetActorHiddenInGame(false);
+				MovePieceAnim(TotemPieces[i].TotemPiecePlaced, TotemPieces[i].EndPosition);
 			}
+
 			UE_LOG(LogTemp,Warning,TEXT("piece found and added to tottem"));
 
 			
-			InstigatorPlayer->TottemPieces.RemoveAt(0);
+			InstigatorPlayer->TottemPieces.RemoveAt(0); 
 			InstigatorPlayer->TottemPieces.Sort();
 			UE_LOG(LogTemp,Warning,TEXT("Got Totem Piece from player "));
 
@@ -140,7 +156,7 @@ void ALL_Tottem::TotemCompletion()
 	int32 NumPiecesInPlace = 0;
 	for(FTottemPieceState TotemState : TotemPieces)
 	{
-		if(TotemState.TotemPice != nullptr)
+		if(TotemState.Delivered )
 		{
 			NumPiecesInPlace +=1;
 		}
@@ -174,3 +190,13 @@ void ALL_Tottem::Tick(float DeltaTime)
 
 }
 
+void ALL_Tottem::SetEndPositions()
+{
+	for (auto& TotemPiece : TotemPieces)
+	{
+		if (TotemPiece.TotemPiecePlaced != nullptr)
+		{
+			TotemPiece.EndPosition = TotemPiece.TotemPiecePlaced->GetActorLocation();
+		}
+	}
+}

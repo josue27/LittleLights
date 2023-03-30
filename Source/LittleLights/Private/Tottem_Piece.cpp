@@ -2,7 +2,7 @@
 
 
 #include "Tottem_Piece.h"
-
+#include "Kismet/GameplayStatics.h"
 #include "PlayerCharacter.h"
 
 // Sets default values
@@ -74,7 +74,7 @@ void ATottem_Piece::Deactivate_Implementation()
 {
 	RootComponent->SetVisibility(false,true);
 	SphereCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
-
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), GrabbedParticleSystem, GetActorLocation());
 }
 
 

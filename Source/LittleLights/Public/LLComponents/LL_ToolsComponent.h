@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+
 #include "LL_ToolsComponent.generated.h"
 
 
@@ -53,9 +54,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "LL Tools | Orb")
 		void StartOrbRefill(float Amount = 30.f);
 	UFUNCTION(BlueprintCallable, Category = "LL Tools | Orb")
-		void RefillOrb(float Amount=30.f);
+		void RefillOrb(float Amount=30.f,bool bStartDecay = true);
 
 	UFUNCTION(BlueprintCallable, Category = "LL Tools | Orb")
 		void OrbRefillFinished();
+
+	UFUNCTION(BlueprintCallable, Category = "LL Tools | Orb")
+		float GetDeltaRemainOrb();
+
 #pragma endregion
 };
