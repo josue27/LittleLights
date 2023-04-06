@@ -8,6 +8,10 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPiecesCountChanged, ALL_PlayerState*,PlayerState,int32,Pieces);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRefillingOrb,bool,bRefilling);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnObstacleStarted,bool,bStarted);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnOrbRefillFinished, bool, bRefillingFinished);
+
 /**
  * 
  */
@@ -38,4 +42,13 @@ protected:
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "LevelState")
 		int32 LevelPiecesToFind = 0;
+
+	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, Category = "LevelState")
+	FOnRefillingOrb OnRefillingOrb;
+
+	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, Category = "LevelState")
+	FOnObstacleStarted OnObstacleStarted;
+
+	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, Category = "LevelState")
+	FOnOrbRefillFinished OnOrbRefillFinished;
 };

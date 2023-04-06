@@ -5,6 +5,7 @@
 #include "PlayerCharacter.h"
 #include "Tools/LL_Orb.h"
 #include "Engine/SkeletalMeshSocket.h"
+#include "LL_PlayerState.h"
 #include "LittleLights/LittleLights.h"
 
 // Sets default values for this component's properties
@@ -84,6 +85,11 @@ void ULL_ToolsComponent::StartOrbRefill(float Amount)
 	{
 		PC->StopCharacter();
 		PC->bLightingTorch = true;
+		ALL_PlayerState* PS = Cast<ALL_PlayerState>(PC->GetPlayerState());
+		if (PS)
+		{
+			PS->OnRefillingOrb.Broadcast(true);
+		}
 		//PC->bUpdateFov = false;
 	}
 	LogOnScreen(GetWorld(),"Orb refill started");
@@ -94,7 +100,20 @@ void ULL_ToolsComponent::RefillOrb(float Amount, bool bStartDecay)
 	if (Orb)
 	{
 		Orb->RefillOrb(Amount);
+		
+
 		if(bStartDecay) StartOrbDecay();
+
+		APlayerCharacter* PC = Cast<APlayerCharacter>(GetOwner());
+		if (PC)
+		{
+			ALL_PlayerState* PS = Cast<ALL_PlayerState>(PC->GetPlayerState());
+			if (PS)
+			{
+				PS->OnRefillingOrb.Broadcast(false);
+				PS->OnOrbRefillFinished.Broadcast(true);
+			}
+		}
 
 	}
 	LogOnScreen(GetWorld(), "Orb refilled");
@@ -113,6 +132,12 @@ void ULL_ToolsComponent::OrbRefillFinished()
 			PC->ContinueMovement();
 			PC->ResetCameraPosition();
 			//PC->bUpdateFov = true;
+			ALL_PlayerState* PS = Cast<ALL_PlayerState>(PC->GetPlayerState());
+			if (PS)
+			{
+				PS->OnRefillingOrb.Broadcast(false);
+				PS->OnOrbRefillFinished.Broadcast(true);
+			}
 		}	
 
 		LogOnScreen(GetWorld(), "Orb refilled finish called");
