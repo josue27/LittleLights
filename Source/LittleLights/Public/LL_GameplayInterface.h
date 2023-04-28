@@ -6,11 +6,13 @@
 #include "UObject/Interface.h"
 #include "LL_GameplayInterface.generated.h"
 
+
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
 class ULL_GameplayInterface : public UInterface
 {
 	GENERATED_BODY()
+
 };
 
 /**

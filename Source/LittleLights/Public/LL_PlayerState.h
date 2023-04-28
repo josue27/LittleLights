@@ -11,7 +11,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPiecesCountChanged, ALL_PlayerSt
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRefillingOrb,bool,bRefilling);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnObstacleStarted,bool,bStarted);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnOrbRefillFinished, bool, bRefillingFinished);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractionStarted,AActor*,ActorInteracting,bool,bSlowTime);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractionEnded,AActor*,ActorInteracting,bool,bSlowTime);
 /**
  * 
  */
@@ -51,4 +52,8 @@ public:
 
 	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, Category = "LevelState")
 	FOnOrbRefillFinished OnOrbRefillFinished;
+	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, Category = "LevelState")
+	FOnInteractionStarted OnInteractionStarted;
+	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, Category = "LevelState")
+	FOnInteractionEnded OnInteractionEnded;
 };

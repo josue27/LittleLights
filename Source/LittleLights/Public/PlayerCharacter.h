@@ -29,6 +29,23 @@ class ULL_ToolsComponent;
 class UAIPerceptionStimuliSourceComponent;
 class ALL_GameModeBase;
 class ALL_AIBeast;
+
+
+USTRUCT(BlueprintType)
+struct FCameraOccludedActor
+{
+	GENERATED_USTRUCT_BODY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	const AActor* Actor;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UStaticMeshComponent* StaticMesh;
+  
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TArray<UMaterialInterface*> Materials;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	bool IsOccluded;
+};
+
 UCLASS()
 class LITTLELIGHTS_API APlayerCharacter : public ACharacter, public ILL_GameplayInterface
 {
@@ -310,6 +327,26 @@ public:
 		int32 MinStepsGivenForSound = 2;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPlayer|AI")
 		int32 MaxStepsGivenForSound = 4;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	bool bInfiniteSprint =false;
+
+		
+#pragma region Camera Oclussion
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Camera Occlusion|Occlusion",
+   meta=(ClampMin="0.1", ClampMax="10.0") )
+	float CapsulePercentageForTrace;
+  
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Camera Occlusion|Materials")
+	UMaterialInterface* FadeMaterial;
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Camera Occlusion|Materials")
+	// ECollisionChannel CollisionChannelToTrace ;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Camera Occlusion")
+	bool IsOcclusionEnabled;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Camera Occlusion|Occlusion")
+	bool DebugLineTraces;
+#pragma endregion
+	
 private:
 	void ForwardMovement(float AxisValue);
 	void RightMovement(float AxisValue);
@@ -335,8 +372,22 @@ private:
 		void SprintAction();
 	UFUNCTION()
 		void SprintCancelled();
-	
-
-	
+#pragma region Camera Occlusion
+	TMap<const AActor*, FCameraOccludedActor> OccludedActors;
+  
+	bool HideOccludedActor(const AActor* Actor);
+	bool OnHideOccludedActor(const FCameraOccludedActor& OccludedActor) const;
+	void ShowOccludedActor(FCameraOccludedActor& OccludedActor);
+	bool OnShowOccludedActor(const FCameraOccludedActor& OccludedActor) const;
+	void ForceShowOccludedActors();
+	__forceinline bool ShouldCheckCameraOcclusion() const
+	{
+		return IsOcclusionEnabled && FadeMaterial && CameraComp && GetCapsuleComponent();
+	}
+  
+public:
+	UFUNCTION(BlueprintCallable)
+	void SyncOccludedActors();
+#pragma endregion 
 
 };

@@ -72,6 +72,21 @@ void ALL_Tottem::Interact_Implementation(APawn* InstigatorPawn)
 		AddTotemPiece_Implementation(Player,Player->TottemPieces[0]);
 		
 	}
+
+	LLPlayerState = LLPlayerState ==nullptr? Cast<ALL_PlayerState>(UGameplayStatics::GetPlayerState(this, 0)) : LLPlayerState;
+	if (LLPlayerState)
+	{
+		LLPlayerState->OnInteractionStarted.Broadcast(this,true);
+		
+		FTimerHandle InteractionTimeHandler;
+		FTimerDelegate TimerCallback;
+		TimerCallback.BindLambda([&]
+		{
+			// callback;
+			LLPlayerState->OnInteractionEnded.Broadcast(this,false);
+		});
+		GetWorldTimerManager().SetTimer(InteractionTimeHandler,TimerCallback,2.f,false);
+	}
 }
 
 

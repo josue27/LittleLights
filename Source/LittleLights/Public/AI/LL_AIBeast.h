@@ -51,17 +51,27 @@ protected:
 	
 	UPROPERTY()
 		AAIController* AIC;
+
+	UFUNCTION(BlueprintCallable)
+	void UserStartedInteraction(AActor* ActorInteractor,bool bSlowTime);
+	UFUNCTION(BlueprintCallable)
+	void UserFinishedInteraction(AActor* ActorInteractor,bool bSlowTime);
 public:	
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "LLBeast")
 		bool bIsAttacking;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "LLBeast")
+	float SlowTimeOnInteraction = 0.2f;
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BasicAttackSequence();
 
+	
 
+	virtual void Destroyed() override;
 
 };
 
