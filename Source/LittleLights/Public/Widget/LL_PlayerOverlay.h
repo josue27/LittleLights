@@ -30,5 +30,6 @@ public:
 	
 	UFUNCTION(BlueprintNativeEvent)
 		void TotemPieceDeliveredHUD();
-	
+	UFUNCTION(BlueprintNativeEvent)
+	void ShowBeastPresenceHUD(bool bShow);
 };

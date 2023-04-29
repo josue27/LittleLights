@@ -634,8 +634,8 @@ void APlayerCharacter::SyncOccludedActors()
 	FVector Start = CameraComp->GetComponentLocation();
 	FVector End = GetActorLocation();
 	TArray<TEnumAsByte<EObjectTypeQuery>> CollisionObjectTypes;
-	//CollisionObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_OccludedObject));
-	CollisionObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_GameTraceChannel3));
+	
+	CollisionObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_GameTraceChannel3));//OccludedObject channel
 	TArray<AActor*> ActorsToIgnore; // TODO: Add configuration to ignore actor types
 	TArray<FHitResult> OutHits;
 	auto ShouldDebug = DebugLineTraces ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None;

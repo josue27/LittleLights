@@ -129,3 +129,11 @@ void ALL_PlayerControllerBase::TotemPiecesDeliveredHUD()
 		LL_GameHUD->PlayerOverlay->TotemPieceDeliveredHUD();
 	}
 }
+
+void ALL_PlayerControllerBase::ShowBeastPresenceImg_Implementation(bool bShow)
+{
+	if(LL_GameHUD)
+	{
+		LL_GameHUD->PlayerOverlay->ShowBeastPresenceHUD(bShow);
+	}
+}
