@@ -80,5 +80,7 @@ void ALL_Orb::RefillOrb(float Amount)
 	float AmountToAdd = FMath::Clamp(Amount + RemainingLightTime, 1.f, MaxLightUpTime);
 	RemainingLightTime = AmountToAdd + GetWorld()->GetTimeSeconds();
 
+	UpdateLight(1.f);
+
 }
 

@@ -46,7 +46,8 @@ void ALL_GameModeBase::StartSequence_Implementation()
 					Player->MovePlayerTo(StartTargetLocation->GetActorLocation(),150.0f,true);
 					if (Player->ToolsComponent)
 					{
-						Player->ToolsComponent->RefillOrb(30.0f);
+						//This is so when we start the level the light is up
+						Player->ToolsComponent->RefillOrb(30.0f,false);
 
 
 						UE_LOG(LogTemp, Warning, TEXT("GM: Lighting orb"));
@@ -224,7 +225,7 @@ void ALL_GameModeBase::BeaconCompleted_Implementation()
 	
 }
 
-void ALL_GameModeBase::PlayerEndedIntroMovement()
+void ALL_GameModeBase::PlayerEndedIntroMovement(bool bLightUpOrb, bool bStartOrbDecay)
 {
 	if (!Player)
 	{
@@ -234,9 +235,9 @@ void ALL_GameModeBase::PlayerEndedIntroMovement()
 	UE_LOG(LogTemp, Warning, TEXT("Player ended intro movement"));
 	Player->EnableInput(UGameplayStatics::GetPlayerController(this, 0));
 	Player->ResetWalkSpeed();
-	if (Player->ToolsComponent)
+	if (Player->ToolsComponent && bLightUpOrb)
 	{
-		Player->ToolsComponent->RefillOrb(30.0f);
+		Player->ToolsComponent->RefillOrb(30.0f, bStartOrbDecay);
 		
 		
 		UE_LOG(LogTemp, Warning, TEXT("GM: Lighting orb"));

@@ -4,6 +4,7 @@
 #include "SpecialMovementZones/LL_SpecialMovementZone.h"
 
 #include "LLGamePlayFunctionLibrary.h"
+#include "LL_PlayerState.h"
 #include "PlayerCharacter.h"
 #include "LittleLights/LittleLights.h"
 #include "Components/BoxComponent.h"
@@ -72,6 +73,17 @@ void ALL_SpecialMovementZone::Interact_Implementation(APawn* InstigatorPawn)
 				break;
 			}
 		}
+		//Call slow down, mainly for beast
+		ALL_PlayerState* PlayerState = Cast<ALL_PlayerState>(PC->GetPlayerState());
+		PlayerState->OnInteractionStarted.Broadcast(this,true);
+		// FTimerHandle InteractionTimeHandler;
+		// FTimerDelegate TimerCallback;
+		// TimerCallback.BindLambda([]
+		// {
+		// 	
+		// });
+		// GetWorldTimerManager().SetTimer(InteractionTimeHandler,)
+		
 
 	}
 }

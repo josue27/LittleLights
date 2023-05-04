@@ -81,7 +81,8 @@ protected:
 		void GameStart();
 
 	UFUNCTION(BlueprintCallable)
-		void PlayerEndedIntroMovement();
+		void PlayerEndedIntroMovement(bool bLightUpOrb = true
+			, bool bStartOrbDecay = true);
 	UFUNCTION(BlueprintCallable)
 		void PlayerIntroMovement();
 	

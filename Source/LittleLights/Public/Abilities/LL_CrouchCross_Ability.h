@@ -25,7 +25,7 @@ public:
 		virtual void StopAbility_Implementation(AActor* Instigator, AActor* SecondActor = nullptr) override;
 
 	UFUNCTION()
-	void PlayerEndedMovement(APlayerCharacter* Player);
+	void PlayerEndedMovement(APlayerCharacter* Player,bool bLightUpOrb, bool bStartOrbDecay);
 	UFUNCTION()
 	void KeyPressed(FKey KeyPressed);
 

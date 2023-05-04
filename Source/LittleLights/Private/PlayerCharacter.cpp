@@ -80,6 +80,11 @@ APlayerCharacter::APlayerCharacter()
 	CapsulePercentageForTrace = 1.0f;
 	DebugLineTraces = true;
 	IsOcclusionEnabled = true;
+
+	 MinStepsGivenForSound = 2;
+	MaxStepsGivenForSound = 4;
+	bInfiniteSprint =false;
+	stepsForSound = 10;
 }
 
 // Called when the game starts or when spawned

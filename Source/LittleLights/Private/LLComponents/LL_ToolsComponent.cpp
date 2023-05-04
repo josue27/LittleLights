@@ -104,6 +104,8 @@ void ULL_ToolsComponent::RefillOrb(float Amount, bool bStartDecay)
 
 		if(bStartDecay) StartOrbDecay();
 
+		
+
 		APlayerCharacter* PC = Cast<APlayerCharacter>(GetOwner());
 		if (PC)
 		{

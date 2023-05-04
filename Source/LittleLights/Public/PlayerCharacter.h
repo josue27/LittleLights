@@ -14,7 +14,7 @@
 #include "Components/TimelineComponent.h"
 #include "PlayerCharacter.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAutomaticMovementEnded, APlayerCharacter*, PlayerCharacter);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnAutomaticMovementEnded, APlayerCharacter*, PlayerCharacter,bool,bLightUpTorch,bool,bStartDecay);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnKeyPressed, FKey, KeyPressed);
 
 class ATorch;
@@ -270,7 +270,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void ActionButtonCall();
 	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable)
-		void MovePlayerTo(FVector Location, float Speed = 150.0f,bool bNotify = false);
+		void MovePlayerTo(FVector Location, float Speed = 150.0f,bool bNotify = false,bool bLightUpOrb = true,bool bStartOrbDecay = true);
 	
 	UFUNCTION(BlueprintCallable,Category="LLPLayer|LL_Player")
 		void ResetWalkSpeed(float speed=400.0f);
@@ -324,12 +324,12 @@ public:
 		void MakeStepNoise();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPlayer|AI")
-		int32 MinStepsGivenForSound = 2;
+		int32 MinStepsGivenForSound;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPlayer|AI")
-		int32 MaxStepsGivenForSound = 4;
+		int32 MaxStepsGivenForSound;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	bool bInfiniteSprint =false;
+	bool bInfiniteSprint;
 
 		
 #pragma region Camera Oclussion
@@ -360,7 +360,7 @@ private:
 	FQuat EndRotation;
 
 	int32 stepsGiven;
-	int32 stepsForSound = 10;
+	int32 stepsForSound;
 
 	float TempRefillAmount;
 	friend class AMainPlayer_DebugHUD;

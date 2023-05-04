@@ -58,7 +58,7 @@ void ULL_CrouchCross_Ability::StartAbility_Implementation(AActor* Instigator, AA
 	}
 }
 
-void ULL_CrouchCross_Ability::PlayerEndedMovement(APlayerCharacter* PlayerCaller)
+void ULL_CrouchCross_Ability::PlayerEndedMovement(APlayerCharacter* PlayerCaller,bool bLightUpOrb, bool bStartOrbDecay)
 {
 	
 	if (InKeyPressed == KeyToPress.Num())
@@ -88,10 +88,10 @@ void ULL_CrouchCross_Ability::KeyPressed(FKey KeyPressed)
 	if (KeyToPress.IsValidIndex(InKeyPressed) && KeyPressed == KeyToPress[InKeyPressed])
 	{
 
-	    Player = Cast<APlayerCharacter>(AbilityComponent->GetOwner());
+	    Player = Player == nullptr? Cast<APlayerCharacter>(AbilityComponent->GetOwner()): Player;
 		if (Player)
 		{
-			Player->MovePlayerTo(PathPositions[InKeyPressed], 100.f, true);
+			Player->MovePlayerTo(PathPositions[InKeyPressed], 100.f, true,false,false);
 			bCanReceiveInput = false;
 		}
 		
@@ -110,9 +110,13 @@ void ULL_CrouchCross_Ability::StopAbility_Implementation(AActor* Instigator, AAc
 	Player->ResetWalkSpeed(400.0f);
 	Player->bIsCrossingUnder = false;
 	Player->bCanMove = true;
-	Player->OnAutomaticMovementEnded.RemoveDynamic(this, &ULL_CrouchCross_Ability::PlayerEndedMovement);
+	//Player->OnAutomaticMovementEnded.RemoveDynamic(this, &ULL_CrouchCross_Ability::PlayerEndedMovement);
 	Player->OnKeyPressed.RemoveDynamic(this, &ULL_CrouchCross_Ability::KeyPressed);
 	Player->DisableInteraction(false);
+
+
+	//Call the stop interaction, Mainly for the Beast slowmotion
+	
 
 	Player = nullptr;
 	SpecialMovementZone->BlockerCollider->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);

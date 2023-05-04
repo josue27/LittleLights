@@ -3,6 +3,9 @@
 
 #include "LL_Ability.h"
 
+#include "LL_PlayerState.h"
+#include "Kismet/GameplayStatics.h"
+
 
 void ULL_Ability::Initialize(ULL_AbilityComponent* AbilityComp)
 {
@@ -42,6 +45,13 @@ void ULL_Ability::StopAbility_Implementation(AActor* Instigator,AActor* SecondAc
 	bIsRunning = false;
 	//removetags let us remove a whole container, instead of remove one by one
 	AbilityComponent->ActiveGameplayTags.RemoveTags(GrantsTags);
+
+	//Call stop interaction, Mainly for the Beast slowmo
+	ALL_PlayerState* LLPlayerState = Cast<ALL_PlayerState>(UGameplayStatics::GetPlayerState(GetWorld(),0));
+	if(LLPlayerState)
+	{
+		LLPlayerState->OnInteractionEnded.Broadcast(AbilityComponent->GetOwner(),false);
+	}
 }
 
 bool ULL_Ability::CanStart_Implementation(AActor* Instigator)
