@@ -114,6 +114,25 @@ void ALL_PlayerControllerBase::RemoveKeyToPressUI()
 	}
 }
 
+void ALL_PlayerControllerBase::ShowKeyWithTimeToPressUI(FString keymsg, AActor* ActorToAttach, float TimeRemainng)
+{
+	if (InteractionWidgetInstance == nullptr && ensure(DefaultWidgetClass))
+	{
+		InteractionWidgetInstance = CreateWidget<ULL_WorldUserWidget>(GetWorld(), DefaultWidgetClass);
+		InteractionWidgetInstance->AttachedActor = ActorToAttach;
+	}
+	if (InteractionWidgetInstance)
+	{
+		InteractionWidgetInstance->AttachedActor = ActorToAttach;//duplicated??
+		if (!InteractionWidgetInstance->IsInViewport())
+		{
+			InteractionWidgetInstance->AddToViewport();
+		}
+		InteractionWidgetInstance->TextOfInteraction = FText::FromString(keymsg);
+		InteractionWidgetInstance->TimeRemainingUI = TimeRemainng;
+	}
+}
+
 void ALL_PlayerControllerBase::ShowTotemPiecesHUD(bool bShow)
 {
 	if (LL_GameHUD)

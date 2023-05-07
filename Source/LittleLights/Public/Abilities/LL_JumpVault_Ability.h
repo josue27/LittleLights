@@ -19,13 +19,16 @@ class LITTLELIGHTS_API ULL_JumpVault_Ability : public ULL_Ability
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LL | Ability")
 	TArray<FKey> KeysToPress;
+	//Time we want the user to  press a key
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LL | Ability")
+	float TimeToPressKey =3.f;
 	UFUNCTION()
 	virtual void StartAbility_Implementation(AActor* Instigator, AActor* SecondActor) override;
 	UFUNCTION()
 	virtual void StopAbility_Implementation(AActor* Instigator, AActor* SecondActor = nullptr) override;
-
+	virtual void Update_Implementation(float DeltaTime) override;
 	UPROPERTY()
 	bool bCanReceiveInput;
 
@@ -51,4 +54,7 @@ private:
 
 	UFUNCTION()
 	void PlayerEndedMovement(APlayerCharacter* PlayerActor,bool bLightUpOrb, bool bStartOrbDecay);
+
+	UPROPERTY()
+	float RemainingDeltaJumpTime;
 };

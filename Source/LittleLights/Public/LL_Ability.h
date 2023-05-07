@@ -23,6 +23,8 @@ class LITTLELIGHTS_API ULL_Ability : public UObject
 	bool bTick;
 	UPROPERTY(EditDefaultsOnly,Category="Ability")
 	FName AbilityName;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	float RemainingActionTime;
 
 	UFUNCTION(BlueprintNativeEvent,Category="Ability")
 	void StartAbility(AActor* Instigator, AActor* SecondActor =nullptr);
@@ -47,7 +49,7 @@ class LITTLELIGHTS_API ULL_Ability : public UObject
 
 	UFUNCTION(BlueprintNativeEvent,Category="Abilit Tags")
 	void Update(float DeltaTime);
-
+	virtual void Update_Implementation(float DeltaTime);
 	protected:
 
 	UPROPERTY()

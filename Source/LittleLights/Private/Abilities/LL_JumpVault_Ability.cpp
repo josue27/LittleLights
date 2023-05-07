@@ -7,6 +7,7 @@
 #include "PlayerCharacter.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "LittleLights/LittleLights.h"
 #include "LittleLights/LL_PlayerControllerBase.h"
 #include "SpecialMovementZones/LL_SpecialMovementZone.h"
 
@@ -26,6 +27,7 @@ void ULL_JumpVault_Ability::StartAbility_Implementation(AActor* Instigator, AAct
 		 Player->OnAutomaticMovementEnded.AddDynamic(this,&ULL_JumpVault_Ability::PlayerEndedMovement);
 		Player->OnKeyPressed.AddDynamic(this,&ULL_JumpVault_Ability::KeyPressed);
 	}
+
 	SpecialMovementZone->BlockerCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SpecialMovementZone->TriggerCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
@@ -49,6 +51,28 @@ void ULL_JumpVault_Ability::StartAbility_Implementation(AActor* Instigator, AAct
 	{
 		LLPlayerController->ShowKeyToPressUI("Press " + KeysToPress[InKeyPressed].ToString(), Player);
 	}
+	RemainingActionTime =  TimeToPressKey + Player->GetWorld()->GetTimeSeconds();
+
+}
+void ULL_JumpVault_Ability::Update_Implementation(float DeltaTime)
+{
+	
+	if(Player && IsRunning())
+	{
+		RemainingDeltaJumpTime = FMath::Clamp( ((RemainingActionTime - Player->GetWorld()->GetTimeSeconds()) / TimeToPressKey),0.f,1.f);
+		RemainingDeltaJumpTime = FMath::FInterpTo(RemainingDeltaJumpTime, 0.f, DeltaTime, 0.5f);
+
+		FString TRemainingStrinag = FString::Printf(TEXT("Remaining: %f"),RemainingDeltaJumpTime);
+		LogOnScreen(Player->GetWorld(),TRemainingStrinag,FColor::Red,0.1f);
+		if (LLPlayerController)
+		{
+			LLPlayerController->ShowKeyWithTimeToPressUI("Press "+KeysToPress[InKeyPressed].ToString(), Player,RemainingDeltaJumpTime);
+		}
+		if(RemainingDeltaJumpTime <= 0.0f)
+		{
+			AbilityComponent->StopAbilityByName(Player, "JumpOver", SpecialMovementZone);
+		}
+	}
 }
 
 
@@ -57,7 +81,7 @@ void ULL_JumpVault_Ability::StopAbility_Implementation(AActor* Instigator, AActo
 {
 	Super::StopAbility_Implementation(Instigator, SecondActor);
 	
-d	Player->ResetWalkSpeed(400.0f);
+	Player->ResetWalkSpeed(400.0f);
 	Player->bJumpingOver = false;
 	Player->bCanMove = true;
 	//Player->OnAutomaticMovementEnded.RemoveDynamic(this, &ULL_JumpVault_Ability::PlayerEndedMovement);
@@ -66,7 +90,10 @@ d	Player->ResetWalkSpeed(400.0f);
 
 
 	//Call the stop interaction, Mainly for the Beast slowmotion
-	
+	if (LLPlayerController)
+	{
+		LLPlayerController->RemoveKeyToPressUI();
+	}
 
 	Player = nullptr;
 	SpecialMovementZone->BlockerCollider->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
@@ -98,7 +125,10 @@ void ULL_JumpVault_Ability::KeyPressed(FKey KeyPressed)
 				Player->MovePlayerTo(PathPositions[1], 100.f, true,false,false);
 				bCanReceiveInput = false;
 			}
-
+			if (LLPlayerController)
+			{
+				LLPlayerController->RemoveKeyToPressUI();
+			}
 			
 			
 		}
@@ -107,9 +137,11 @@ void ULL_JumpVault_Ability::KeyPressed(FKey KeyPressed)
 			InKeyPressed += 1;
 			if (LLPlayerController)
 			{
-				LLPlayerController->ShowKeyToPressUI("Press "+KeysToPress[InKeyPressed].ToString(), Player);
+				LLPlayerController->ShowKeyWithTimeToPressUI("Press "+KeysToPress[InKeyPressed].ToString(), Player,RemainingActionTime);
+
 			}
 			bCanReceiveInput = true;
+			RemainingActionTime = TimeToPressKey+Player->GetWorld()->GetTimeSeconds();
 		}
 
 	}
@@ -117,10 +149,7 @@ void ULL_JumpVault_Ability::KeyPressed(FKey KeyPressed)
 	{
 		AbilityComponent->StopAbilityByName(Player, "JumpOver", SpecialMovementZone);
 		
-		if (LLPlayerController)
-		{
-			LLPlayerController->RemoveKeyToPressUI();
-		}
+		
 	}
 	
 }

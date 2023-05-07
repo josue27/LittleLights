@@ -58,7 +58,8 @@ public:
 		void ShowKeyToPressUI(FString keymsg,AActor* ActorToAttach);
 	UFUNCTION(BlueprintCallable)
 		void RemoveKeyToPressUI();
-
+	UFUNCTION(BlueprintCallable)
+	void ShowKeyWithTimeToPressUI(FString keymsg,AActor* ActorToAttach,float TimeRemainng);
 	UFUNCTION(BlueprintCallable)
 		void ShowTotemPiecesHUD(bool bShow);
 

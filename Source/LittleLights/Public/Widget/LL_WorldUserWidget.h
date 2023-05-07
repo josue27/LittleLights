@@ -32,5 +32,6 @@ class LITTLELIGHTS_API ULL_WorldUserWidget : public UUserWidget
 	AActor* AttachedActor;
 	UPROPERTY(BlueprintReadWrite,Category="LL_Player_UI")
 	FText TextOfInteraction;
-	
+	UPROPERTY(BlueprintReadWrite,Category="LL_Player_UI")
+	float TimeRemainingUI;
 };

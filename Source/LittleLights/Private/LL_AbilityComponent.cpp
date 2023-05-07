@@ -94,7 +94,7 @@ void ULL_AbilityComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	// ...
 	for(ULL_Ability* Ability : Abilities)
 	{
-		if(Ability->bTick)
+		if(Ability->bTick && Ability->IsRunning())
 		{
 			Ability->Update(DeltaTime);
 		}
