@@ -67,6 +67,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 		bool bOrbOff = false;
+
+	UFUNCTION(BlueprintCallable)
+	float PlayAnimation(UAnimMontage* AnimationToPlay);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

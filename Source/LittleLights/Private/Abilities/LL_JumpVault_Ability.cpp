@@ -147,9 +147,19 @@ void ULL_JumpVault_Ability::KeyPressed(FKey KeyPressed)
 	}
 	else
 	{
-		AbilityComponent->StopAbilityByName(Player, "JumpOver", SpecialMovementZone);
-		
-		
+		float AnimDuration = Player->PlayAnimation(JumpFailedAnimation);
+		FTimerHandle FailedAnimationTimerHandle;
+		FTimerDelegate FailedTimerDelegate;
+		FailedTimerDelegate.BindLambda([&]
+		{
+			
+			AbilityComponent->StopAbilityByName(Player, "JumpOver", SpecialMovementZone);
+		});
+		Player->GetWorldTimerManager().SetTimer(FailedAnimationTimerHandle,FailedTimerDelegate,AnimDuration,false);
+		if (LLPlayerController)
+		{
+			LLPlayerController->RemoveKeyToPressUI();
+		}
 	}
 	
 }

@@ -24,6 +24,9 @@ public:
 	//Time we want the user to  press a key
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LL | Ability")
 	float TimeToPressKey =3.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LL | Ability")
+	UAnimMontage* JumpFailedAnimation;
+	
 	UFUNCTION()
 	virtual void StartAbility_Implementation(AActor* Instigator, AActor* SecondActor) override;
 	UFUNCTION()
@@ -40,7 +43,7 @@ public:
 	UPROPERTY()
 	APlayerCharacter* Player;
 
-
+	//TODO:Add animation montage
 
 	UPROPERTY()
 	ALL_PlayerControllerBase* LLPlayerController = nullptr;

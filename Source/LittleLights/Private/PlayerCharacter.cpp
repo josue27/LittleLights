@@ -87,6 +87,17 @@ APlayerCharacter::APlayerCharacter()
 	stepsForSound = 10;
 }
 
+float APlayerCharacter::PlayAnimation(UAnimMontage* AnimationToPlay)
+{
+	if(AnimationToPlay)
+	{
+		PlayAnimMontage(AnimationToPlay,1.f);
+		
+		return AnimationToPlay->GetPlayLength();
+	}
+	return 0;
+}
+
 // Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {
