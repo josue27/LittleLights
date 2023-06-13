@@ -20,7 +20,11 @@ class LITTLELIGHTS_API ULL_BTService_CheckPlayerRange : public UBTService
 	FBlackboardKeySelector InRangeKey;
 	UPROPERTY(EditAnywhere,Category="AI")
 	float DistanceAttackRange = 500.0f;
-
+	UPROPERTY(EditAnywhere,Category="AI")
+	float DistanceToTeleport = 700.0f;
+	//Radius that you will look for the point to move in
+	UPROPERTY(EditAnywhere,Category="AI")
+	float RadiusToSpawn = 800.0f;
 	UPROPERTY(VisibleAnywhere,Category="AI")
 	FBlackboardKeySelector TargetKeyName ;	
 

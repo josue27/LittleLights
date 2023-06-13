@@ -6,8 +6,10 @@
 #include "AIController.h"
 #include "DrawDebugHelpers.h"
 #include "LLGamePlayFunctionLibrary.h"
-
+#include "AI/NavigationSystemBase.h"
+#include "NavigationSystem.h"
 #include "BehaviorTree/BlackboardComponent.h"
+
 
 //static TAutoConsoleVariable<bool> CVarDebugAI(TEXT("ll.DebugAI"),false,TEXT("Enable spawning of bots via timer"),ECVF_Cheat);
 
@@ -20,7 +22,7 @@ void ULL_BTService_CheckPlayerRange::TickNode(UBehaviorTreeComponent& OwnerComp,
 	if(ensure(BBComp))
 	{
 		AActor* TargetActor = Cast<AActor>( BBComp->GetValueAsObject(TargetKeyName.SelectedKeyName));
-		if(TargetActor && ULLGamePlayFunctionLibrary::IsPlayerAlive(TargetActor))
+		if(TargetActor && ULLGamePlayFunctionLibrary::IsPlayerAlive(TargetActor))//Do we have actor and is Alive?
 		{
 			AAIController* AIController = OwnerComp.GetAIOwner();
 			
@@ -31,6 +33,7 @@ void ULL_BTService_CheckPlayerRange::TickNode(UBehaviorTreeComponent& OwnerComp,
 				{
 					float Distance = FVector::Distance(TargetActor->GetActorLocation(),AIPawn->GetActorLocation());
 					bool InRange = Distance <= DistanceAttackRange;
+					bool InTeleportRange = Distance > DistanceToTeleport;
 					bool InLineOfSight = false;
 					if(InRange)
 					{
@@ -38,9 +41,28 @@ void ULL_BTService_CheckPlayerRange::TickNode(UBehaviorTreeComponent& OwnerComp,
 					}
 					else if (!InRange)
 					{
+						
 						ALL_AIBeast* BeastAI = Cast<ALL_AIBeast>(AIController->GetPawn());
 						if(BeastAI) BeastAI->bIsAttacking = false;
+						if(InTeleportRange)
+						{
+							UNavigationSystemV1* NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+							if (NavSys)
+							{
+								FNavLocation RandLocation;
+								NavSys->GetRandomReachablePointInRadius(TargetActor->GetActorLocation(),RadiusToSpawn,RandLocation);
+								AIPawn->SetActorLocation(RandLocation.Location);
+								//TODO:
+								//1-Make a timer event so it doesnt trigger that fast
+								//2-Make a counter so we dont keep doing this, like rand 2-3 times is ok?
+								//3-This should not affect the attack so we should spawn it a bit far for the player to be able to know what to do
+								//4-Make the randlocation be infront of the player aaaand maybe an angle, but in the mean time in front, next would be right left 60angel search
+								
+
+							}
+						}
 					}
+					
 					//BBComp->SetValueAsBool(InRangeKey.SelectedKeyName,(InRange && InLineOfSight));
 					BBComp->SetValueAsBool(InRangeKey.SelectedKeyName,(InRange));
 					/*
