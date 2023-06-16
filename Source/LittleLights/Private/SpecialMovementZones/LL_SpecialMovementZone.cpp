@@ -76,13 +76,6 @@ void ALL_SpecialMovementZone::Interact_Implementation(APawn* InstigatorPawn)
 		//Call slow down, mainly for beast
 		ALL_PlayerState* PlayerState = Cast<ALL_PlayerState>(PC->GetPlayerState());
 		PlayerState->OnInteractionStarted.Broadcast(this,true);
-		// FTimerHandle InteractionTimeHandler;
-		// FTimerDelegate TimerCallback;
-		// TimerCallback.BindLambda([]
-		// {
-		// 	
-		// });
-		// GetWorldTimerManager().SetTimer(InteractionTimeHandler,)
 		
 
 	}

@@ -130,6 +130,11 @@ void ALL_AIBeast::UserFinishedInteraction(AActor* ActorInteractor, bool bSlowTim
 }
 
 
+void ALL_AIBeast::ResetTeleports()
+{
+	CurrentTeleports = 0;
+}
+
 void ALL_AIBeast::Destroyed()
 {
 	

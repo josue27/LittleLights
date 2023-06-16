@@ -27,7 +27,8 @@ public:
 
 	UFUNCTION(BlueprintCallable,Category="Ability")
 	void StartAbilityByName(AActor* Instigator,FName AbilityName, AActor* ActorInfo = nullptr);
-        
+
+	//@Instigator is Player
 	UFUNCTION(BlueprintCallable,Category="Ability")
 	void StopAbilityByName(AActor* Instigator,FName AbilityName,  AActor* ActorInfo = nullptr);
 

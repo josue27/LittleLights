@@ -145,7 +145,7 @@ void ULL_InteractorComponent::PrimaryInteract()
 		
 		}
 
-		//It mightbe a special zone , pond or something else(for the moment)
+		//It might be a special zone , pond or something else(for the moment)
 		ILL_GameplayInterface::Execute_Interact(InteractableActor,OwnerPawn);
 		if(InteractionWidgetInstance)
 		{

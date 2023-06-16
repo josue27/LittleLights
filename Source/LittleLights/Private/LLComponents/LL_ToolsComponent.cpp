@@ -114,6 +114,7 @@ void ULL_ToolsComponent::RefillOrb(float Amount, bool bStartDecay)
 			{
 				PS->OnRefillingOrb.Broadcast(false);
 				PS->OnOrbRefillFinished.Broadcast(true);
+				PS->OnInteractionEnded.Broadcast(GetOwner(),false);
 			}
 		}
 

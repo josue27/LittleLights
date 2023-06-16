@@ -13,6 +13,7 @@
 
 //static TAutoConsoleVariable<bool> CVarDebugAI(TEXT("ll.DebugAI"),false,TEXT("Enable spawning of bots via timer"),ECVF_Cheat);
 
+
 void ULL_BTService_CheckPlayerRange::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
@@ -33,7 +34,7 @@ void ULL_BTService_CheckPlayerRange::TickNode(UBehaviorTreeComponent& OwnerComp,
 				{
 					float Distance = FVector::Distance(TargetActor->GetActorLocation(),AIPawn->GetActorLocation());
 					bool InRange = Distance <= DistanceAttackRange;
-					bool InTeleportRange = Distance > DistanceToTeleport;
+					bool InTeleportRange = Distance > DistanceToTriggerTeleport;
 					bool InLineOfSight = false;
 					if(InRange)
 					{
@@ -46,23 +47,24 @@ void ULL_BTService_CheckPlayerRange::TickNode(UBehaviorTreeComponent& OwnerComp,
 						if(BeastAI) BeastAI->bIsAttacking = false;
 						if(InTeleportRange)
 						{
-							UNavigationSystemV1* NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
-							if (NavSys)
-							{
-								FNavLocation RandLocation;
-								NavSys->GetRandomReachablePointInRadius(TargetActor->GetActorLocation(),RadiusToSpawn,RandLocation);
-								AIPawn->SetActorLocation(RandLocation.Location);
-								//TODO:
-								//1-Make a timer event so it doesnt trigger that fast
-								//2-Make a counter so we dont keep doing this, like rand 2-3 times is ok?
-								//3-This should not affect the attack so we should spawn it a bit far for the player to be able to know what to do
-								//4-Make the randlocation be infront of the player aaaand maybe an angle, but in the mean time in front, next would be right left 60angel search
-								
+							
+						
 
-							}
+							// if (BeastAI->CurrentTeleports < BeastAI->MaxTeleports)
+							// {
+							//
+							// 	// //1-Make a timer event so it doesnt trigger that fast
+							// 	// FTimerDelegate TimerCallback;
+							// 	// TimerCallback.BindUFunction(this,"TeleportToRandLocation",TargetActor,AIPawn);
+							// 	// GetWorld()->GetTimerManager().SetTimer(TriggerTeleporTimer,TimerCallback,3.f,false);
+							//
+							// 	
+							// 	
+							//
+							// }
 						}
 					}
-					
+					BBComp->SetValueAsBool(TeleportTriggerKeyName.SelectedKeyName,(InTeleportRange));
 					//BBComp->SetValueAsBool(InRangeKey.SelectedKeyName,(InRange && InLineOfSight));
 					BBComp->SetValueAsBool(InRangeKey.SelectedKeyName,(InRange));
 					/*
@@ -94,5 +96,34 @@ void ULL_BTService_CheckPlayerRange::TickNode(UBehaviorTreeComponent& OwnerComp,
 			}
 
 		}
+	}
+}
+
+//TODO:I dont like this being here, should we move it to Beast cpp
+void ULL_BTService_CheckPlayerRange::TeleportToRandLocation(AActor* TargetActor,APawn* AIPawn)
+{
+	UNavigationSystemV1* NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+	if (NavSys )
+	{
+		FNavLocation RandLocation;
+		FVector OriginLocationSearch = TargetActor->GetActorLocation() +( TargetActor->GetActorForwardVector() * DistanceToTeleport);
+		DrawDebugSphere(GetWorld(),OriginLocationSearch,RadiusToSpawn,16,FColor::Yellow,true,5.f);
+		if(NavSys->GetRandomReachablePointInRadius(OriginLocationSearch,RadiusToSpawn,RandLocation))
+		{
+			AIPawn->SetActorLocation(RandLocation.Location);
+			ALL_AIBeast* BeastAI = Cast<ALL_AIBeast>(AIPawn);
+			BeastAI->CurrentTeleports++;
+		}
+		else
+		{
+			FTimerDelegate TimerCallback;
+			TimerCallback.BindUFunction(this,"TeleportToRandLocation",TargetActor,AIPawn);
+								
+			GetWorld()->GetTimerManager().SetTimer(TriggerTeleporTimer,TimerCallback,3.f,false);
+		}
+	
+		//3-This should not affect the attack so we should spawn it a bit far for the player to be able to know what to do
+		//4-Make the randlocation be infront of the player aaaand maybe an angle, but in the mean time in front, next would be right left 60angel search
+	
 	}
 }

@@ -72,8 +72,6 @@ void ALL_Orb::StopDecay()
 void ALL_Orb::RefillOrb(float Amount)
 {
 
-	//TODO:this is wrong but works for us now	
-	//RemainingLightTime = FMath::Clamp(Amount, 1.f, MaxLightUpTime) + GetWorld()->GetTimeSeconds();
 	
 
 	//this should work 
