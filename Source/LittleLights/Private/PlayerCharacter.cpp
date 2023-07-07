@@ -20,6 +20,7 @@
 #include "Camera/CameraComponent.h"
 #include "LL_InteractorComponent.h"
 #include "LL_PlayerState.h"
+#include "Abilities/LL_Sprint_Ability.h"
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "Perception/PawnSensingComponent.h"
 #include "Perception/AISense_Hearing.h"
@@ -117,8 +118,21 @@ void APlayerCharacter::BeginPlay()
 		UpdateFov(this, ToolsComponent->Orb->RemainingDeltaTime);
 	}
 
-
-	CurrentStamine = Stamine;
+	//Get MaxStamine for the player
+	CurrentStamine = Stamine;//this is weird it should be deleted
+	if(AbilityComponent)
+	{
+		
+		if(ULL_Ability* SprintAbility = AbilityComponent->GetAbilityByName(FName("Sprint")))
+		{
+			if(ULL_Sprint_Ability* Sprint = Cast<ULL_Sprint_Ability>( SprintAbility))
+			{
+				Stamine = Sprint->MaxStamine;
+			}
+		}
+	}
+	
+	
 
 	if (CurveFloat)
 	{

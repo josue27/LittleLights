@@ -123,3 +123,17 @@ void ULL_AbilityComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 }
 
 
+ULL_Ability* ULL_AbilityComponent::GetAbilityByName(FName AbilityName)
+{
+	
+	for(int32 i =0; i< Abilities.Num();i++)
+	{
+		if(Abilities[i]->AbilityName == AbilityName)
+		{
+			return Abilities[i];
+		}
+	}
+	return  nullptr;
+}
+
+

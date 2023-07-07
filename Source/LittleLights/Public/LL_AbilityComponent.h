@@ -35,7 +35,8 @@ public:
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnStamineChanged OnStamineChanged;
 
-	
+	UFUNCTION(BlueprintCallable)
+	ULL_Ability* GetAbilityByName(FName AbilityName);
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
