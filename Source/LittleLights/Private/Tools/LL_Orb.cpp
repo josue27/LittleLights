@@ -2,6 +2,9 @@
 
 
 #include "Tools/LL_Orb.h"
+
+#include "LL_PlayerState.h"
+#include "Kismet/GameplayStatics.h"
 #include "LLComponents/LL_ToolsComponent.h"
 // Sets default values
 ALL_Orb::ALL_Orb()
@@ -55,6 +58,15 @@ void ALL_Orb::UpdateLight(float DeltaTime)
 	{
 		//InstanceLiquidMaterial->SetVectorParameterValue(FName(TEXT("Emissive_Ctrl"),);
 	}
+	if(RemainingDeltaTime <= 0.f)
+	{
+		bStartDecay = false;
+		if(ALL_PlayerState* PS = Cast<ALL_PlayerState>(UGameplayStatics::GetPlayerState(GetWorld(),0)))
+		{
+			PS->OnOrbEmpty.Broadcast(GetOwner(),false);
+		}
+		
+	}
 	
 }
 
@@ -71,9 +83,7 @@ void ALL_Orb::StopDecay()
 
 void ALL_Orb::RefillOrb(float Amount)
 {
-
 	
-
 	//this should work 
 	float AmountToAdd = FMath::Clamp(Amount + RemainingLightTime, 1.f, MaxLightUpTime);
 	RemainingLightTime = AmountToAdd + GetWorld()->GetTimeSeconds();

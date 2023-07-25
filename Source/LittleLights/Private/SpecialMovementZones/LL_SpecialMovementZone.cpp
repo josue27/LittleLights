@@ -8,6 +8,7 @@
 #include "PlayerCharacter.h"
 #include "LittleLights/LittleLights.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -43,6 +44,8 @@ void ALL_SpecialMovementZone::Tick(float DeltaTime)
 
 }
 
+
+
 void ALL_SpecialMovementZone::Interact_Implementation(APawn* InstigatorPawn)
 {
 	APlayerCharacter* PC = Cast<APlayerCharacter>(InstigatorPawn);
@@ -76,10 +79,16 @@ void ALL_SpecialMovementZone::Interact_Implementation(APawn* InstigatorPawn)
 		//Call slow down, mainly for beast
 		ALL_PlayerState* PlayerState = Cast<ALL_PlayerState>(PC->GetPlayerState());
 		PlayerState->OnInteractionStarted.Broadcast(this,true);
-		
+		PlayerState->OnInteractionEnded.AddDynamic(this,&ALL_SpecialMovementZone::InteractionEnded_Implementation);
 
 	}
 }
+
+void ALL_SpecialMovementZone::InteractionEnded_Implementation(AActor* InstigatorPawn, bool bSlowTime)
+{
+	PlayerEndedTask();
+}
+
 FText ALL_SpecialMovementZone::GetInteractText_Implementation(APawn* InstigatorPawn)
 {
 	APlayerCharacter* Player = Cast<APlayerCharacter>(InstigatorPawn);
@@ -88,4 +97,15 @@ FText ALL_SpecialMovementZone::GetInteractText_Implementation(APawn* InstigatorP
 		return InteractionMessage;
 	}
 	return FText::GetEmpty();
+}
+
+void ALL_SpecialMovementZone::PlayerEndedTask()
+{
+	BlockerCollider->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	TriggerCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	ALL_PlayerState* PlayerState = Cast<ALL_PlayerState>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
+	if(PlayerState)
+	{
+		PlayerState->OnInteractionEnded.RemoveDynamic(this,&ALL_SpecialMovementZone::InteractionEnded_Implementation);
+	}
 }

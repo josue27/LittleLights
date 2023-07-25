@@ -113,16 +113,16 @@ void ULL_CrouchCross_Ability::StopAbility_Implementation(AActor* Instigator, AAc
 	//Player->OnAutomaticMovementEnded.RemoveDynamic(this, &ULL_CrouchCross_Ability::PlayerEndedMovement);
 	Player->OnKeyPressed.RemoveDynamic(this, &ULL_CrouchCross_Ability::KeyPressed);
 	Player->DisableInteraction(false);
-
+	
 
 	//Call the stop interaction, Mainly for the Beast slowmotion
 	
 
 	Player = nullptr;
-	SpecialMovementZone->BlockerCollider->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-	SpecialMovementZone->TriggerCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-
+	
+	SpecialMovementZone->PlayerEndedTask();
 	SpecialMovementZone = nullptr;
+	
 	InKeyPressed = 0;
 	PathPositions.Empty();
 }

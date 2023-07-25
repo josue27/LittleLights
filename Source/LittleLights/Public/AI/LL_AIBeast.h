@@ -46,7 +46,8 @@ protected:
 
 	virtual void PostInitializeComponents() override;
 
-	UPROPERTY()
+	//Reference of PlayerCharacter, set on BeginPlay
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		APlayerCharacter* LLPlayer;
 	
 	UPROPERTY()
@@ -76,8 +77,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ResetTeleports();
 
+	/**
+	 * @brief 
+	 * @param ActorInteracting  usually it should be the player PlayerCharater
+	 * @param bSlowTime should we slow time, usually affects the Beast
+	 */
+	UFUNCTION(BlueprintNativeEvent)
+	void OrbIsEmpty(AActor* ActorInteracting,bool bSlowTime);
 	
-
 	virtual void Destroyed() override;
 
 };

@@ -25,6 +25,12 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	/**
+	 * @brief Starts the ability for the player
+	 * @param Instigator usually the player Pawn
+	 * @param AbilityName name on string
+	 * @param ActorInfo usually who called the start of the ability, can be the player, or SpecialMovementZone
+	 */
 	UFUNCTION(BlueprintCallable,Category="Ability")
 	void StartAbilityByName(AActor* Instigator,FName AbilityName, AActor* ActorInfo = nullptr);
 
