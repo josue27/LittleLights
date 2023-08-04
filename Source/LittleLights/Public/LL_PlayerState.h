@@ -13,6 +13,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnObstacleStarted,bool,bStarted);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnOrbRefillFinished, bool, bRefillingFinished);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractionStarted,AActor*,ActorInteracting,bool,bSlowTime);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractionEnded,AActor*,ActorInteracting,bool,bSlowTime);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnOrbEmpty,AActor*,ActorInteracting,bool,bSlowTime);
 /**
  * 
  */
@@ -56,4 +57,6 @@ public:
 	FOnInteractionStarted OnInteractionStarted;
 	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, Category = "LevelState")
 	FOnInteractionEnded OnInteractionEnded;
+	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, Category = "LevelState")
+	FOnOrbEmpty OnOrbEmpty;
 };

@@ -192,7 +192,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float JumpForce = 3000.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float Stamine = 10.0f;
+		float Stamine = 10.0f;//TODO: this is not pretty we should use the MaxStamina from the SprintAbility
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float CurrentStamine = 0.0f;
 	//Deprecated:using the ability settings

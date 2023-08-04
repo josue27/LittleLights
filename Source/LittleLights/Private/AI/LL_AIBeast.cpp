@@ -44,6 +44,7 @@ void ALL_AIBeast::BeginPlay()
 	{
 		LLPlayerState->OnInteractionStarted.AddDynamic(this,&ALL_AIBeast::ALL_AIBeast::UserStartedInteraction);
 		LLPlayerState->OnInteractionEnded.AddDynamic(this,&ALL_AIBeast::ALL_AIBeast::UserFinishedInteraction);
+		LLPlayerState->OnOrbEmpty.AddDynamic(this,&ThisClass::ALL_AIBeast::OrbIsEmpty);
 	}
 }
 
@@ -129,6 +130,15 @@ void ALL_AIBeast::UserFinishedInteraction(AActor* ActorInteractor, bool bSlowTim
 
 }
 
+
+void ALL_AIBeast::ResetTeleports()
+{
+	CurrentTeleports = 0;
+}
+
+void ALL_AIBeast::OrbIsEmpty_Implementation(AActor* ActorInteracting, bool bSlowTime)
+{
+}
 
 void ALL_AIBeast::Destroyed()
 {

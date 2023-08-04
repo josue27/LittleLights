@@ -28,6 +28,8 @@ public:
 	void Interact(APawn* InstigatorPawn);
 
 	UFUNCTION(BlueprintNativeEvent)
+	void InteractionEnded(AActor* InstigatorPawn,bool bSlowTime);
+	UFUNCTION(BlueprintNativeEvent)
 	void StartGame();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)

@@ -149,6 +149,14 @@ void ALL_PlayerControllerBase::TotemPiecesDeliveredHUD()
 	}
 }
 
+void ALL_PlayerControllerBase::ShowDialogue(FText DialogueToDisplay, bool bShow)
+{
+	if(LL_GameHUD)
+	{
+		LL_GameHUD->PlayerOverlay->ShowDialogue(bShow, DialogueToDisplay);
+	}
+}
+
 void ALL_PlayerControllerBase::ShowBeastPresenceImg_Implementation(bool bShow)
 {
 	if(LL_GameHUD)

@@ -25,3 +25,8 @@ void ULL_PlayerOverlay::ShowBeastPresenceHUD_Implementation(bool bShow)
 
 	}
 }
+
+void ULL_PlayerOverlay::ShowDialogue_Implementation(bool bShow,const FText& TextToDisplay)
+{
+	
+}

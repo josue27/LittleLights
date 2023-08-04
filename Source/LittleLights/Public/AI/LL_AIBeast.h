@@ -46,7 +46,8 @@ protected:
 
 	virtual void PostInitializeComponents() override;
 
-	UPROPERTY()
+	//Reference of PlayerCharacter, set on BeginPlay
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		APlayerCharacter* LLPlayer;
 	
 	UPROPERTY()
@@ -60,6 +61,9 @@ public:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "LLBeast")
 		bool bIsAttacking;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "LLBeast")
+	int32 MaxTeleports = 3;
+	int32 CurrentTeleports = 0;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "LLBeast")
 	float SlowTimeOnInteraction = 0.2f;
@@ -69,8 +73,18 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void BasicAttackSequence();
 
-	
+	//Resets the CurrentTeleports for the beast to 0, preferably call it when beast is not longer chasing the player
+	UFUNCTION(BlueprintCallable)
+	void ResetTeleports();
 
+	/**
+	 * @brief 
+	 * @param ActorInteracting  usually it should be the player PlayerCharater
+	 * @param bSlowTime should we slow time, usually affects the Beast
+	 */
+	UFUNCTION(BlueprintNativeEvent)
+	void OrbIsEmpty(AActor* ActorInteracting,bool bSlowTime);
+	
 	virtual void Destroyed() override;
 
 };

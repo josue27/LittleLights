@@ -84,7 +84,7 @@ void ULL_JumpVault_Ability::StopAbility_Implementation(AActor* Instigator, AActo
 	Player->ResetWalkSpeed(400.0f);
 	Player->bJumpingOver = false;
 	Player->bCanMove = true;
-	//Player->OnAutomaticMovementEnded.RemoveDynamic(this, &ULL_JumpVault_Ability::PlayerEndedMovement);
+	Player->OnAutomaticMovementEnded.RemoveDynamic(this, &ULL_JumpVault_Ability::PlayerEndedMovement);
 	Player->OnKeyPressed.RemoveDynamic(this, &ULL_JumpVault_Ability::KeyPressed);
 	Player->DisableInteraction(false);
 
@@ -96,8 +96,7 @@ void ULL_JumpVault_Ability::StopAbility_Implementation(AActor* Instigator, AActo
 	}
 
 	Player = nullptr;
-	SpecialMovementZone->BlockerCollider->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-	SpecialMovementZone->TriggerCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	SpecialMovementZone->PlayerEndedTask();
 
 	SpecialMovementZone = nullptr;
 	InKeyPressed = 0;

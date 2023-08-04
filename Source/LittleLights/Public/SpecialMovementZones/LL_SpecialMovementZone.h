@@ -18,6 +18,7 @@ public:
 	// Sets default values for this actor's properties
 	ALL_SpecialMovementZone();
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
+	virtual void InteractionEnded_Implementation(AActor* InstigatorPawn, bool bSlowTime) override;
 	virtual FText GetInteractText_Implementation(APawn* InstigatorPawn) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -51,5 +52,8 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintCallable)
+	void PlayerEndedTask();
 
 };

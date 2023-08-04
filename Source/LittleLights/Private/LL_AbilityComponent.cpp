@@ -3,6 +3,8 @@
 
 #include "LL_AbilityComponent.h"
 #include "LL_Ability.h"
+#include "PlayerCharacter.h"
+#include "LL_PlayerState.h"
 #include "LittleLights/LittleLights.h"
 
 // Sets default values for this component's properties
@@ -77,7 +79,17 @@ void ULL_AbilityComponent::StopAbilityByName(AActor* Instigator, FName AbilityNa
 				Ability->StopAbility(Instigator,ActorInfo);
 				//FString compstring =  FString::Printf((TEXT("Stop ability:%s"), AbilityName));
 				LogOnScreen(this, FString(TEXT("Ability stopped")));
-
+				
+				APlayerCharacter* PC = Cast<APlayerCharacter>(Instigator);
+				if (PC)
+				{
+					ALL_PlayerState* PS = Cast<ALL_PlayerState>(PC->GetPlayerState());
+					if (PS)
+					{
+						PS->OnInteractionEnded.Broadcast(GetOwner(),false);
+					}
+				}
+				
 				return;
 			}
 		}
@@ -94,7 +106,11 @@ void ULL_AbilityComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	// ...
 	for(ULL_Ability* Ability : Abilities)
 	{
-		if(Ability->bTick && Ability->IsRunning())
+		if(Ability->AbilityName == "Sprint" && Ability->bTick)
+		{
+			Ability->Update(DeltaTime);
+		}
+		else if(Ability->bTick && Ability->IsRunning())
 		{
 			Ability->Update(DeltaTime);
 		}
@@ -104,6 +120,20 @@ void ULL_AbilityComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 		FString DebugMsg = GetNameSafe(GetOwner()) + " : " + ActiveGameplayTags.ToStringSimple();
 		GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, DebugMsg);
 	}
+}
+
+
+ULL_Ability* ULL_AbilityComponent::GetAbilityByName(FName AbilityName)
+{
+	
+	for(int32 i =0; i< Abilities.Num();i++)
+	{
+		if(Abilities[i]->AbilityName == AbilityName)
+		{
+			return Abilities[i];
+		}
+	}
+	return  nullptr;
 }
 
 
