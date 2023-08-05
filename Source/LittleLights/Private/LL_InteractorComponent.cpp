@@ -21,6 +21,7 @@ ULL_InteractorComponent::ULL_InteractorComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
+	bInteractionStarted = false;
 	// ...
 }
 
@@ -111,6 +112,7 @@ void ULL_InteractorComponent::FindInteractable()
 		if(InteractionWidgetInstance)
 		{
 			InteractionWidgetInstance->RemoveFromParent();
+			bInteractionStarted = false;
 		}
 	}
 	if(CVarDrawDebugInteraction.GetValueOnGameThread())
@@ -151,6 +153,7 @@ void ULL_InteractorComponent::PrimaryInteract()
 		{
 			InteractionWidgetInstance->RemoveFromParent();
 		}
+		bInteractionStarted = true;
 	}
 	
 }

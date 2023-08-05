@@ -105,7 +105,8 @@ void APlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 
 
-	
+	if(bIsTutorialCharacter)
+		return;
 
 	//TODO:DELETE??
 	//FillLightInitRotation = FillLight->GetComponentRotation();

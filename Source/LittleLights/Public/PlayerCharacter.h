@@ -56,7 +56,9 @@ public:
 	// Sets default values for this character's properties
 	APlayerCharacter();
 
-
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LLPlayer|Tutorial")
+	bool bIsTutorialCharacter;
+	
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnAutomaticMovementEnded OnAutomaticMovementEnded;
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)

@@ -37,7 +37,8 @@ protected:
 	UPROPERTY()
 	AActor* InteractableActor;
 
-	
+	UPROPERTY(BlueprintReadWrite)
+	bool bInteractionStarted ;
 
 
 public:	

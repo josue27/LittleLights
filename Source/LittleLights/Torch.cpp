@@ -115,7 +115,11 @@ void ATorch::LightDecay()
 	DeltaIntensity = RemainingTime;
 
 	APlayerCharacter* PC = Cast<APlayerCharacter>(GetOwner());
-	ULL_AbilityComponent* AC = Cast<ULL_AbilityComponent>(PC->AbilityComponent);
+	if(PC)
+	{
+		
+		ULL_AbilityComponent* AC = Cast<ULL_AbilityComponent>(PC->AbilityComponent);
+	}
 	
 	
 }
