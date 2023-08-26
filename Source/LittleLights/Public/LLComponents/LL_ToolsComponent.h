@@ -45,6 +45,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 #pragma region Orb
+	UFUNCTION(BlueprintCallable, Category = "LL Tools | Orb")
 	void SpawnOrb();
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "LL Tools | Orb")

@@ -97,7 +97,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite,Category="Player State")
 	bool bIsAlive;//changed if captured o anything else;
 	
-	UFUNCTION( Category="LLPLayer| Player Camera")
+	UFUNCTION(BlueprintCallable, Category="LLPLayer| Player Camera")
 	void UpdateFov(AActor* InstigatorActor, float DeltaRemainingTime);
 	
 

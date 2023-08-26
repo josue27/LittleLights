@@ -4,6 +4,7 @@
 #include "LL_InteractorComponent.h"
 
 #include "DrawDebugHelpers.h"
+#include "InterchangeResult.h"
 #include "LLGamePlayFunctionLibrary.h"
 #include "LL_GameplayInterface.h"
 #include "PlayerCharacter.h"
@@ -104,7 +105,8 @@ void ULL_InteractorComponent::FindInteractable()
 			//If there is no text remove | Todo: Should we paste a default text?
 			if(InteractionWidgetInstance->TextOfInteraction.IsEmpty())
 			{
-				InteractionWidgetInstance->RemoveFromParent();
+				InteractionWidgetInstance->TextOfInteraction = FText::FromString("PRESS E");
+				UE_LOG(LogTemp,Warning,TEXT("%s no interact text found, set default"),*GetName());
 			}
 		}
 	}else

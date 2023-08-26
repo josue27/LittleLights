@@ -34,8 +34,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bIsBalancing = false;
 
-	/*UPROPERTY(EditAnywhere, Meta = (MakeEditWidget = true))
-		TArray<FVector>PathPoints;*/
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		USceneComponent* RootComp;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -44,7 +43,9 @@ public:
 		UBoxComponent* TriggerCollider;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UBoxComponent* BlockerCollider;
-	
+	//If true it will destroy after the player completes de movement
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsSingleUse;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

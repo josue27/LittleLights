@@ -105,12 +105,9 @@ void APlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 
 
-	if(bIsTutorialCharacter)
-		return;
-
-	//TODO:DELETE??
-	//FillLightInitRotation = FillLight->GetComponentRotation();
-
+	// if(bIsTutorialCharacter)
+	// 	return;
+	
 		
 	//Bind delta orb remainig time to the FOV
 	if (ToolsComponent && ToolsComponent->Orb)
@@ -121,6 +118,7 @@ void APlayerCharacter::BeginPlay()
 
 	//Get MaxStamine for the player
 	CurrentStamine = Stamine;//this is weird it should be deleted
+	
 	if(AbilityComponent)
 	{
 		
@@ -134,7 +132,7 @@ void APlayerCharacter::BeginPlay()
 	}
 	
 	
-
+	//Took from example project from UE
 	if (CurveFloat)
 	{
 		FOnTimelineFloat TimelineProgress;
@@ -161,7 +159,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	//UpdateRotacion();
-	
+	if(bIsTutorialCharacter)return;
 	CurveTimeline.TickTimeline(DeltaTime);
 
 	//LookingAt();

@@ -78,8 +78,11 @@ void ALL_SpecialMovementZone::Interact_Implementation(APawn* InstigatorPawn)
 		}
 		//Call slow down, mainly for beast
 		ALL_PlayerState* PlayerState = Cast<ALL_PlayerState>(PC->GetPlayerState());
-		PlayerState->OnInteractionStarted.Broadcast(this,true);
-		PlayerState->OnInteractionEnded.AddDynamic(this,&ALL_SpecialMovementZone::InteractionEnded_Implementation);
+		if(PlayerState)
+		{
+			PlayerState->OnInteractionStarted.Broadcast(this,true);
+			PlayerState->OnInteractionEnded.AddDynamic(this,&ALL_SpecialMovementZone::InteractionEnded_Implementation);
+		}
 
 	}
 }
@@ -107,5 +110,10 @@ void ALL_SpecialMovementZone::PlayerEndedTask()
 	if(PlayerState)
 	{
 		PlayerState->OnInteractionEnded.RemoveDynamic(this,&ALL_SpecialMovementZone::InteractionEnded_Implementation);
+	}
+	if(bIsSingleUse)
+	{
+		TriggerCollider->SetCollisionResponseToChannels(ECollisionResponse::ECR_Ignore);
+		
 	}
 }

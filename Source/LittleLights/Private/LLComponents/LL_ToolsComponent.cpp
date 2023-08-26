@@ -105,18 +105,18 @@ void ULL_ToolsComponent::RefillOrb(float Amount, bool bStartDecay)
 		if(bStartDecay) StartOrbDecay();
 
 		
-
-		APlayerCharacter* PC = Cast<APlayerCharacter>(GetOwner());
-		if (PC)
-		{
-			ALL_PlayerState* PS = Cast<ALL_PlayerState>(PC->GetPlayerState());
-			if (PS)
-			{
-				PS->OnRefillingOrb.Broadcast(false);
-				PS->OnOrbRefillFinished.Broadcast(true);
-				PS->OnInteractionEnded.Broadcast(GetOwner(),false);
-			}
-		}
+	//Is this duplicated?
+		// APlayerCharacter* PC = Cast<APlayerCharacter>(GetOwner());
+		// if (PC)
+		// {
+		// 	ALL_PlayerState* PS = Cast<ALL_PlayerState>(PC->GetPlayerState());
+		// 	if (PS)
+		// 	{
+		// 		PS->OnRefillingOrb.Broadcast(false);
+		// 		PS->OnOrbRefillFinished.Broadcast(true);
+		// 		PS->OnInteractionEnded.Broadcast(GetOwner(),false);
+		// 	}
+		// }
 
 	}
 	LogOnScreen(GetWorld(), "Orb refilled");
@@ -129,21 +129,22 @@ void ULL_ToolsComponent::OrbRefillFinished()
 	RefillOrb(TempRefillAmount);
 
 	APlayerCharacter* PC = Cast<APlayerCharacter>(GetOwner());
-		if (PC)
+	if (PC)
+	{
+		PC->bLightingTorch = false;
+		PC->ContinueMovement();
+		PC->ResetCameraPosition();
+		//PC->bUpdateFov = true;
+		ALL_PlayerState* PS = Cast<ALL_PlayerState>(PC->GetPlayerState());
+		if (PS)
 		{
-			PC->bLightingTorch = false;	
-			PC->ContinueMovement();
-			PC->ResetCameraPosition();
-			//PC->bUpdateFov = true;
-			ALL_PlayerState* PS = Cast<ALL_PlayerState>(PC->GetPlayerState());
-			if (PS)
-			{
-				PS->OnRefillingOrb.Broadcast(false);
-				PS->OnOrbRefillFinished.Broadcast(true);
-			}
-		}	
+			PS->OnRefillingOrb.Broadcast(false);
+			PS->OnOrbRefillFinished.Broadcast(true);
+			PS->OnInteractionEnded.Broadcast(GetOwner(), false);
+		}
+	}
 
-		LogOnScreen(GetWorld(), "Orb refilled finish called");
+	LogOnScreen(GetWorld(), "Orb refilled finish called");
 
 	
 
