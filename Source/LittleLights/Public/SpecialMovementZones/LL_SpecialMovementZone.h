@@ -46,6 +46,8 @@ public:
 	//If true it will destroy after the player completes de movement
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsSingleUse;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bUsed;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

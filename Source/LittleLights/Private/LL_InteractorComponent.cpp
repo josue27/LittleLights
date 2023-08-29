@@ -10,6 +10,7 @@
 #include "PlayerCharacter.h"
 #include "Tottem_Piece.h"
 #include "Blueprint/UserWidget.h"
+#include "SpecialMovementZones/LL_SpecialMovementZone.h"
 #include "Widget/LL_WorldUserWidget.h"
 
 static TAutoConsoleVariable<bool> CVarDrawDebugInteraction(TEXT("ll.DrawDebugInteraction"),false,TEXT("Drawing Debug InteractiveComponent"),ECVF_Cheat);
@@ -72,9 +73,20 @@ void ULL_InteractorComponent::FindInteractable()
 		AActor* Actor = Hit.GetActor();
 		if(Actor->Implements<ULL_GameplayInterface>() && !Cast<APlayerCharacter>(Actor))
 		{
+			if(ALL_SpecialMovementZone* SpecialMZ = Cast<ALL_SpecialMovementZone>(Actor))
+			{
+				if(SpecialMZ->bIsSingleUse && SpecialMZ->bUsed)
+				{
+					break;
+				}
+				InteractableActor = Actor;
+			}
+			else
+			{
+				InteractableActor = Actor;
+			}
 			
 			
-			InteractableActor = Actor;
 			
 			//UE_LOG(LogTemp,Warning,TEXT("Hitted with Interactive Object"));
 			break;

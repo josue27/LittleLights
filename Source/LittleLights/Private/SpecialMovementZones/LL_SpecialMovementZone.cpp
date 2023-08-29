@@ -48,6 +48,11 @@ void ALL_SpecialMovementZone::Tick(float DeltaTime)
 
 void ALL_SpecialMovementZone::Interact_Implementation(APawn* InstigatorPawn)
 {
+	if(bIsSingleUse && bUsed)
+	{
+		//This is mainly for tutorial purposes but we might need a case for single use
+		return;
+	}
 	APlayerCharacter* PC = Cast<APlayerCharacter>(InstigatorPawn);
 	if (PC)
 	{
@@ -81,7 +86,7 @@ void ALL_SpecialMovementZone::Interact_Implementation(APawn* InstigatorPawn)
 		if(PlayerState)
 		{
 			PlayerState->OnInteractionStarted.Broadcast(this,true);
-			PlayerState->OnInteractionEnded.AddDynamic(this,&ALL_SpecialMovementZone::InteractionEnded_Implementation);
+			PlayerState->OnInteractionEnded.AddDynamic(this,&ALL_SpecialMovementZone::InteractionEnded);
 		}
 
 	}
@@ -114,6 +119,7 @@ void ALL_SpecialMovementZone::PlayerEndedTask()
 	if(bIsSingleUse)
 	{
 		TriggerCollider->SetCollisionResponseToChannels(ECollisionResponse::ECR_Ignore);
+		bUsed = true;
 		
 	}
 }
