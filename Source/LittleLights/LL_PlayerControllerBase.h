@@ -67,7 +67,7 @@ public:
 		void TotemPiecesDeliveredHUD();
 
 	UFUNCTION(BlueprintCallable)
-	void ShowDialogue(FText DialogueToDisplay, bool bShow);
+	void ShowDialogue(FLL_DialogueLineStruct DialogueStruct, bool bShow);
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	void ShowBeastPresenceImg(bool bShow);
 

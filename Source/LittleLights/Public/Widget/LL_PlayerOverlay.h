@@ -34,5 +34,5 @@ public:
 	void ShowBeastPresenceHUD(bool bShow);
 
 	UFUNCTION(BlueprintNativeEvent)
-	void ShowDialogue(bool bShow,const FText& TextToDisplay);
+	void ShowDialogue(bool bShow, FLL_DialogueLineStruct DialogueStruct);
 };

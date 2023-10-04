@@ -54,14 +54,17 @@ void ULL_DialogueComponent::StartDialogue()
 				InDialogueIndex++;
 				return;
 			}
-			
-			PC->ShowDialogue(FText::FromString("[Closing....]"), false);
+			FLL_DialogueLineStruct DialogueStruct;
+			DialogueStruct.Dialogue =FText::FromString("[Closing....]");
+			PC->ShowDialogue(DialogueStruct, false);
 			
 			
 		}
 		else
 		{
-			PC->ShowDialogue(FText::FromString("[Closing....]"), false);
+			FLL_DialogueLineStruct DialogueStruct;
+			DialogueStruct.Dialogue =FText::FromString("[Closing....]");
+			PC->ShowDialogue(DialogueStruct, false);
 
 		}
 		InDialogueIndex = 0;
@@ -90,13 +93,15 @@ void ULL_DialogueComponent::StartDialogue()
 			//Check if we hava something in the TempDialogues
 			if(TempDialogues.Num() > 0)
 			{
-				PC->ShowDialogue(TempDialogues[InDialogueIndex], true);
+				
+				PC->ShowDialogue( TempDialogues[InDialogueIndex], true);
 				InDialogueIndex++;
 			}
 			else
 			{
-				
-				PC->ShowDialogue(FText::FromString("[DUMMY DIALOGUE]"), true);
+				FLL_DialogueLineStruct DialogueStruct;
+				DialogueStruct.Dialogue =FText::FromString("[DUMMY DIALOGUE]");
+				PC->ShowDialogue(DialogueStruct, true);
 			}
 		}
 	}

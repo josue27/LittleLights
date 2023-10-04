@@ -19,6 +19,26 @@ enum class LL_DialogueState : uint8
 };
 
 USTRUCT(BlueprintType)
+struct FLL_DialogueLineStruct  
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,  meta = (MultiLine="true"))
+	FText Dialogue;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UTexture2D* SpeakerA_Portrait;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	ESlateVisibility SpeakerA_Visibility;
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UTexture2D* SpeakerB_Portrait;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	ESlateVisibility SpeakerB_Visibility;
+	
+};
+
+USTRUCT(BlueprintType)
 struct FLL_Dialogue : public FTableRowBase
 {
 	GENERATED_BODY()
@@ -26,8 +46,8 @@ struct FLL_Dialogue : public FTableRowBase
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	FString ID;
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, meta = (MultiLine="true"))
-	TArray<FText> DialogueLines;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TArray<FLL_DialogueLineStruct> DialogueLines;
 	
 };
 
@@ -56,7 +76,7 @@ protected:
 	int32 InDialogueIndex = 0;
 
 	UPROPERTY(BlueprintReadOnly)
-	TArray<FText> TempDialogues;
+	TArray<FLL_DialogueLineStruct> TempDialogues;
 
 public:	
 	// Called every frame

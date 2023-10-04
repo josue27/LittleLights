@@ -4,6 +4,7 @@
 #include "Widget/LL_PlayerOverlay.h"
 
 #include "Components/Image.h"
+#include "DialogueSystem/LL_DialogueComponent.h"
 
 void ULL_PlayerOverlay::ShowTotemPieceHUD_Implementation(bool bShow)
 {
@@ -26,7 +27,7 @@ void ULL_PlayerOverlay::ShowBeastPresenceHUD_Implementation(bool bShow)
 	}
 }
 
-void ULL_PlayerOverlay::ShowDialogue_Implementation(bool bShow,const FText& TextToDisplay)
+void ULL_PlayerOverlay::ShowDialogue_Implementation(bool bShow,  FLL_DialogueLineStruct DialogueStruct)
 {
 	
 }

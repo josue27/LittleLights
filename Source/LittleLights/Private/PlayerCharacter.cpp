@@ -345,7 +345,7 @@ void APlayerCharacter::ResetWalkSpeed(float speed)
 
 void APlayerCharacter::JumpOver(class AJumpOverZone* TempZone)
 {
-	if (bJumpingOver) return;
+	if (bJumpingOver || !bCanMove) return;
 
 	Temp_JumpOverZone = TempZone;
 

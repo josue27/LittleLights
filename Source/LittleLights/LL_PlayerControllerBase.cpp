@@ -11,6 +11,7 @@
 #include "Widget/LL_PlayerOverlay.h"
 #include "Components/ProgressBar.h"
 #include "Components/Image.h"
+#include "DialogueSystem/LL_DialogueComponent.h"
 #include "Widget/LL_WorldUserWidget.h"
 
 
@@ -149,11 +150,24 @@ void ALL_PlayerControllerBase::TotemPiecesDeliveredHUD()
 	}
 }
 
-void ALL_PlayerControllerBase::ShowDialogue(FText DialogueToDisplay, bool bShow)
+void ALL_PlayerControllerBase::ShowDialogue(FLL_DialogueLineStruct DialogueStruct, bool bShow)
 {
 	if(LL_GameHUD)
 	{
-		LL_GameHUD->PlayerOverlay->ShowDialogue(bShow, DialogueToDisplay);
+		if(DialogueStruct.SpeakerA_Portrait!=nullptr && bShow)
+		{
+			
+			LL_GameHUD->PlayerOverlay->ShowDialogue(bShow, DialogueStruct);
+		}
+		else if(!bShow)
+		{
+			LL_GameHUD->PlayerOverlay->ShowDialogue(bShow, DialogueStruct);
+
+		}
+		else
+		{
+			UE_LOG(LogTemp,Warning,TEXT("%hs CAREFULL: no portrait found, is it set?"),__FUNCTION__);
+		}
 	}
 }
 
