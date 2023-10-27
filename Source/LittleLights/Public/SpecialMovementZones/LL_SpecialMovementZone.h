@@ -59,4 +59,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void PlayerEndedTask();
 
+	UFUNCTION(BlueprintCallable)
+	void DisableCollisions(bool bDisable);
+
 };

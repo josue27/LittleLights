@@ -123,3 +123,17 @@ void ALL_SpecialMovementZone::PlayerEndedTask()
 		
 	}
 }
+
+void ALL_SpecialMovementZone::DisableCollisions(bool bDisable)
+{
+	if(bDisable)
+	{
+		BlockerCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		TriggerCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+	else
+	{
+		BlockerCollider->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		TriggerCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	}
+}

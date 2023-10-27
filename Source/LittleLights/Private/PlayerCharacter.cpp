@@ -432,6 +432,7 @@ void APlayerCharacter::RightMovement(float AxisValue)
 /// </summary>
 void APlayerCharacter::JumpButtonCall()
 {
+	if(!bCanMove)return;
 	
 	AbilityComponent->StartAbilityByName(this, "RollForward");
 
