@@ -55,7 +55,9 @@ void ULL_DialogueComponent::StartDialogue()
 				return;
 			}
 			FLL_DialogueLineStruct DialogueStruct;
-			DialogueStruct.Dialogue =FText::FromString("[Closing....]");
+			FLL_DialogueLine DialogueLine;
+			DialogueLine.Dialogue = FText::FromString("[Closing...]");
+			DialogueStruct.DialogueLines.Add(DialogueLine);
 			PC->ShowDialogue(DialogueStruct, false);
 			
 			
@@ -63,7 +65,9 @@ void ULL_DialogueComponent::StartDialogue()
 		else
 		{
 			FLL_DialogueLineStruct DialogueStruct;
-			DialogueStruct.Dialogue =FText::FromString("[Closing....]");
+			FLL_DialogueLine DialogueLine;
+			DialogueLine.Dialogue = FText::FromString("[Closing...]");
+			DialogueStruct.DialogueLines.Add(DialogueLine);
 			PC->ShowDialogue(DialogueStruct, false);
 
 		}
@@ -90,7 +94,7 @@ void ULL_DialogueComponent::StartDialogue()
 					TempDialogues = DialogueData->DialogueLines;
 				}
 			}
-			//Check if we hava something in the TempDialogues
+			//Check if we have something in the TempDialogues
 			if(TempDialogues.Num() > 0)
 			{
 				
@@ -100,7 +104,9 @@ void ULL_DialogueComponent::StartDialogue()
 			else
 			{
 				FLL_DialogueLineStruct DialogueStruct;
-				DialogueStruct.Dialogue =FText::FromString("[DUMMY DIALOGUE]");
+				FLL_DialogueLine DialogueLine;
+				DialogueLine.Dialogue = FText::FromString("[DUMMY DIALOGUE]");
+				DialogueStruct.DialogueLines.Add(DialogueLine);
 				PC->ShowDialogue(DialogueStruct, true);
 			}
 		}

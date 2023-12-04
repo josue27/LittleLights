@@ -12,6 +12,7 @@ class ULL_WorldUserWidget;
 /**
  * 
  */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogueOver);
 UCLASS()
 class LITTLELIGHTS_API ALL_PlayerControllerBase : public APlayerController
 {
@@ -68,8 +69,15 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ShowDialogue(FLL_DialogueLineStruct DialogueStruct, bool bShow);
+	UFUNCTION(BlueprintCallable)
+	void ShowNextDialogue();
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	void ShowBeastPresenceImg(bool bShow);
 
-	
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+	void DialogueEnded();
+
+
+	UPROPERTY(BlueprintAssignable,BlueprintCallable)
+	FOnDialogueOver OnDialogueLinesOver;
 };

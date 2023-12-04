@@ -23,7 +23,7 @@ public:
 	 * @brief For the moment the idea is to get the general data for dialogues
 	 */
 	UFUNCTION(BlueprintCallable)
-	void GetCharacterData(const ELL_CharacterID SpeakerID, FLL_DialogueSpeakers& CharacterData);
+	bool GetCharacterData(const ELL_CharacterID SpeakerID, FLL_DialogueSpeakers& CharacterData);
 
 	
 };

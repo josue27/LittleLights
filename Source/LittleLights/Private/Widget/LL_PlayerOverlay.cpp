@@ -31,3 +31,8 @@ void ULL_PlayerOverlay::ShowDialogue_Implementation(bool bShow,  FLL_DialogueLin
 {
 	
 }
+
+void ULL_PlayerOverlay::NextDialogue_Implementation()
+{
+	
+}

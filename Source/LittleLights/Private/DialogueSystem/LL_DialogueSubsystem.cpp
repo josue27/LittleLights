@@ -5,7 +5,7 @@
 
 #include "DialogueSystem/LL_DialogueComponent.h"
 
-void ULL_DialogueSubsystem::GetCharacterData(const ELL_CharacterID SpeakerID, FLL_DialogueSpeakers& CharacterData)
+bool ULL_DialogueSubsystem::GetCharacterData(const ELL_CharacterID SpeakerID, FLL_DialogueSpeakers& CharacterData)
 {
 	FLL_DialogueSpeakers RetrievedData;
 	if(CharactersData)
@@ -17,9 +17,10 @@ void ULL_DialogueSubsystem::GetCharacterData(const ELL_CharacterID SpeakerID, FL
 			if(Data->CharacterID == SpeakerID)
 			{
 				CharacterData = *Data;
-				break;
+				return true;
 			}
 		}
 	}
+	return false;
 	
 }

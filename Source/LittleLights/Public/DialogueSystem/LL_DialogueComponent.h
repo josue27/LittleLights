@@ -17,46 +17,34 @@ enum class LL_DialogueState : uint8
 	D_Ended,
 	D_NONE
 };
+
 UENUM(BlueprintType)
 enum class ELL_CharacterID : uint8
 {
-	CI_Lucas = 0 UMETA(DisplayName = "Lucas"),
-	CI_Golem1 = 1 UMETA(DisplayName = "Golem1"),
-	CI_Golem2 = 2 UMETA(DisplayName = "Golem2"),
-	CI_Bestia = 3 UMETA(DisplayName = "Bestia"),
+	CI_None = 0 UMETA(DisplayName = "None"),
+	CI_Lucas = 1 UMETA(DisplayName = "Lucas"),
+	CI_Golem1 = 2 UMETA(DisplayName = "Golem1"),
+	CI_Golem2 = 3 UMETA(DisplayName = "Golem2"),
+	CI_Bestia = 4 UMETA(DisplayName = "Bestia"),
+	CI_MAX
 };
 
+UENUM(BlueprintType)
+enum class LL_SpeakerTurn : uint8
+{
+	Speaker_A = 0 UMETA(DisplayName = "Speaker A"),
+	Speaker_B = 1 UMETA(DisplayName = "Speaker B")
+};
 
 USTRUCT(BlueprintType)
-struct FLL_DialogueLineStruct  
+struct FLL_DialogueLine : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,  meta = (MultiLine="true"))
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,  meta = (MultiLine="true"))
 	FText Dialogue;
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	UTexture2D* SpeakerA_Portrait;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	ESlateVisibility SpeakerA_Visibility;
-	
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	UTexture2D* SpeakerB_Portrait;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	ESlateVisibility SpeakerB_Visibility;
-	
-};
-
-USTRUCT(BlueprintType)
-struct FLL_Dialogue : public FTableRowBase
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	FString ID;
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	TArray<FLL_DialogueLineStruct> DialogueLines;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly);
+	LL_SpeakerTurn Speaker;
 	
 };
 
@@ -78,7 +66,37 @@ struct FLL_DialogueSpeakers : public FTableRowBase
 	
 };
 
+USTRUCT(BlueprintType)
+struct FLL_DialogueLineStruct  
+{
+	GENERATED_BODY()
 
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	ELL_CharacterID SpeakerA_Info;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	ELL_CharacterID SpeakerB_Info;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,  meta = (MultiLine="true"))
+	TArray<FLL_DialogueLine> DialogueLines;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	ESlateVisibility SpeakerA_Visibility;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	ESlateVisibility SpeakerB_Visibility;
+	
+};
+
+USTRUCT(BlueprintType)
+struct FLL_Dialogue : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	FString ID;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TArray<FLL_DialogueLineStruct> DialogueLines;
+	
+};
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
