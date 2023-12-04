@@ -17,6 +17,15 @@ enum class LL_DialogueState : uint8
 	D_Ended,
 	D_NONE
 };
+UENUM(BlueprintType)
+enum class ELL_CharacterID : uint8
+{
+	CI_Lucas = 0 UMETA(DisplayName = "Lucas"),
+	CI_Golem1 = 1 UMETA(DisplayName = "Golem1"),
+	CI_Golem2 = 2 UMETA(DisplayName = "Golem2"),
+	CI_Bestia = 3 UMETA(DisplayName = "Bestia"),
+};
+
 
 USTRUCT(BlueprintType)
 struct FLL_DialogueLineStruct  
@@ -50,6 +59,27 @@ struct FLL_Dialogue : public FTableRowBase
 	TArray<FLL_DialogueLineStruct> DialogueLines;
 	
 };
+
+USTRUCT(BlueprintType)
+struct FLL_DialogueSpeakers : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	ELL_CharacterID CharacterID;
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	FText DisplayName;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UTexture2D* Portrait;
+	
+	
+	
+};
+
+
+
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class LITTLELIGHTS_API ULL_DialogueComponent : public UActorComponent
