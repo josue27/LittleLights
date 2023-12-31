@@ -12,6 +12,8 @@ class UImage;
 /**
  * 
  */
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogueLinesOver);
 UCLASS()
 class LITTLELIGHTS_API ULL_PlayerOverlay : public UUserWidget
 {
@@ -35,4 +37,10 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent)
 	void ShowDialogue(bool bShow, FLL_DialogueLineStruct DialogueStruct);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void NextDialogue();
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FOnDialogueLinesOver OnDialogueLinesOver;
 };

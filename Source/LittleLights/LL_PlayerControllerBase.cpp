@@ -154,21 +154,30 @@ void ALL_PlayerControllerBase::ShowDialogue(FLL_DialogueLineStruct DialogueStruc
 {
 	if(LL_GameHUD)
 	{
-		if(DialogueStruct.SpeakerA_Portrait!=nullptr && bShow)
-		{
-			
-			LL_GameHUD->PlayerOverlay->ShowDialogue(bShow, DialogueStruct);
-		}
-		else if(!bShow)
-		{
-			LL_GameHUD->PlayerOverlay->ShowDialogue(bShow, DialogueStruct);
-
-		}
-		else
-		{
-			UE_LOG(LogTemp,Warning,TEXT("%hs CAREFULL: no portrait found, is it set?"),__FUNCTION__);
-		}
+	
+		LL_GameHUD->PlayerOverlay->ShowDialogue(bShow, DialogueStruct);
+		LL_GameHUD->PlayerOverlay->OnDialogueLinesOver.AddDynamic(this,&ALL_PlayerControllerBase::DialogueEnded);
+		
 	}
+}
+
+void ALL_PlayerControllerBase::ShowNextDialogue()
+{
+	if(LL_GameHUD)
+	{
+	
+		LL_GameHUD->PlayerOverlay->NextDialogue();
+	
+	}
+}
+
+void ALL_PlayerControllerBase::DialogueEnded_Implementation()
+{
+	ShowDialogue(FLL_DialogueLineStruct(),false);
+	OnDialogueLinesOver.Broadcast();
+	if(LL_GameHUD)
+		LL_GameHUD->PlayerOverlay->OnDialogueLinesOver.RemoveDynamic(this,&ALL_PlayerControllerBase::DialogueEnded);
+
 }
 
 void ALL_PlayerControllerBase::ShowBeastPresenceImg_Implementation(bool bShow)
