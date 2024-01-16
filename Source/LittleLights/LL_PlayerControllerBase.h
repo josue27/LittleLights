@@ -19,7 +19,7 @@ class LITTLELIGHTS_API ALL_PlayerControllerBase : public APlayerController
 	GENERATED_BODY()
 
 protected:
-		UPROPERTY(EditDefaultsOnly, Category = "LL | UI")
+		UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "LL | UI")
 			ALLGame_HUD* LL_GameHUD;
 
 	UPROPERTY(EditDefaultsOnly,Category="UI")

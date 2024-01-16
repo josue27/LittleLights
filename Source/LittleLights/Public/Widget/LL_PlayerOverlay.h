@@ -43,4 +43,7 @@ public:
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnDialogueLinesOver OnDialogueLinesOver;
+
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+	void SetSequenceTimer(float InTime);
 };

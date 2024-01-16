@@ -36,3 +36,7 @@ void ULL_PlayerOverlay::NextDialogue_Implementation()
 {
 	
 }
+
+void ULL_PlayerOverlay::SetSequenceTimer_Implementation(float InTime)
+{
+}

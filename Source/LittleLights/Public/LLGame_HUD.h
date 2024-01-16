@@ -21,6 +21,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "LL PlayerHUD")
 		TSubclassOf<UUserWidget> PlayerOverlayClass;
 
+	UPROPERTY(BlueprintReadOnly, Category="LL PlayerHUD")
 	ULL_PlayerOverlay* PlayerOverlay;
 
 	UFUNCTION(BlueprintCallable)
