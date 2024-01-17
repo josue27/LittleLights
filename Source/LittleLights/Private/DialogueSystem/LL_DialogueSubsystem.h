@@ -17,6 +17,7 @@ class LITTLELIGHTS_API ULL_DialogueSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 public:
+	//TODO: We set the DT in the GMs we should do it in the base gamemode
 	UPROPERTY(BlueprintReadWrite)
 	UDataTable* CharactersData;
 	/**

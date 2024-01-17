@@ -26,6 +26,7 @@ enum class ELL_CharacterID : uint8
 	CI_Golem1 = 2 UMETA(DisplayName = "Golem1"),
 	CI_Golem2 = 3 UMETA(DisplayName = "Golem2"),
 	CI_Bestia = 4 UMETA(DisplayName = "Bestia"),
+	CI_OldGolem = 5 UMETA(DisplayName = "Old Golem"),
 	CI_MAX
 };
 
