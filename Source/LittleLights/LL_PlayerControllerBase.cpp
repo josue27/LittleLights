@@ -152,11 +152,12 @@ void ALL_PlayerControllerBase::TotemPiecesDeliveredHUD()
 
 void ALL_PlayerControllerBase::ShowDialogue(FLL_DialogueLineStruct DialogueStruct, bool bShow)
 {
-	if(LL_GameHUD)
+	if(LL_GameHUD )
 	{
 	
 		LL_GameHUD->PlayerOverlay->ShowDialogue(bShow, DialogueStruct);
-		LL_GameHUD->PlayerOverlay->OnDialogueLinesOver.AddDynamic(this,&ALL_PlayerControllerBase::DialogueEnded);
+		if(DialogueStruct.DialogueLines.Num()>0)
+			LL_GameHUD->PlayerOverlay->OnDialogueLinesOver.AddDynamic(this,&ALL_PlayerControllerBase::DialogueEnded);
 		
 	}
 }
