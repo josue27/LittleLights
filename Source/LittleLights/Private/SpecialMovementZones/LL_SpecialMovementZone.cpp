@@ -46,11 +46,16 @@ void ALL_SpecialMovementZone::Tick(float DeltaTime)
 
 
 
+
 void ALL_SpecialMovementZone::Interact_Implementation(APawn* InstigatorPawn)
 {
 	if(bIsSingleUse && bUsed)
 	{
 		//This is mainly for tutorial purposes but we might need a case for single use
+		return;
+	}
+	if(!bEnabled)
+	{
 		return;
 	}
 	APlayerCharacter* PC = Cast<APlayerCharacter>(InstigatorPawn);
