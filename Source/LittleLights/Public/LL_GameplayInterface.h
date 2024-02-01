@@ -37,5 +37,16 @@ public:
 
 	UFUNCTION(BlueprintCallable,BlueprintNativeEvent)
 	FText GetInteractText(APawn* InstigatorPawn);
-	
+
+	/**
+	 * @brief For the moment used to activate on object afeter a dialogue ended
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void ActivateObject();
+
+	/**
+	 * @brief For the moment used to activate on objects after a dialogue ended
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void ActivateObjectsOnList();
 };

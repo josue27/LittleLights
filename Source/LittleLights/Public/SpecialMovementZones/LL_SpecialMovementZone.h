@@ -21,6 +21,7 @@ public:
 	virtual void InteractionEnded_Implementation(AActor* InstigatorPawn, bool bSlowTime) override;
 	virtual FText GetInteractText_Implementation(APawn* InstigatorPawn) override;
 
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		ELLSpecialMovementZoneType MovementZone_Type;
 
@@ -48,6 +49,8 @@ public:
 	bool bIsSingleUse;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bUsed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bEnabled;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
