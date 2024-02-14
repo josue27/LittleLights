@@ -19,6 +19,12 @@ class LITTLELIGHTS_API ULL_CrouchCross_Ability : public ULL_Ability
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
 		TArray<FKey> KeyToPress;
+	UPROPERTY()
+	TArray<FKey> RandKeysToPress;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LL | Ability")
+	float TimeToPressKey =3.f;
+	UPROPERTY(BlueprintReadWrite)
+	bool bCompleted;
 	UFUNCTION()
 		virtual void StartAbility_Implementation(AActor* Instigator, AActor* SecondActor) override;
 	UFUNCTION()
@@ -29,7 +35,7 @@ public:
 	UFUNCTION()
 	void KeyPressed(FKey KeyPressed);
 
-
+	virtual void Update_Implementation(float DeltaTime) override;
 
 protected:
 	UPROPERTY()
@@ -50,4 +56,7 @@ protected:
 
 	UPROPERTY()
 		ALL_PlayerControllerBase* LLPlayerController = nullptr;
+
+	UPROPERTY()
+	float RemainingDeltaActionTime;
 };

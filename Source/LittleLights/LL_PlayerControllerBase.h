@@ -9,6 +9,7 @@
 class UUserWidget;
 class ALLGame_HUD;
 class ULL_WorldUserWidget;
+class ULL_ArrowInputWidget;
 /**
  * 
  */
@@ -49,8 +50,12 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "LL | UI")
 		TSubclassOf<ULL_WorldUserWidget> DefaultWidgetClass;
+	UPROPERTY(EditDefaultsOnly, Category = "LL | UI")
+		TSubclassOf<ULL_ArrowInputWidget> ArrowPressWidgetClass;
 	UPROPERTY()
 		ULL_WorldUserWidget* InteractionWidgetInstance = nullptr;
+	UPROPERTY()
+		ULL_ArrowInputWidget* ArrowWidgetInstance = nullptr;
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	bool UsingGamePad;
@@ -60,7 +65,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void RemoveKeyToPressUI();
 	UFUNCTION(BlueprintCallable)
-	void ShowKeyWithTimeToPressUI(FString keymsg,AActor* ActorToAttach,float TimeRemainng);
+		void ShowKeyWithTimeToPressUI(FString keymsg,AActor* ActorToAttach,float TimeRemainng);
+
+	UFUNCTION(BlueprintCallable)
+		void ShowArrowToPressUI(FKey KeyToPress, AActor* ActorToAttach);
+	UFUNCTION(BlueprintCallable)
+		void RemoveArrowToPressUI();
+	UFUNCTION(BlueprintCallable)
+		void ShowArrowWithTimeToPressUI(FKey KeyPressed, AActor* ActorToAttach, float TimeRemainng);
+		
 	UFUNCTION(BlueprintCallable)
 		void ShowTotemPiecesHUD(bool bShow);
 

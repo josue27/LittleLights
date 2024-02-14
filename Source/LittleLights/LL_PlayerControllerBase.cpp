@@ -12,6 +12,7 @@
 #include "Components/ProgressBar.h"
 #include "Components/Image.h"
 #include "DialogueSystem/LL_DialogueComponent.h"
+#include "Widget/LL_ArrowInputWidget.h"
 #include "Widget/LL_WorldUserWidget.h"
 
 
@@ -133,6 +134,52 @@ void ALL_PlayerControllerBase::ShowKeyWithTimeToPressUI(FString keymsg, AActor* 
 		InteractionWidgetInstance->TimeRemainingUI = TimeRemainng;
 	}
 }
+
+#pragma region Arrow
+
+void ALL_PlayerControllerBase::ShowArrowToPressUI(FKey KeyToPress, AActor* ActorToAttach)
+{
+	if (ArrowWidgetInstance == nullptr && ensure(DefaultWidgetClass))
+	{
+		ArrowWidgetInstance = CreateWidget<ULL_ArrowInputWidget>(GetWorld(), ArrowPressWidgetClass);
+		ArrowWidgetInstance->AttachedActor = ActorToAttach;
+	}
+	if (ArrowWidgetInstance)
+	{
+		ArrowWidgetInstance->AttachedActor = ActorToAttach;//duplicated??
+		if (!ArrowWidgetInstance->IsInViewport())
+		{
+			ArrowWidgetInstance->AddToViewport();
+		}
+		ArrowWidgetInstance->SetArrow(KeyToPress);
+	}
+}
+void ALL_PlayerControllerBase::RemoveArrowToPressUI()
+{
+	if(ArrowWidgetInstance)
+	{
+		ArrowWidgetInstance->RemoveFromParent();
+	}
+}
+void ALL_PlayerControllerBase::ShowArrowWithTimeToPressUI(FKey KeyPressed, AActor* ActorToAttach, float TimeRemainng)
+{
+	if (ArrowWidgetInstance == nullptr && ensure(DefaultWidgetClass))
+	{
+		ArrowWidgetInstance = CreateWidget<ULL_ArrowInputWidget>(GetWorld(), ArrowPressWidgetClass);
+		ArrowWidgetInstance->AttachedActor = ActorToAttach;
+	}
+	if (ArrowWidgetInstance)
+	{
+		ArrowWidgetInstance->AttachedActor = ActorToAttach;//duplicated??
+		if (!ArrowWidgetInstance->IsInViewport())
+		{
+			ArrowWidgetInstance->AddToViewport();
+		}
+		ArrowWidgetInstance->SetArrow(KeyPressed);
+		ArrowWidgetInstance->TimeRemainingUI = TimeRemainng;
+	}
+}
+#pragma endregion 
 
 void ALL_PlayerControllerBase::ShowTotemPiecesHUD(bool bShow)
 {

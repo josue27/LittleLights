@@ -21,6 +21,8 @@ class LITTLELIGHTS_API ULL_JumpVault_Ability : public ULL_Ability
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LL | Ability")
 	TArray<FKey> KeysToPress;
+	UPROPERTY()
+	TArray<FKey> RandKeys;
 	//Time we want the user to  press a key
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LL | Ability")
 	float TimeToPressKey =3.f;
@@ -47,6 +49,9 @@ public:
 
 	UPROPERTY()
 	ALL_PlayerControllerBase* LLPlayerController = nullptr;
+
+	UPROPERTY(BlueprintReadWrite)
+	bool bCompleted;
 
 private:
 	UPROPERTY()

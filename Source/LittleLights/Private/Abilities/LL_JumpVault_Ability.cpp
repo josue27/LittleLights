@@ -17,13 +17,14 @@ void ULL_JumpVault_Ability::StartAbility_Implementation(AActor* Instigator, AAct
 
 	SpecialMovementZone = Cast< ALL_SpecialMovementZone>(SecondActor);
 	if (SpecialMovementZone == nullptr)return;
+	bCompleted = false;
 	InKeyPressed = 0;
 	Player = Cast<APlayerCharacter>(AbilityComponent->GetOwner());
 	if (Player)
 	{
 		Player->bCanMove = false;
 		Player->DisableInteraction(true);
-		//TODO: make the calls of this delegates on the plaeyr
+		//TODO: make the calls of this delegates on the player
 		 Player->OnAutomaticMovementEnded.AddDynamic(this,&ULL_JumpVault_Ability::PlayerEndedMovement);
 		Player->OnKeyPressed.AddDynamic(this,&ULL_JumpVault_Ability::KeyPressed);
 	}
@@ -49,14 +50,20 @@ void ULL_JumpVault_Ability::StartAbility_Implementation(AActor* Instigator, AAct
 	LLPlayerController = Cast<ALL_PlayerControllerBase>(PC);
 	if (LLPlayerController)
 	{
-		LLPlayerController->ShowKeyToPressUI("Press " + KeysToPress[InKeyPressed].ToString(), Player);
+	
+		for(int32 i = 0 ; i < KeysToPress.Num();i++)
+		{
+			RandKeys.AddUnique(KeysToPress[FMath::RandRange(0,KeysToPress.Num()-1)]);
+		}
+			
+		LLPlayerController->ShowKeyToPressUI("Press " + RandKeys[InKeyPressed].ToString(), Player);
 	}
 	RemainingActionTime =  TimeToPressKey + Player->GetWorld()->GetTimeSeconds();
 
 }
 void ULL_JumpVault_Ability::Update_Implementation(float DeltaTime)
 {
-	
+	if(bCompleted)return;
 	if(Player && IsRunning())
 	{
 		RemainingDeltaJumpTime = FMath::Clamp( ((RemainingActionTime - Player->GetWorld()->GetTimeSeconds()) / TimeToPressKey),0.f,1.f);
@@ -66,7 +73,7 @@ void ULL_JumpVault_Ability::Update_Implementation(float DeltaTime)
 		LogOnScreen(Player->GetWorld(),TRemainingStrinag,FColor::Red,0.1f);
 		if (LLPlayerController)
 		{
-			LLPlayerController->ShowKeyWithTimeToPressUI("Press "+KeysToPress[InKeyPressed].ToString(), Player,RemainingDeltaJumpTime);
+			LLPlayerController->ShowKeyWithTimeToPressUI("Press "+RandKeys[InKeyPressed].ToString(), Player,RemainingDeltaJumpTime);
 		}
 		if(RemainingDeltaJumpTime <= 0.0f)
 		{
@@ -108,14 +115,12 @@ void ULL_JumpVault_Ability::KeyPressed(FKey KeyPressed)
 
 	if (KeyPressed.GetFName() == FKey("E") || KeyPressed.GetFName() == FKey("e"))return;
 
-	if (KeysToPress.IsValidIndex(InKeyPressed) && KeyPressed == KeysToPress[InKeyPressed])
+	if (RandKeys.IsValidIndex(InKeyPressed) && KeyPressed == RandKeys[InKeyPressed])
 	{
 
-	
-		
-		if(InKeyPressed >= KeysToPress.Num()-1)//This means we have pressed all key correctly
+		if(InKeyPressed >= RandKeys.Num()-1)//This means we have pressed all key correctly
 		{
-			
+			bCompleted = true;
 			//Player->SetActorLocation();
 			Player->bJumpingOver = true;
 			Player = Cast<APlayerCharacter>(AbilityComponent->GetOwner());
@@ -136,11 +141,11 @@ void ULL_JumpVault_Ability::KeyPressed(FKey KeyPressed)
 			InKeyPressed += 1;
 			if (LLPlayerController)
 			{
-				LLPlayerController->ShowKeyWithTimeToPressUI("Press "+KeysToPress[InKeyPressed].ToString(), Player,RemainingActionTime);
+				LLPlayerController->ShowKeyWithTimeToPressUI("Press "+RandKeys[InKeyPressed].ToString(), Player,RemainingActionTime);
 
 			}
 			bCanReceiveInput = true;
-			RemainingActionTime = TimeToPressKey+Player->GetWorld()->GetTimeSeconds();
+			//RemainingActionTime = TimeToPressKey+Player->GetWorld()->GetTimeSeconds();
 		}
 
 	}
