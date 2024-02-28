@@ -58,7 +58,6 @@ void ULL_CrouchCross_Ability::StartAbility_Implementation(AActor* Instigator, AA
 		{
 			RandKeysToPress.Add(KeyToPress[FMath::RandRange(0,KeyToPress.Num()-1)]);
 		}
-		//LLPlayerController->ShowKeyToPressUI("Press " + RandKeysToPress[InKeyPressed].ToString(), Player);
 		LLPlayerController->ShowArrowToPressUI(RandKeysToPress[InKeyPressed], Player);
 	}
 	RemainingActionTime =  TimeToPressKey + Player->GetWorld()->GetTimeSeconds();

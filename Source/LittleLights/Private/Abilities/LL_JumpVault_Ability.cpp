@@ -56,7 +56,8 @@ void ULL_JumpVault_Ability::StartAbility_Implementation(AActor* Instigator, AAct
 			RandKeys.AddUnique(KeysToPress[FMath::RandRange(0,KeysToPress.Num()-1)]);
 		}
 			
-		LLPlayerController->ShowKeyToPressUI("Press " + RandKeys[InKeyPressed].ToString(), Player);
+		LLPlayerController->ShowArrowToPressUI(RandKeys[InKeyPressed], Player);
+
 	}
 	RemainingActionTime =  TimeToPressKey + Player->GetWorld()->GetTimeSeconds();
 
@@ -73,7 +74,7 @@ void ULL_JumpVault_Ability::Update_Implementation(float DeltaTime)
 		LogOnScreen(Player->GetWorld(),TRemainingStrinag,FColor::Red,0.1f);
 		if (LLPlayerController)
 		{
-			LLPlayerController->ShowKeyWithTimeToPressUI("Press "+RandKeys[InKeyPressed].ToString(), Player,RemainingDeltaJumpTime);
+			LLPlayerController->ShowArrowWithTimeToPressUI(RandKeys[InKeyPressed], Player,RemainingDeltaJumpTime);
 		}
 		if(RemainingDeltaJumpTime <= 0.0f)
 		{
@@ -99,7 +100,7 @@ void ULL_JumpVault_Ability::StopAbility_Implementation(AActor* Instigator, AActo
 	//Call the stop interaction, Mainly for the Beast slowmotion
 	if (LLPlayerController)
 	{
-		LLPlayerController->RemoveKeyToPressUI();
+		LLPlayerController->RemoveArrowToPressUI();
 	}
 
 	Player = nullptr;
@@ -131,7 +132,7 @@ void ULL_JumpVault_Ability::KeyPressed(FKey KeyPressed)
 			}
 			if (LLPlayerController)
 			{
-				LLPlayerController->RemoveKeyToPressUI();
+				LLPlayerController->RemoveArrowToPressUI();
 			}
 			
 			
@@ -141,7 +142,7 @@ void ULL_JumpVault_Ability::KeyPressed(FKey KeyPressed)
 			InKeyPressed += 1;
 			if (LLPlayerController)
 			{
-				LLPlayerController->ShowKeyWithTimeToPressUI("Press "+RandKeys[InKeyPressed].ToString(), Player,RemainingActionTime);
+				LLPlayerController->ShowArrowWithTimeToPressUI(RandKeys[InKeyPressed], Player,RemainingDeltaJumpTime);
 
 			}
 			bCanReceiveInput = true;
@@ -162,7 +163,7 @@ void ULL_JumpVault_Ability::KeyPressed(FKey KeyPressed)
 		Player->GetWorldTimerManager().SetTimer(FailedAnimationTimerHandle,FailedTimerDelegate,AnimDuration,false);
 		if (LLPlayerController)
 		{
-			LLPlayerController->RemoveKeyToPressUI();
+			LLPlayerController->RemoveArrowToPressUI();
 		}
 	}
 	
