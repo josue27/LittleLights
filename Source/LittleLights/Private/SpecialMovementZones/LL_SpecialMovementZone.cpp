@@ -119,7 +119,7 @@ void ALL_SpecialMovementZone::PlayerEndedTask()
 	ALL_PlayerState* PlayerState = Cast<ALL_PlayerState>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
 	if(PlayerState)
 	{
-		PlayerState->OnInteractionEnded.RemoveDynamic(this,&ALL_SpecialMovementZone::InteractionEnded_Implementation);
+		PlayerState->OnInteractionEnded.RemoveDynamic(this,&ALL_SpecialMovementZone::InteractionEnded);
 	}
 	if(bIsSingleUse)
 	{

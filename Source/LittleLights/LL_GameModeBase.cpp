@@ -146,9 +146,6 @@ void ALL_GameModeBase::SpawnBeast_Implementation()
 		QueryLocationInstance->GetOnQueryFinishedEvent().AddDynamic(this,&ALL_GameModeBase::OnLocationQueryCompleted);
 	}
 
-	
-
-
 }
 void ALL_GameModeBase::OnLocationQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryInstance,
 	EEnvQueryStatus::Type QueryStatus)
