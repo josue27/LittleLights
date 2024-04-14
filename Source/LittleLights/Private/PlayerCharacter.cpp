@@ -651,6 +651,9 @@ void APlayerCharacter::ForceShowOccludedActors()
 	}
 }
 
+/**
+ * @brief Called by a timer on BP it occludes all actors between the camera and character that are marked in the tracechannel and
+ */
 void APlayerCharacter::SyncOccludedActors()
 {
 	if (!ShouldCheckCameraOcclusion()) return;
@@ -689,8 +692,7 @@ void APlayerCharacter::SyncOccludedActors()
 		// Show actors that are currently hidden but that are not occluded by the camera anymore 
 		for (auto& Elem : OccludedActors)
 		{
-			if (!ActorsJustOccluded.Contains(Elem.Value.Actor) && Elem.Value.IsOccluded)
-			{
+ 			{
 				ShowOccludedActor(Elem.Value);
 				if (DebugLineTraces)
 				{
