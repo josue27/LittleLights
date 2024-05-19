@@ -14,6 +14,8 @@
 #include "Components/TimelineComponent.h"
 #include  "GameFramework/SpringArmComponent.h"
 #include "JumpOverZone.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 #include "Level_Manager_Base.h"
 #include "DrawDebugHelpers.h"
 #include "LLComponents/LL_ToolsComponent.h"
@@ -26,6 +28,7 @@
 #include "Perception/AISense_Hearing.h"
 #include "AI/LL_AIBeast.h"
 #include "Components/CapsuleComponent.h"
+#include "LittleLights/LittleLights.h"
 #include "LittleLights/LL_GameModeBase.h"
 #include "Tools/LL_Orb.h"
 
@@ -212,14 +215,24 @@ void APlayerCharacter::Tick(float DeltaTime)
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &APlayerCharacter::ForwardMovement);
-	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &APlayerCharacter::RightMovement);
-	PlayerInputComponent->BindAction(TEXT("InteractInput"), IE_Pressed, this, &APlayerCharacter::ActionButtonCall);
+
+	// PlayerInputComponent->BindAction(TEXT("InteractInput"), IE_Pressed, this, &APlayerCharacter::ActionButtonCall);
 	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Pressed, this, &APlayerCharacter::SprintAction);
 	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Released, this, &APlayerCharacter::SprintCancelled);
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &APlayerCharacter::JumpButtonCall);
 	//PlayerInputComponent->BindAction(TEXT("Gamepad"))
+
+
+
 	
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+	Subsystem->ClearAllMappings();
+	Subsystem->AddMappingContext(InputMapping, 0);
+	
+	UEnhancedInputComponent* Input = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+	Input->BindAction(MoveForward,ETriggerEvent::Triggered,this,&APlayerCharacter::Movement);
+	Input->BindAction(IAInteract,ETriggerEvent::Triggered,this,&APlayerCharacter::ActionButtonCall);
 }
 
 //DEPRECATED
@@ -324,18 +337,14 @@ void APlayerCharacter::ContinueMovement()
 	bCanMove = true;
 }
 
-void APlayerCharacter::ActionButtonCall()
+void APlayerCharacter::ActionButtonCall(const FInputActionValue& Value)
 {
-	if(InteractorComp)
+	const bool bPressed = Value.Get<bool>();
+	if(InteractorComp && bPressed)
 	{
 		InteractorComp->PrimaryInteract();
 	}
-	return;
-	if (bInJumpOverZone && Temp_JumpOverZone)
-	{
-
-		//JumpOver();
-	}
+	
 }
 
 void APlayerCharacter::ResetWalkSpeed(float speed)
@@ -370,9 +379,31 @@ void APlayerCharacter::ShowHint(bool showhint, const FString& textToShow)
 void APlayerCharacter::BalanceUpdate()
 {
 }
-
-void APlayerCharacter::ForwardMovement(float AxisValue)
+void APlayerCharacter::Movement(const FInputActionValue& Value)
 {
+	if(IsValid(Controller))
+	{
+		FVector2D InputVector = Value.Get<FVector2D>();
+
+		//Add forward direction
+		FRotator Rotator = Controller->GetControlRotation();
+		FRotator YawRotation = FRotator(0,Rotator.Yaw - JoystickAnlgeDifference,0);
+		FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X).GetSafeNormal();
+		FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y).GetSafeNormal();
+
+		
+
+		AddMovementInput(ForwardDirection,InputVector.Y * (VelocidadMovimiento * GetWorld()->DeltaTimeSeconds));
+		AddMovementInput(RightDirection,InputVector.X * (VelocidadMovimiento * GetWorld()->DeltaTimeSeconds));
+
+		// FString DebugText = FString::Printf(TEXT("Forward Direction; %s Right Direction: %s Axisvalue: %s, Rotationyas %f "),*ForwardDirection.ToString(),*RightDirection.ToString(),*InputVector.ToString(),Rotation.Yaw);
+		// LogOnScreen(GetWorld(),DebugText);
+
+	}
+}
+void APlayerCharacter::ForwardMovement(const FInputActionValue& Value)
+{
+	float AxisValue= Value.GetMagnitude();
 	if (!bCanMove && bBalancing)
 	{
 		if (Temp_JumpOverZone)
@@ -388,12 +419,38 @@ void APlayerCharacter::ForwardMovement(float AxisValue)
 	FRotator Rotation = Controller->GetControlRotation();
 	Rotation.Pitch = 0.0f;
 	Rotation.Roll = 0.0f;
+	
 	 FRotator RotationWithDiff(0, Rotation.Yaw - JoystickAnlgeDifference, 0);
 	// FVector Direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::X);
 	// AddMovementInput(Direction, AxisValue * VelocidadMovimiento * GetWorld()->DeltaTimeSeconds);
-	AddMovementInput(RotationWithDiff.Vector(), AxisValue * VelocidadMovimiento  * GetWorld()->DeltaTimeSeconds);
+	//float CurrentVelocity = FMath::Max(VelocidadMovimiento,AxisValue *  VelocidadMovimiento  * GetWorld()->DeltaTimeSeconds);
+	FVector Direction = FRotationMatrix(RotationWithDiff).GetScaledAxis(EAxis::X).GetSafeNormal();
+	//FVector Direction = FVector(0.f,0.f,Rotation.Yaw);
+	//AddMovementInput(Direction, CurrentVelocity);
+	//AddMovementInput(Direction, AxisValue * VelocidadMovimiento  * GetWorld()->DeltaTimeSeconds);
 
+	// FString DebugText = FString::Printf(TEXT("Forward Direction; %s Axisvalue: %f, Rotationyas %f"),*Direction.ToString(),AxisValue,Rotation.Yaw);
+	// LogOnScreen(GetWorld(),DebugText);
 
+	FVector2D InputVector = Value.Get<FVector2D>();
+
+	if(IsValid(Controller))
+	{
+		//Add forward direction
+		FRotator Rotator = Controller->GetControlRotation();
+		FRotator YawRotation = FRotator(0,Rotator.Yaw - JoystickAnlgeDifference,0);
+		FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X).GetSafeNormal();
+		FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y).GetSafeNormal();
+
+		
+
+		AddMovementInput(ForwardDirection,InputVector.Y * (VelocidadMovimiento * GetWorld()->DeltaTimeSeconds));
+		AddMovementInput(RightDirection,InputVector.X * (VelocidadMovimiento * GetWorld()->DeltaTimeSeconds));
+
+		FString DebugText = FString::Printf(TEXT("Forward Direction; %s Right Direction: %s Axisvalue: %s, Rotationyas %f "),*ForwardDirection.ToString(),*RightDirection.ToString(),*InputVector.ToString(),Rotation.Yaw);
+		LogOnScreen(GetWorld(),DebugText);
+
+	}
 }
 
 void APlayerCharacter::RightMovement(float AxisValue)
@@ -417,10 +474,15 @@ void APlayerCharacter::RightMovement(float AxisValue)
 	Rotation.Roll = 0.0f;
 	FRotator Yaw(0, Rotation.Yaw - JoystickAnlgeDifference, 0);
 	//FVector Direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::Y);
-	FVector Direction = FRotationMatrix(Yaw).GetScaledAxis(EAxis::Y);//Esto segun TomLooman
+	FVector Direction = FRotationMatrix(Yaw).GetScaledAxis(EAxis::Y).GetSafeNormal();//Esto segun TomLooman
 
+	//float CurrentVelocity = FMath::Max(VelocidadMovimiento,AxisValue *  VelocidadMovimiento  * GetWorld()->DeltaTimeSeconds);
 
 	 AddMovementInput(Direction, AxisValue *  VelocidadMovimiento  * GetWorld()->DeltaTimeSeconds);
+	// AddMovementInput(Direction, CurrentVelocity);
+
+	FString DebugText = FString::Printf(TEXT("Forward Direction; %s Axisvalue: %f, Rotationyas %f"),*Direction.ToString(),AxisValue,Rotation.Yaw);
+	LogOnScreen(GetWorld(),DebugText);
 
 
 	

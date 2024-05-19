@@ -8,9 +8,8 @@ public class LittleLights : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" ,"AIModule","GameplayTasks","UMG" , "XMPP", "GameplayTags","NavigationSystem","LevelSequence"});
-
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" ,"AIModule","GameplayTasks","UMG" , "XMPP", "GameplayTags","NavigationSystem","LevelSequence", "EnhancedInput"});
+		
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

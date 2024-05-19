@@ -29,8 +29,8 @@ class ULL_ToolsComponent;
 class UAIPerceptionStimuliSourceComponent;
 class ALL_GameModeBase;
 class ALL_AIBeast;
-
-
+class UInputMappingContext;
+class UInputAction;
 USTRUCT(BlueprintType)
 struct FCameraOccludedActor
 {
@@ -72,6 +72,16 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	float PlayAnimation(UAnimMontage* AnimationToPlay);
+#pragma region Input
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "LLPLayer | EnhancedInput")
+	UInputMappingContext* InputMapping;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,  Category = "LLPLayer | EnhancedInput")
+	UInputAction* MoveForward;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,  Category = "LLPLayer | EnhancedInput")
+	UInputAction* IAInteract;
+#pragma endregion
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -273,7 +283,7 @@ public:
 		void ContinueMovement();
 
 	UFUNCTION(BlueprintCallable)
-		void ActionButtonCall();
+		void ActionButtonCall(const FInputActionValue& Value);
 	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable)
 		void MovePlayerTo(FVector Location, float Speed = 150.0f,bool bNotify = false,bool bLightUpOrb = true,bool bStartOrbDecay = true);
 	
@@ -353,7 +363,9 @@ public:
 #pragma endregion
 	
 private:
-	void ForwardMovement(float AxisValue);
+	UFUNCTION()
+	void ForwardMovement(const FInputActionValue& Value);
+	void Movement(const FInputActionValue& Value);
 	void RightMovement(float AxisValue);
 	void CameraHorizontalRotation(float AxisValue);
 	void UpdateRotation();
