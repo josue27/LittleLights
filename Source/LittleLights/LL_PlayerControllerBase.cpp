@@ -4,6 +4,8 @@
 #include "LL_PlayerControllerBase.h"
 
 
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 #include "Level_Manager_Base.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
@@ -44,12 +46,12 @@ void ALL_PlayerControllerBase::ChangeToGameInput()
 
 void ALL_PlayerControllerBase::ChangeToUIInput()
 {
-	SetInputMode(FInputModeUIOnly());
+	//SetInputMode(FInputModeUIOnly());//not working with EnhanceInput
 	bShowMouseCursor = true;
 
 }
 
-void ALL_PlayerControllerBase::TogglePauseMenu()
+void ALL_PlayerControllerBase::TogglePauseMenu(const FInputActionValue& Value)
 {
 	if(PauseMenuInstance && PauseMenuInstance->IsInViewport())
 	{
@@ -74,7 +76,17 @@ void ALL_PlayerControllerBase::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	InputComponent->BindAction("PauseMenu",IE_Pressed,this,&ALL_PlayerControllerBase::TogglePauseMenu);
+	// InputComponent->BindAction("PauseMenu",IE_Pressed,this,&ALL_PlayerControllerBase::TogglePauseMenu);
+
+	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+	Subsystem->ClearAllMappings();
+	Subsystem->AddMappingContext(InputMapping, 0);
+	
+	UEnhancedInputComponent* Input = Cast<UEnhancedInputComponent>(InputComponent);
+	Input->BindAction(Pause_IA,ETriggerEvent::Triggered,this,&ALL_PlayerControllerBase::TogglePauseMenu);
+	//Input->BindAction(Pause_IA,ETriggerEvent::Completed,this,&ALL_PlayerControllerBase::TogglePauseMenu);
+	// Input->BindAction(AdvanceDialogue_IA,ETriggerEvent::Triggered,this,&ALL_PlayerControllerBase::ActionButtonCall);
+	
 }
 
 

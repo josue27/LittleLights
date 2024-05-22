@@ -91,7 +91,8 @@ void ALL_SpecialMovementZone::Interact_Implementation(APawn* InstigatorPawn)
 		if(PlayerState)
 		{
 			PlayerState->OnInteractionStarted.Broadcast(this,true);
-			PlayerState->OnInteractionEnded.AddDynamic(this,&ALL_SpecialMovementZone::InteractionEnded);
+			if(!PlayerState->OnInteractionEnded.IsBound())
+				PlayerState->OnInteractionEnded.AddDynamic(this,&ALL_SpecialMovementZone::InteractionEnded);
 		}
 
 	}

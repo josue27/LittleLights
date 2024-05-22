@@ -217,12 +217,10 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	// PlayerInputComponent->BindAction(TEXT("InteractInput"), IE_Pressed, this, &APlayerCharacter::ActionButtonCall);
-	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Pressed, this, &APlayerCharacter::SprintAction);
-	PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Released, this, &APlayerCharacter::SprintCancelled);
-	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &APlayerCharacter::JumpButtonCall);
+	// PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Pressed, this, &APlayerCharacter::SprintAction);
+	// PlayerInputComponent->BindAction(TEXT("Sprint"), IE_Released, this, &APlayerCharacter::SprintCancelled);
+	// PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &APlayerCharacter::JumpButtonCall);
 	//PlayerInputComponent->BindAction(TEXT("Gamepad"))
-
-
 
 	
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());
@@ -231,8 +229,13 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Subsystem->AddMappingContext(InputMapping, 0);
 	
 	UEnhancedInputComponent* Input = Cast<UEnhancedInputComponent>(PlayerInputComponent);
-	Input->BindAction(MoveForward,ETriggerEvent::Triggered,this,&APlayerCharacter::Movement);
-	Input->BindAction(IAInteract,ETriggerEvent::Triggered,this,&APlayerCharacter::ActionButtonCall);
+	Input->BindAction(MoveForward_IA,ETriggerEvent::Triggered,this,&APlayerCharacter::Movement);
+	Input->BindAction(Interact_IA,ETriggerEvent::Triggered,this,&APlayerCharacter::ActionButtonCall);
+
+	Input->BindAction(Sprint_IA,ETriggerEvent::Triggered, this, &APlayerCharacter::SprintAction);
+	Input->BindAction(Sprint_IA, ETriggerEvent::Completed, this, &APlayerCharacter::SprintCancelled);//Might Be wrong
+	Input->BindAction(Jump_IA, ETriggerEvent::Triggered, this, &APlayerCharacter::JumpButtonCall);
+	Input->BindAction(AdvanceDialogue_IA, ETriggerEvent::Triggered, this, &APlayerCharacter::AdvanceDialogueCall);
 }
 
 //DEPRECATED
@@ -294,15 +297,21 @@ void APlayerCharacter::ResetCameraPosition_Implementation()
 /// </summary>
 
 
-void APlayerCharacter::SprintAction()
+void APlayerCharacter::SprintAction(const FInputActionValue& Value)
 {
-	AbilityComponent->StartAbilityByName(this,"Sprint");
+	if(Value.Get<bool>())
+	{
+		
+		AbilityComponent->StartAbilityByName(this,"Sprint");
+	}
 }
 
-void APlayerCharacter::SprintCancelled()
+void APlayerCharacter::SprintCancelled(const FInputActionValue& Value)
 {
-	
-	AbilityComponent->StopAbilityByName(this,"Sprint");
+	if(!Value.Get<bool>())
+	{
+		AbilityComponent->StopAbilityByName(this,"Sprint");
+	}
 
 }
 
@@ -335,6 +344,11 @@ void APlayerCharacter::StopCharacter()
 void APlayerCharacter::ContinueMovement()
 {
 	bCanMove = true;
+}
+
+void APlayerCharacter::AdvanceDialogueCall(const FInputActionValue& Value)
+{
+	OnDialogueAdvance.Broadcast();
 }
 
 void APlayerCharacter::ActionButtonCall(const FInputActionValue& Value)
@@ -492,7 +506,7 @@ void APlayerCharacter::RightMovement(float AxisValue)
 /// DISABLED: we are using the "Interction" button binding, may we should remove this
 /// When user press jump, it checks if its hitting an
 /// </summary>
-void APlayerCharacter::JumpButtonCall()
+void APlayerCharacter::JumpButtonCall(const FInputActionValue& Value)
 {
 	if(!bCanMove)return;
 	

@@ -16,6 +16,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnAutomaticMovementEnded, APlayerCharacter*, PlayerCharacter,bool,bLightUpTorch,bool,bStartDecay);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnKeyPressed, FKey, KeyPressed);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogueAdvance);
 
 class ATorch;
 class UArrowComponent;
@@ -72,15 +73,24 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	float PlayAnimation(UAnimMontage* AnimationToPlay);
-#pragma region Input
+#pragma region Enhanced Input
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "LLPLayer | EnhancedInput")
 	UInputMappingContext* InputMapping;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,  Category = "LLPLayer | EnhancedInput")
-	UInputAction* MoveForward;
+	UInputAction* MoveForward_IA;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,  Category = "LLPLayer | EnhancedInput")
-	UInputAction* IAInteract;
+	UInputAction* Interact_IA;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,  Category = "LLPLayer | EnhancedInput")
+	UInputAction* Sprint_IA;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,  Category = "LLPLayer | EnhancedInput")
+	UInputAction* Jump_IA;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,  Category = "LLPLayer | EnhancedInput")
+	UInputAction* AdvanceDialogue_IA;
+
+	UPROPERTY(BlueprintAssignable,BlueprintCallable)
+	FOnDialogueAdvance OnDialogueAdvance;
 #pragma endregion
 protected:
 	// Called when the game starts or when spawned
@@ -283,6 +293,8 @@ public:
 		void ContinueMovement();
 
 	UFUNCTION(BlueprintCallable)
+	void AdvanceDialogueCall(const FInputActionValue& Value);
+	UFUNCTION(BlueprintCallable)
 		void ActionButtonCall(const FInputActionValue& Value);
 	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable)
 		void MovePlayerTo(FVector Location, float Speed = 150.0f,bool bNotify = false,bool bLightUpOrb = true,bool bStartOrbDecay = true);
@@ -303,7 +315,7 @@ public:
 		void ShowHint(bool bShowHint, const FString& textToShow);
 
 	UFUNCTION(BlueprintCallable)
-		void JumpButtonCall();
+		void JumpButtonCall(const FInputActionValue& Value);
 
 	/// <summary>
 	/// Evaluates what is the PlayerCharacater is looking at so it can display something in HUD(or not)
@@ -386,9 +398,9 @@ private:
 
 	
 	UFUNCTION()
-		void SprintAction();
+		void SprintAction(const FInputActionValue& Value);
 	UFUNCTION()
-		void SprintCancelled();
+		void SprintCancelled(const FInputActionValue& Value);
 #pragma region Camera Occlusion
 	TMap<const AActor*, FCameraOccludedActor> OccludedActors;
   

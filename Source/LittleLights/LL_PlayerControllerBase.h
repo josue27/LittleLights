@@ -10,6 +10,8 @@ class UUserWidget;
 class ALLGame_HUD;
 class ULL_WorldUserWidget;
 class ULL_ArrowInputWidget;
+class UInputMappingContext;
+class UInputAction;
 /**
  * 
  */
@@ -41,7 +43,7 @@ protected:
 	void ChangeToUIInput();
 
 	UFUNCTION(BlueprintCallable,Category="Player Controller")
-	void TogglePauseMenu();
+	void TogglePauseMenu(const FInputActionValue& Value);
 	
 	virtual void SetupInputComponent() override;
 
@@ -93,4 +95,11 @@ public:
 
 	UPROPERTY(BlueprintAssignable,BlueprintCallable)
 	FOnDialogueOver OnDialogueLinesOver;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "LLPLayer | EnhancedInput")
+	UInputMappingContext* InputMapping;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,  Category = "LLPLayer | EnhancedInput")
+	UInputAction* Pause_IA;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,  Category = "LLPLayer | EnhancedInput")
+	UInputAction* AdvanceDialogue_IA;
 };
