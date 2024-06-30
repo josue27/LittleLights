@@ -168,25 +168,6 @@ void APlayerCharacter::Tick(float DeltaTime)
 	//LookingAt();
 	//UpdateFov();//DELETE?
 
-	if (bBalancing)
-	{
-		Balancing_X += UnbalanceVelocity;
-		if (Balancing_X <= -0.9f || Balancing_X >= 0.9)
-		{
-			bLostBalance = true;
-			bBalancing = false;
-			if (Temp_JumpOverZone)
-			{
-				Temp_JumpOverZone->PlayerLostBalance();
-				PlayerFall();
-			}
-		}
-		else
-		{
-			bLostBalance = false;
-
-		}
-	}
 
 	bInfiniteSprint = CVarInfiniteSprint.GetValueOnGameThread();
 	bool ShowBestLoc = CVarShowBeastLoc.GetValueOnGameThread();
@@ -209,6 +190,8 @@ void APlayerCharacter::Tick(float DeltaTime)
 		
 		UpdateFov(this, ToolsComponent->GetDeltaRemainOrb());
 	}
+
+	MovementInputVector = MoveActionBinding->GetValue().Get<FVector2D>();
 }
 
 // Called to bind functionality to input
@@ -236,6 +219,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Input->BindAction(Sprint_IA, ETriggerEvent::Completed, this, &APlayerCharacter::SprintCancelled);//Might Be wrong
 	Input->BindAction(Jump_IA, ETriggerEvent::Triggered, this, &APlayerCharacter::JumpButtonCall);
 	Input->BindAction(AdvanceDialogue_IA, ETriggerEvent::Triggered, this, &APlayerCharacter::AdvanceDialogueCall);
+
+	MoveActionBinding = &Input->BindActionValue(MoveForward_IA);
 }
 
 //DEPRECATED
@@ -395,9 +380,22 @@ void APlayerCharacter::BalanceUpdate()
 }
 void APlayerCharacter::Movement(const FInputActionValue& Value)
 {
+	FVector2D InputVector = Value.Get<FVector2D>();
+	
+	if (!bCanMove && bBalancing)
+	{
+		if (Temp_JumpOverZone)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Moving Forwad: %f"), InputVector);
+			Temp_JumpOverZone->MovePlayerAlongSpline(InputVector.Y);
+		}
+		return;
+		
+
+	}
 	if(IsValid(Controller))
 	{
-		FVector2D InputVector = Value.Get<FVector2D>();
+		
 
 		//Add forward direction
 		FRotator Rotator = Controller->GetControlRotation();

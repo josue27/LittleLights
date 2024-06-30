@@ -3,6 +3,7 @@
 
 #include "LL_Tottem.h"
 
+#include "LLGameManager.h"
 #include "LL_PlayerState.h"
 #include "PlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
@@ -69,7 +70,7 @@ void ALL_Tottem::Interact_Implementation(APawn* InstigatorPawn)
 		}
 	}else if(Player->TottemPieces.Num() > 0)
 	{
-		AddTotemPiece_Implementation(Player,Player->TottemPieces[0]);
+		AddTotemPiece_Implementation(Player);
 		
 	}
 
@@ -101,48 +102,47 @@ FText ALL_Tottem::GetInteractText_Implementation(APawn* InstigatorPawn)
 	return TextForInteraction;
 }
 
-void ALL_Tottem::AddTotemPiece_Implementation(APlayerCharacter* InstigatorPlayer,ATottem_Piece* TotemPiece)
+void ALL_Tottem::AddTotemPiece_Implementation(APlayerCharacter* InstigatorPlayer)
 {
 	UE_LOG(LogTemp,Warning,TEXT("Tottem pieces:%i"),TotemPieces.Num());
 	UE_LOG(LogTemp,Warning,TEXT("Adding totem piece"),TotemPieces.Num());
 	LLPlayerController = LLPlayerController == nullptr ? Cast<ALL_PlayerControllerBase>(UGameplayStatics::GetPlayerController(this, 0)) : LLPlayerController;
 
-	for(int32 i = 0; i < TotemPieces.Num(); i++)
+	TMap<TottemPieceType,FVector> PiecesToMove;
+	for(auto& PlayerTotemPiece : InstigatorPlayer->TottemPieces)
 	{
-		//if type and there is no piece in place
-		if(TotemPiece->PieceType == TotemPieces[i].PieceType   && !TotemPieces[i].Delivered)
+		for(int32 i = 0; i < TotemPieces.Num(); i++)
 		{
-			ALL_PlayerState* PS = Cast<ALL_PlayerState>(Player->GetPlayerState());
-			if(PS)
+			//if type and there is no piece in place
+			if(PlayerTotemPiece->PieceType == TotemPieces[i].PieceType   && !TotemPieces[i].Delivered)
 			{
-				PS->RemoveTotemPiece();
-				UE_LOG(LogTemp,Warning,TEXT(" PS"));
-				LLPlayerController->TotemPiecesDeliveredHUD();
+				ALL_PlayerState* PS = Cast<ALL_PlayerState>(Player->GetPlayerState());
+				if(PS)
+				{
+					PS->RemoveTotemPiece();
+					UE_LOG(LogTemp,Warning,TEXT(" PS"));
+					LLPlayerController->TotemPiecesDeliveredHUD();
 
-			}
-			//TotemPieces[i].TotemPice = TotemPiece;
-			TotemPieces[i].Delivered = true;
-			/*if(TotemPieces[i].TotemPiece_Dummy != nullptr)
-			{
-				MovePieceAnim(TotemPieces[i].TotemPiece_Dummy);
-			}*/
-			if (TotemPieces[i].TotemPiecePlaced != nullptr)
-			{
+				}
+			
+				TotemPieces[i].Delivered = true;
+			
+				PiecesToMove.Add(TotemPieces[i].PieceType,FVector::Zero());
 
-				TotemPieces[i].TotemPiecePlaced->SetActorHiddenInGame(false);
-				MovePieceAnim(TotemPieces[i].TotemPiecePlaced, TotemPieces[i].EndPosition);
-			}
-
-			UE_LOG(LogTemp,Warning,TEXT("piece found and added to tottem"));
+				UE_LOG(LogTemp,Warning,TEXT("piece found and added to tottem"));
 
 			
-			InstigatorPlayer->TottemPieces.RemoveAt(0); 
-			InstigatorPlayer->TottemPieces.Sort();
-			UE_LOG(LogTemp,Warning,TEXT("Got Totem Piece from player "));
+				// InstigatorPlayer->TottemPieces.RemoveAt(0); 
+				// InstigatorPlayer->TottemPieces.Sort();
+				UE_LOG(LogTemp,Warning,TEXT("Got Totem Piece from player "));
 
-			break;
+				//break;
+			}
 		}
 	}
+	InstigatorPlayer->TottemPieces.Empty();
+	MovePieceAnim( PiecesToMove);
+	
 }
 
 //Called in blueprint for the moment
@@ -151,7 +151,7 @@ void ALL_Tottem::MovePieceAnimEnded()
 	//This is because we want all the pieces animation to finish and
 	//by logic the last one will be removed and TottemPieces will be 0 so we could
 	//check the completition
-
+	return;
 	if(Player->TottemPieces.Num() == 0)
 	{
 		TotemCompletion();
@@ -164,7 +164,26 @@ void ALL_Tottem::MovePieceAnimEnded()
 	}
 	
 }
+/**
+ *This will tell the gamemanager that we completed the totem, for the mean time we consider this level completed
+ *and will save the game
+ */
 
+void ALL_Tottem::SendLevelCompleted()
+{
+	if(bDebug)return;
+	
+	if(ULLGameManager* GameManager = GetGameInstance()->GetSubsystem<ULLGameManager>())
+	{
+		GameManager->LevelCompleted(LevelCompleted);
+		GameManager->SaveGame();
+	}
+		
+}
+
+/**
+ * Checks if the totem has been completed and if successful trigger completion events
+ */
 void ALL_Tottem::TotemCompletion()
 {
 
@@ -187,6 +206,7 @@ void ALL_Tottem::TotemCompletion()
 
 		LLPlayerController = LLPlayerController == nullptr ? Cast<ALL_PlayerControllerBase>(UGameplayStatics::GetPlayerController(this, 0)) : LLPlayerController;
 		LLPlayerController->ShowTotemPiecesHUD(true);
+		SendLevelCompleted();
 	}
 	
 	

@@ -91,6 +91,8 @@ public:
 
 	UPROPERTY(BlueprintAssignable,BlueprintCallable)
 	FOnDialogueAdvance OnDialogueAdvance;
+
+	struct FEnhancedInputActionValueBinding* MoveActionBinding;
 #pragma endregion
 protected:
 	// Called when the game starts or when spawned
@@ -260,16 +262,18 @@ public:
 		float UnbalanceVelocity = 0.001f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|Jump Over settings Balancing")
 		bool bLostBalance;
-
+	/*Bind to the Value of the Movement input, use this to get the Vetor2D of the movement*/
+	UPROPERTY(BlueprintReadOnly)
+	FVector2D MovementInputVector;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|Hints")
-		FText TextHint;
+	FText TextHint;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LLPLayer|Totems")
 	TArray<ATottem_Piece*> TottemPieces;
 
 	UFUNCTION(BlueprintCallable,Category="LLPLayer|Totems")
 	void AddTottemPiece(ATottem_Piece* Piece);
-	
+		
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	void PlayerCatchByMonster();
 

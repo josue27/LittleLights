@@ -51,6 +51,9 @@ public:
 	bool bUsed;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bEnabled;
+
+	UFUNCTION(BlueprintCallable,BlueprintImplementableEvent)
+	void DisableMeshCollisions(float ActivationDelay);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

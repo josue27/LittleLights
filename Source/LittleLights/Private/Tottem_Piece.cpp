@@ -74,7 +74,8 @@ void ATottem_Piece::Deactivate_Implementation()
 {
 	RootComponent->SetVisibility(false,true);
 	SphereCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), GrabbedParticleSystem, GetActorLocation());
+	if(GrabbedParticleSystem)
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), GrabbedParticleSystem, GetActorLocation());
 }
 
 
