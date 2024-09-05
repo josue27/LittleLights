@@ -75,6 +75,7 @@ void ULL_CrouchCross_Ability::KeyPressed(FKey KeyPressed)
 		if (Player)
 		{
 			Player->OnAutomaticMovementEnded.AddDynamic(this,&ULL_CrouchCross_Ability::PlayerEndedMovement);
+
 			Player->MovePlayerTo(PathPositions[InKeyPressed], 100.f, true,false,false);
 			bCanReceiveInput = false;
 		}
@@ -92,7 +93,7 @@ void ULL_CrouchCross_Ability::PlayerEndedMovement(APlayerCharacter* PlayerCaller
 	if (Player)
 		Player->OnAutomaticMovementEnded.RemoveDynamic(this,&ULL_CrouchCross_Ability::PlayerEndedMovement);
 	
-	if (InKeyPressed >= RandKeysToPress.Num())
+	if (InKeyPressed >= RandKeysToPress.Num()-1)
 	{
 		bCompleted = true;
 		AbilityComponent->StopAbilityByName(Player, "Crouch", SpecialMovementZone);

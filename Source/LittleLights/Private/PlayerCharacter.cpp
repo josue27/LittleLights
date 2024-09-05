@@ -393,6 +393,12 @@ void APlayerCharacter::Movement(const FInputActionValue& Value)
 		
 
 	}
+	 if(!bCanMove)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Movement Disabled"));
+	 	return;
+
+	}
 	if(IsValid(Controller))
 	{
 		
