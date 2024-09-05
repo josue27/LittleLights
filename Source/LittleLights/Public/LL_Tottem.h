@@ -9,9 +9,11 @@
 #include "GameFramework/Actor.h"
 #include "LL_Tottem.generated.h"
 
+enum class ELLMapsIndexEntry : uint8;
 class ALL_PlayerControllerBase;
 class ALL_PlayerState;
 class AStaticMeshActor;
+
 USTRUCT(BlueprintType)
 struct FTottemPieceState
 {
@@ -21,7 +23,7 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TottemPieceType PieceType;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	ATottem_Piece* TotemPice;
+	ATottem_Piece* TotemPice;//The piece that the player has to recover and set to the player
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	AStaticMeshActor* TotemPiecePlaced;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
@@ -53,7 +55,7 @@ public:
 
 
 	
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Totem")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LL Totem")
 	TArray<FTottemPieceState> TotemPieces;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LL Totem|UI")
@@ -61,6 +63,8 @@ public:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LL Totem")
 	bool TotemCompleted;
+
+	
 	
 	virtual FText GetInteractText_Implementation(APawn* InstigatorPawn) override;
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
@@ -73,28 +77,36 @@ public:
 	UFUNCTION(CallInEditor)
 		void SetEndPositions();
 
+	
+
 protected:
 
-
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LL Toteam")
+	bool bDebug;
 	UPROPERTY(BlueprintReadWrite, Category="LL Totem")
 	APlayerCharacter* Player;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="LL Totem")
+	ELLMapsIndexEntry LevelCompleted;//when the user completes the totem what level should we take into account as finished?
 	UPROPERTY(BlueprintReadWrite, Category = "LL Totem | UI")
 		UUserWidget* DiscoverTotemWidget;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UFUNCTION(BlueprintCallable,BlueprintNativeEvent)
-	void AddTotemPiece(APlayerCharacter* InstigatorPlayer, ATottem_Piece* TotemPiece);
+	void AddTotemPiece(APlayerCharacter* InstigatorPlayer);
 
 	UFUNCTION(BlueprintCallable)
 	void TotemCompletion();
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-	void MovePieceAnim(AActor* TotemPiece, FVector EndLocation);
+	void MovePieceAnim(const TMap<TottemPieceType, FVector>& PiecesToMoveInfo);
 
 	UFUNCTION(BlueprintCallable)
 	void MovePieceAnimEnded();
+
+	UFUNCTION(BlueprintCallable)
+	void SendLevelCompleted();
+	
 private:
 	UPROPERTY()
 		ALL_PlayerControllerBase* LLPlayerController;
