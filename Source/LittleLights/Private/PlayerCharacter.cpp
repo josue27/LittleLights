@@ -162,6 +162,8 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	//UpdateRotacion();
+	
+	MovementInputVector = MoveActionBinding->GetValue().Get<FVector2D>();
 	if(bIsTutorialCharacter)return;
 	CurveTimeline.TickTimeline(DeltaTime);
 
@@ -191,7 +193,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 		UpdateFov(this, ToolsComponent->GetDeltaRemainOrb());
 	}
 
-	MovementInputVector = MoveActionBinding->GetValue().Get<FVector2D>();
+	UE_LOG(LogTemp,Warning,TEXT("MovementInput %s"),*MovementInputVector.ToString());
 }
 
 // Called to bind functionality to input
@@ -223,21 +225,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	MoveActionBinding = &Input->BindActionValue(MoveForward_IA);
 }
 
-//DEPRECATED
-//This mechanic is no longer in use
-int32 APlayerCharacter::GetBengalas()
-{
-	return BengalasDisponibles;
-}
 
-/// <summary>
-/// DEPRECATED
-/// Called when user press the action button to light up de torch if any
-/// </summary>
-void APlayerCharacter::SpawnLanternOrb()
-{
-	
-}
+
 /// <summary>
 /// DEPRECATED
 /// Called when user press the action button to light up de torch if any
