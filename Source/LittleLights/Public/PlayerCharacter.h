@@ -208,7 +208,7 @@ public:
 	//the movement from the joystick
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float JoystickAnlgeDifference = 45;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)a
 		AFirePit* FirePitTemp = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float DistanceRatio = 0;
