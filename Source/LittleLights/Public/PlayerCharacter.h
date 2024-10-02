@@ -178,8 +178,7 @@ public:
 		UArrowComponent* TorchPosition;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int32 BengalasDisponibles = 3;
-	UFUNCTION(BlueprintPure)
-		int32 GetBengalas();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bCanMove = true;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -209,7 +208,7 @@ public:
 	//the movement from the joystick
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float JoystickAnlgeDifference = 45;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)a
 		AFirePit* FirePitTemp = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float DistanceRatio = 0;
@@ -327,8 +326,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "LLPLayer|HUD")
 		void LookingAt();
 
-	UFUNCTION(BlueprintCallable, Category ="LLPLayer|Lantern")
-		void SpawnLanternOrb();
 
 	UFUNCTION(Category = "LLPLayer|Balancing")
 		void BalanceUpdate();
