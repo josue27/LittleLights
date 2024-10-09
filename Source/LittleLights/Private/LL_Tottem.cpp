@@ -105,7 +105,6 @@ FText ALL_Tottem::GetInteractText_Implementation(APawn* InstigatorPawn)
 void ALL_Tottem::AddTotemPiece_Implementation(APlayerCharacter* InstigatorPlayer)
 {
 	UE_LOG(LogTemp,Warning,TEXT("Tottem pieces:%i"),TotemPieces.Num());
-	UE_LOG(LogTemp,Warning,TEXT("Adding totem piece"),TotemPieces.Num());
 	LLPlayerController = LLPlayerController == nullptr ? Cast<ALL_PlayerControllerBase>(UGameplayStatics::GetPlayerController(this, 0)) : LLPlayerController;
 
 	TMap<TottemPieceType,FVector> PiecesToMove;
