@@ -51,11 +51,12 @@ void ULLGameManager::LoadGame()
 		{
 			InLevelCompleted = LoadedGenericSave->GameData.LevelsCompleted;
 			CurrentLevel = LoadedGenericSave->GameData.InLevel;
-			OnLoadGameCompleted.Broadcast();
+			OnLoadGameCompleted.Broadcast(true);
 		}
 	}
 	else // If load not succeeded
 	{
+		OnLoadGameCompleted.Broadcast(false);
 		UE_LOG(LogTemp,Warning,TEXT("Load Game Error"));
 
 	}
