@@ -10,7 +10,7 @@
 struct FLLGameSaveData;
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLoadGameCompleted);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLoadGameCompleted,bool, bSuccess);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSaveGameCompleted);
 UCLASS()
 class LITTLELIGHTS_API ULLGameManager : public UGameInstanceSubsystem
