@@ -8,8 +8,6 @@
 #include "Blueprint/UserWidget.h"
 //#include "FirePit.h"
 #include "AIController.h"
-#include "LittleLights/FirePit.h"
-#include "Kismet/KismetMathLibrary.h"
 #include "LittleLights/Torch.h"
 #include "Components/TimelineComponent.h"
 #include  "GameFramework/SpringArmComponent.h"

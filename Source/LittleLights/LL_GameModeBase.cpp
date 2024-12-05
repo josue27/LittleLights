@@ -2,7 +2,10 @@
 
 
 #include "LL_GameModeBase.h"
+
+#include "LevelConfiguration.h"
 #include "LittleLights.h"
+#include "LLGameManager.h"
 #include "MainPlayer_DebugHUD.h"
 #include "EnvironmentQuery/EnvQueryManager.h"
 #include "Kismet/GameplayStatics.h"
@@ -22,11 +25,60 @@ ALL_GameModeBase::ALL_GameModeBase()
 
 
 }
+//ATTTENTION BeginPlays starts before STARTPLAY
+void ALL_GameModeBase::BeginPlay()
+{
+	Super::BeginPlay();
+	LlGameManager = GetGameInstance()->GetSubsystem<ULLGameManager>();
+
+}
 void ALL_GameModeBase::StartPlay()
 {
 	Super::StartPlay();
-	StartSequence();
-	StartBeastTimer();
+	//Check if we have a saved file
+	
+	if(LlGameManager )
+	{
+		if(!LlGameManager->OnLoadGameCompleted.IsAlreadyBound(this,&ThisClass::SaveFileLoaded))
+			LlGameManager->OnLoadGameCompleted.AddUniqueDynamic(this,&ThisClass::SaveFileLoaded);
+
+		LlGameManager->LoadGame();
+	}
+	else
+	{
+		StartSequence();
+		StartBeastTimer();
+	}
+	
+}
+void ALL_GameModeBase::SaveFileLoaded(bool bSuccess)
+{
+	if(bSuccess)
+	{
+		if(LlGameManager->GameSave.LevelsCompleted == GetLevelConfiguration()->InLevel)
+		{
+			//we have completed the level, what should we do?
+			OnLevelCompleted.Broadcast();
+			
+		}
+		else
+		{
+			
+			StartSequence();
+		}
+		//Save game
+		if (ULLGameManager* GameManager = GetGameInstance()->GetSubsystem<ULLGameManager>())
+		{
+			GameManager->LevelChanged(GetLevelConfiguration()->InLevel);
+			GameManager->SaveGame();
+		}
+	}
+	else
+	{
+		StartSequence();
+		StartBeastTimer();
+	}
+		
 }
 
 void ALL_GameModeBase::StartSequence_Implementation()
@@ -36,29 +88,52 @@ void ALL_GameModeBase::StartSequence_Implementation()
 	//UGameplayStatics::GetAllActorsOfClass(GetWorld(),ALL_TargetPoint::StaticClass());
 	ALL_TargetPoint* StartTargetLocation = Cast<ALL_TargetPoint>(UGameplayStatics::GetActorOfClass(GetWorld(),ALL_TargetPoint::StaticClass()));
 	Player = Cast<APlayerCharacter>( UGameplayStatics::GetPlayerPawn(GetWorld(),0));
-	
-	if (EnableIntroMovement)
+
+	bool bStartWithIntroMovement = false;
+	if(LevelConfigurationDataAsset)
 	{
-		if(StartTargetLocation)
+		bStartWithIntroMovement = LevelConfigurationDataAsset->bStartWithIntroMovement;
+	}
+	if (Player)
+	{
+		if (Player->ToolsComponent)
 		{
-				if(Player)
-				{
-					Player->MovePlayerTo(StartTargetLocation->GetActorLocation(),150.0f,true);
-					if (Player->ToolsComponent)
-					{
-						//This is so when we start the level the light is up
-						Player->ToolsComponent->RefillOrb(30.0f,false);
-
-
-						UE_LOG(LogTemp, Warning, TEXT("GM: Lighting orb"));
-
-					}
-				}
-		}else
+			if(LevelConfigurationDataAsset->bStartWithLightUp)
+				Player->ToolsComponent->RefillOrb(30.0f, false);
+			
+			UE_LOG(LogTemp, Warning, TEXT("GM: Lighting orb"));
+		}
+	}
+	if (bStartWithIntroMovement)
+	{
+		if (StartTargetLocation)
+		{
+			if (Player)
 			{
-				LogOnScreen(GetWorld(),"No Start Target found",FColor::Yellow);
-				UE_LOG(LogTemp,Warning,TEXT("Could not start the sequence"))
-			}	
+				Player->MovePlayerTo(StartTargetLocation->GetActorLocation(), 150.0f, true);
+				if (Player->ToolsComponent)
+				{
+					//This is so when we start the level the light is up
+					if(LevelConfigurationDataAsset->bStartWithLightUp)
+						Player->ToolsComponent->RefillOrb(30.0f, LevelConfigurationDataAsset->bStartWithDecay);
+					
+					UE_LOG(LogTemp, Warning, TEXT("GM: Lighting orb"));
+				}
+			}
+		}
+		else
+		{
+			LogOnScreen(GetWorld(), "No Start Target found", FColor::Yellow);
+			UE_LOG(LogTemp, Warning, TEXT("Could not start the sequence"))
+
+			PlayerEndedIntroMovement(LevelConfigurationDataAsset->bStartWithLightUp,LevelConfigurationDataAsset->bStartWithDecay);
+
+		}
+	}
+	else
+	{
+		PlayerEndedIntroMovement(LevelConfigurationDataAsset->bStartWithLightUp,LevelConfigurationDataAsset->bStartWithDecay);
+
 	}
 	
 	//StartBeastTimer();
@@ -111,6 +186,18 @@ void ALL_GameModeBase::LevelCompleted()
 	LightUpMoon();
 }
 
+/**
+ * Get the data asset that contains the configuration for the current level
+ * @return ULevelConfiguration data asset
+ */
+ULevelConfiguration* ALL_GameModeBase::GetLevelConfiguration()
+{
+	if(LevelConfigurationDataAsset)
+	{
+		return LevelConfigurationDataAsset;
+	}
+	return  nullptr;
+}
 
 
 float ALL_GameModeBase::DeltaDistanceToBeast()
@@ -219,6 +306,12 @@ void ALL_GameModeBase::BeaconCompleted_Implementation()
 		Execute_BeaconCompleted(Player);
 	}
 
+	//Save game
+	if (ULLGameManager* GameManager = GetGameInstance()->GetSubsystem<ULLGameManager>())
+	{
+		GameManager->LevelCompleted(GetLevelConfiguration()->InLevel);
+		GameManager->SaveGame();
+	}
 	
 }
 

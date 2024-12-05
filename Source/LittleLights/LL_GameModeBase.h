@@ -10,10 +10,15 @@
 #include "GameFramework/GameModeBase.h"
 #include "LL_GameModeBase.generated.h"
 
+class ULevelConfiguration;
+enum class ELLMapsIndexEntry : uint8;
 /**
  * 
  */
+class ULLGameManager;
 
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLevelCompleted);
 
 UCLASS()
 class LITTLELIGHTS_API ALL_GameModeBase : public AGameModeBase, public ILL_GameplayInterface
@@ -23,8 +28,11 @@ class LITTLELIGHTS_API ALL_GameModeBase : public AGameModeBase, public ILL_Gamep
 protected:
 	ALL_GameModeBase();
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	ALevel_Manager_Base* LevelManager;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="LLGameMode")
+	ULevelConfiguration* LevelConfigurationDataAsset;
 
 	UPROPERTY(BlueprintReadWrite,Category="LLGameMode|FinalDoor")
 	ADoorBase* FinalDoor;
@@ -67,6 +75,7 @@ protected:
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "LLGameMode")
 	void StartSequence();
 
+	virtual void BeginPlay() override;
 	virtual void StartPlay() override;
 	
 
@@ -92,7 +101,14 @@ protected:
 	
 	virtual void BeaconCompleted_Implementation() override;
 
+	UFUNCTION()
+	void SaveFileLoaded(bool bSuccess);
+
+	UPROPERTY()
+	ULLGameManager* LlGameManager;
+
 public:
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="LLGameMode | Player")
 		float TorchLightUpTime = 0.0f;
 
@@ -124,6 +140,11 @@ public:
 
 
 
+	UPROPERTY(BlueprintAssignable)
+	FOnLevelCompleted OnLevelCompleted;
+	
+	UFUNCTION(BlueprintCallable)
+	ULevelConfiguration* GetLevelConfiguration();
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable,Category="LLGameMode|GameMode")
 	void TottemCompleted();
@@ -134,4 +155,6 @@ public:
 
 	UFUNCTION(Exec)
 		void StartOrbDecay();
+
+	
 };

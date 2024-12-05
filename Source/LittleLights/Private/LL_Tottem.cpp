@@ -3,6 +3,7 @@
 
 #include "LL_Tottem.h"
 
+#include "LevelConfiguration.h"
 #include "LLGameManager.h"
 #include "LL_PlayerState.h"
 #include "PlayerCharacter.h"
@@ -23,6 +24,12 @@ ALL_Tottem::ALL_Tottem()
 	RootComponent = SceneComponent;
 	CapsuleCollider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleColider"));
 	CapsuleCollider->SetupAttachment(SceneComponent);
+
+	if(ALL_GameModeBase* GameMode = Cast<ALL_GameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))
+	{
+		if(GameMode->OnLevelCompleted.IsAlreadyBound(this,&ALL_Tottem::SendLevelCompleted))
+			GameMode->OnLevelCompleted.AddUniqueDynamic(this,&ALL_Tottem::SendLevelCompleted);
+	}
 
 }
 // Called when the game starts or when spawned
@@ -172,11 +179,15 @@ void ALL_Tottem::SendLevelCompleted()
 {
 	if(bDebug)return;
 	
-	if(ULLGameManager* GameManager = GetGameInstance()->GetSubsystem<ULLGameManager>())
-	{
-		GameManager->LevelCompleted(LevelCompleted);
-		GameManager->SaveGame();
-	}
+	ALL_GameModeBase* GM = Cast<ALL_GameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	//remember that you have to call this in each actor that has implemented this cause this is an interface not a MulticasEvent
+	Execute_BeaconCompleted(GM);
+	Execute_BeaconCompleted(this);
+		
+	TotemCompleted = true;
+
+	LLPlayerController = LLPlayerController == nullptr ? Cast<ALL_PlayerControllerBase>(UGameplayStatics::GetPlayerController(this, 0)) : LLPlayerController;
+	LLPlayerController->ShowTotemPiecesHUD(true);
 		
 }
 
@@ -196,16 +207,8 @@ void ALL_Tottem::TotemCompletion()
 	}
 	if(NumPiecesInPlace >= TotemPieces.Num())
 	{
-		ALL_GameModeBase* GM = Cast<ALL_GameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
-		//remember that you have to call this in each actor that has implemented this cause this is an interface not a MulticasEvent
-		Execute_BeaconCompleted(GM);
-		Execute_BeaconCompleted(this);
 		
-		TotemCompleted = true;
-
-		LLPlayerController = LLPlayerController == nullptr ? Cast<ALL_PlayerControllerBase>(UGameplayStatics::GetPlayerController(this, 0)) : LLPlayerController;
-		LLPlayerController->ShowTotemPiecesHUD(true);
-		SendLevelCompleted();
+		SendLevelCompleted();//It seems its not necessary
 	}
 	
 	
@@ -213,8 +216,11 @@ void ALL_Tottem::TotemCompletion()
 
 void ALL_Tottem::BeaconCompleted_Implementation()
 {
-
 	LogOnScreen(GetWorld(),"Beacon completed");
+	if(ULLGameManager* GameManager = GetGameInstance()->GetSubsystem<ULLGameManager>())
+	{
+		GameManager->LevelCompleted(InLevel);
+	}
 }
 
 // Called every frame
