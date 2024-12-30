@@ -369,7 +369,7 @@ void APlayerCharacter::Movement(const FInputActionValue& Value)
 {
 	FVector2D InputVector = Value.Get<FVector2D>();
 	
-	if (!bCanMove && bBalancing)
+	if (bBalancing)
 	{
 		if (Temp_JumpOverZone)
 		{

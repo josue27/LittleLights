@@ -45,7 +45,7 @@ void ULL_CrossBalancing_Ability::StartAbility_Implementation(AActor* Instigator,
 	PlayerCharacter->SetActorLocation(PlayerStartLoc);
 	
 	PlayerStartLoc.Z = PlayerCharacter->GetActorLocation().Z;
-	FRotator PlayerRotation = UKismetMathLibrary::FindLookAtRotation(PlayerCharacter->GetActorLocation(), bCloserToEnd ? PlayerEndLoc : PlayerStartLoc);
+	FRotator PlayerRotation = UKismetMathLibrary::FindLookAtRotation(PlayerCharacter->GetActorLocation(), PlayerEndLoc );
 	PlayerCharacter->SetActorRotation(PlayerRotation,ETeleportType::ResetPhysics);
 
 	//PlayerCharacter->SetActorLocationAndRotation(PlayerStartLoc,PlayerRotation,false,0,ETeleportType::None);
@@ -62,13 +62,13 @@ void ULL_CrossBalancing_Ability::Update_Implementation(float DeltaTime)
 	{
 		if(bCloserToEnd)
 		{
-			DistanceWalkedX += (PlayerCharacter->MovementInputVector.Y * -1.f) * (CrossingVelocityMultiplier * DeltaTime);
+			DistanceWalkedX += PlayerCharacter->MovementInputVector.Y  * (CrossingVelocityMultiplier * DeltaTime);
 
 		}
 		else
 		{
 			
-			DistanceWalkedX += PlayerCharacter->MovementInputVector.Y * (CrossingVelocityMultiplier * DeltaTime);
+			DistanceWalkedX += (PlayerCharacter->MovementInputVector.Y * -1.f) * (CrossingVelocityMultiplier * DeltaTime);
 		}
 			
 
