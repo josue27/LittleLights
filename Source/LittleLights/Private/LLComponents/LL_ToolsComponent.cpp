@@ -102,8 +102,11 @@ void ULL_ToolsComponent::RefillOrb(float Amount, bool bStartDecay)
 		Orb->RefillOrb(Amount);
 		
 
-		if(bStartDecay) StartOrbDecay();
+		if(bStartDecay)
+			StartOrbDecay();
 
+		Orb->UpdateLight(1.f);
+		
 		
 	//Is this duplicated?
 		// APlayerCharacter* PC = Cast<APlayerCharacter>(GetOwner());

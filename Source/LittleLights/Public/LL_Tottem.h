@@ -47,6 +47,8 @@ public:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LL Totem")
 	bool discovered;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LL Totem")
+	ELLMapsIndexEntry InLevel;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Components")
 	USceneComponent* SceneComponent;
@@ -81,12 +83,11 @@ public:
 
 protected:
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LL Toteam")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="LL Totem")
 	bool bDebug;
 	UPROPERTY(BlueprintReadWrite, Category="LL Totem")
 	APlayerCharacter* Player;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="LL Totem")
-	ELLMapsIndexEntry LevelCompleted;//when the user completes the totem what level should we take into account as finished?
+	
 	UPROPERTY(BlueprintReadWrite, Category = "LL Totem | UI")
 		UUserWidget* DiscoverTotemWidget;
 	// Called when the game starts or when spawned

@@ -7,12 +7,12 @@
 
 void ULLGameManager::LevelCompleted(ELLMapsIndexEntry InLevel)
 {
-	 InLevelCompleted = InLevel;
+	 GameSave.LevelsCompleted = InLevel;
 }
 
 void ULLGameManager::LevelChanged(ELLMapsIndexEntry InLevel)
 {
-	CurrentLevel = InLevel;
+	GameSave.InLevel = InLevel;
 }
 
 void ULLGameManager::SaveGame()
@@ -22,8 +22,8 @@ void ULLGameManager::SaveGame()
 		//We should equal the data I guess?
 		//LLSaveGame->GameData = GameSave;
 		
-		LLSaveGame->GameData.LevelsCompleted = InLevelCompleted;
-		LLSaveGame->GameData.InLevel = CurrentLevel;
+		LLSaveGame->GameData.LevelsCompleted = GameSave.LevelsCompleted;
+		LLSaveGame->GameData.InLevel = GameSave.InLevel;
 		FAsyncSaveGameToSlotDelegate SaveDelegate;
 		SaveDelegate.BindLambda([this , LLSaveGame](const FString& SlotName, const int32 UserIndex, bool bSuccess)
 		{
@@ -49,6 +49,7 @@ void ULLGameManager::LoadGame()
 	{
 		if (ULLCustomSaveGame* LoadedGenericSave = Cast<ULLCustomSaveGame>(LoadedSaveGame))
 		{
+			GameSave = LoadedGenericSave->GameData;
 			InLevelCompleted = LoadedGenericSave->GameData.LevelsCompleted;
 			CurrentLevel = LoadedGenericSave->GameData.InLevel;
 			OnLoadGameCompleted.Broadcast(true);
