@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "DoorBase.generated.h"
 
+enum class ELLMapsIndexEntry : uint8;
 class ATargetPoint;
 class UBoxComponent;
 
@@ -26,6 +27,9 @@ protected:
 
 	UPROPERTY( BlueprintReadWrite)
 	UBoxComponent* EndTrigger;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Door Base")
+	ELLMapsIndexEntry LevelID;//Level that corresponds to this door
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -35,6 +39,9 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintCallable,BlueprintPure)
+	bool CanOpenDoor();
 
 //PROPERTIES
 public:

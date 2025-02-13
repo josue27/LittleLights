@@ -2,6 +2,8 @@
 
 
 #include "DoorBase.h"
+
+#include "LLGameManager.h"
 #include "Components/BoxComponent.h"
 // Sets default values
 ADoorBase::ADoorBase()
@@ -25,5 +27,20 @@ void ADoorBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+/**
+ * We want to check if the animation  should start.
+ * We are using the same doors for entering levels from lobby
+ * @return should allow to open or not
+ */
+bool ADoorBase::CanOpenDoor()
+{
+
+	if(ULLGameManager* GameManager = GetGameInstance()->GetSubsystem<ULLGameManager>())
+	{
+		return GameManager->InLevelCompleted < LevelID;
+	}
+	return false;
 }
 
