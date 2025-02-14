@@ -33,18 +33,17 @@ void ULL_JumpVault_Ability::StartAbility_Implementation(AActor* Instigator, AAct
 	SpecialMovementZone->TriggerCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	USplineComponent* Spline = SpecialMovementZone->SplinePath;
-	Spline->GetSplineLength();
 	bool bCloseToEnd = ULLGamePlayFunctionLibrary::IsCloserToEnd(Player->GetActorLocation(), Spline);
 	if (bCloseToEnd)
 	{
-		PathPositions.Add(Spline->GetLocationAtDistanceAlongSpline(Spline->GetSplineLength() , ESplineCoordinateSpace::World));
-		PathPositions.Add(Spline->GetLocationAtDistanceAlongSpline(0.f, ESplineCoordinateSpace::World));
+		PathPositions.Add(Spline->GetLocationAtSplinePoint(Spline->GetNumberOfSplinePoints() , ESplineCoordinateSpace::World));
+		PathPositions.Add(Spline->GetLocationAtSplinePoint(0, ESplineCoordinateSpace::World));
 		
 	}
 	else
 	{
-		PathPositions.Add(Spline->GetLocationAtDistanceAlongSpline(0.f, ESplineCoordinateSpace::World));
-		PathPositions.Add(Spline->GetLocationAtDistanceAlongSpline(Spline->GetSplineLength(), ESplineCoordinateSpace::World));
+		PathPositions.Add(Spline->GetLocationAtSplinePoint(0, ESplineCoordinateSpace::World));
+		PathPositions.Add(Spline->GetLocationAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::World));
 	}
 	APlayerController* PC = UGameplayStatics::GetPlayerController(AbilityComponent->GetOwner(), 0);
 	LLPlayerController = Cast<ALL_PlayerControllerBase>(PC);
@@ -53,7 +52,7 @@ void ULL_JumpVault_Ability::StartAbility_Implementation(AActor* Instigator, AAct
 	
 		for(int32 i = 0 ; i < KeysToPress.Num();i++)
 		{
-			RandKeys.AddUnique(KeysToPress[FMath::RandRange(0,KeysToPress.Num()-1)]);
+			RandKeys.Add(KeysToPress[FMath::RandRange(0,KeysToPress.Num()-1)]);
 		}
 			
 		LLPlayerController->ShowArrowToPressUI(RandKeys[InKeyPressed], Player);
@@ -102,6 +101,7 @@ void ULL_JumpVault_Ability::StopAbility_Implementation(AActor* Instigator, AActo
 	{
 		LLPlayerController->RemoveArrowToPressUI();
 	}
+	RandKeys.Empty();
 
 	Player = nullptr;
 	SpecialMovementZone->PlayerEndedTask();
@@ -124,10 +124,11 @@ void ULL_JumpVault_Ability::KeyPressed(FKey KeyPressed)
 			bCompleted = true;
 			//Player->SetActorLocation();
 			Player->bJumpingOver = true;
+			Player->bCanMove = true;
 			Player = Cast<APlayerCharacter>(AbilityComponent->GetOwner());
 			if (Player)
 			{
-				Player->MovePlayerTo(PathPositions[1], 100.f, true,false,false);
+				Player->MovePlayerTo(PathPositions[1], 120.f, true,false,false);
 				bCanReceiveInput = false;
 			}
 			if (LLPlayerController)
