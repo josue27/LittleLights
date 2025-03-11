@@ -70,26 +70,26 @@ void ULL_AbilityComponent::StartAbilityByName(AActor* Instigator, FName AbilityN
 
 void ULL_AbilityComponent::StopAbilityByName(AActor* Instigator, FName AbilityName,AActor* ActorInfo )
 {
-	for(ULL_Ability* Ability : Abilities)
+	for (ULL_Ability* Ability : Abilities)
 	{
-		if(Ability->AbilityName == AbilityName)
+		if (Ability->AbilityName == AbilityName)
 		{
-			if(Ability->IsRunning())
+			if (Ability->IsRunning())
 			{
-				Ability->StopAbility(Instigator,ActorInfo);
+				Ability->StopAbility(Instigator, ActorInfo);
 				//FString compstring =  FString::Printf((TEXT("Stop ability:%s"), AbilityName));
 				LogOnScreen(this, FString(TEXT("Ability stopped")));
-				
+
 				APlayerCharacter* PC = Cast<APlayerCharacter>(Instigator);
 				if (PC)
 				{
 					ALL_PlayerState* PS = Cast<ALL_PlayerState>(PC->GetPlayerState());
 					if (PS)
 					{
-						PS->OnInteractionEnded.Broadcast(GetOwner(),false);
+						PS->OnInteractionEnded.Broadcast(GetOwner(), false);
 					}
 				}
-				
+
 				return;
 			}
 		}

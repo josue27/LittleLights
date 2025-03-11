@@ -40,6 +40,9 @@ protected:
 	
 	UFUNCTION()
 	void ResetTarget(AActor* Actor);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void PlayerEvation(APawn* PlayerPawn);
 	
 	UPROPERTY()
 	AActor* TargetActorTemp;
@@ -77,6 +80,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ResetTeleports();
 
+	UFUNCTION()
+	void UserObstacleCompletedEvent(bool bSuccess);
 	/**
 	 * @brief 
 	 * @param ActorInteracting  usually it should be the player PlayerCharater
@@ -86,6 +91,6 @@ public:
 	void OrbIsEmpty(AActor* ActorInteracting,bool bSlowTime);
 	
 	virtual void Destroyed() override;
-
+	
 };
 

@@ -46,6 +46,10 @@ void ALL_AIBeast::BeginPlay()
 		LLPlayerState->OnInteractionEnded.AddDynamic(this,&ALL_AIBeast::ALL_AIBeast::UserFinishedInteraction);
 		LLPlayerState->OnOrbEmpty.AddDynamic(this,&ThisClass::ALL_AIBeast::OrbIsEmpty);
 	}
+	if(LLPlayer)
+	{
+		LLPlayer->OnObstacleCompleted.AddUniqueDynamic(this,&ALL_AIBeast::UserObstacleCompletedEvent);
+	}
 }
 
 // Called every frame
@@ -119,6 +123,14 @@ void ALL_AIBeast::ResetTarget(AActor* Actor)
 	TargetActorTemp = nullptr;
 }
 
+/**
+ * If user somehow evaded the beast, for now use it when crossing an obstacle
+ * @param PlayerPawn 
+ */
+void ALL_AIBeast::PlayerEvation_Implementation(APawn* PlayerPawn)
+{
+}
+
 void ALL_AIBeast::UserStartedInteraction(AActor* ActorInteractor, bool bSlowTime)
 {
 	CustomTimeDilation = bSlowTime ? SlowTimeOnInteraction : CustomTimeDilation;
@@ -134,6 +146,18 @@ void ALL_AIBeast::UserFinishedInteraction(AActor* ActorInteractor, bool bSlowTim
 void ALL_AIBeast::ResetTeleports()
 {
 	CurrentTeleports = 0;
+}
+
+void ALL_AIBeast::UserObstacleCompletedEvent(bool bSuccess)
+{
+	// if(LLPlayer)
+	// {
+	// 	LLPlayer->OnObstacleCompleted.RemoveDynamic(this,&ALL_AIBeast::UserObstacleCompletedEvent);
+	// }
+	if(bSuccess)
+	{
+		PlayerEvation(nullptr);
+	}
 }
 
 void ALL_AIBeast::OrbIsEmpty_Implementation(AActor* ActorInteracting, bool bSlowTime)

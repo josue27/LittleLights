@@ -96,6 +96,7 @@ void ULL_CrouchCross_Ability::PlayerEndedMovement(APlayerCharacter* PlayerCaller
 	if (InKeyPressed >= RandKeysToPress.Num())
 	{
 		bCompleted = true;
+		Player->OnObstacleCompleted.Broadcast(true);
 		AbilityComponent->StopAbilityByName(Player, "Crouch", SpecialMovementZone);
 
 	
@@ -147,6 +148,14 @@ void ULL_CrouchCross_Ability::StopAbility_Implementation(AActor* Instigator, AAc
 {
 	Super::StopAbility_Implementation(Instigator, SecondActor);
 
+	if (UWorld* World = GetWorld())
+	{
+		World->GetTimerManager().SetTimerForNextTick(FTimerDelegate::CreateWeakLambda(this, [&]()
+		{
+			
+		}));
+	}
+	
 	Player->UnCrouch();
 	Player->ResetWalkSpeed(400.0f);
 	Player->bIsCrossingUnder = false;
@@ -159,13 +168,14 @@ void ULL_CrouchCross_Ability::StopAbility_Implementation(AActor* Instigator, AAc
 	RandKeysToPress.Empty();
 
 	//Call the stop interaction, Mainly for the Beast slowmotion
-	
+
 
 	Player = nullptr;
-	
+
 	SpecialMovementZone->PlayerEndedTask();
 	SpecialMovementZone = nullptr;
-	
+
 	InKeyPressed = 0;
 	PathPositions.Empty();
+	
 }

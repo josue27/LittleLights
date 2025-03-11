@@ -87,7 +87,8 @@ void ULL_JumpVault_Ability::Update_Implementation(float DeltaTime)
 void ULL_JumpVault_Ability::StopAbility_Implementation(AActor* Instigator, AActor* SecondActor)
 {
 	Super::StopAbility_Implementation(Instigator, SecondActor);
-	
+
+
 	Player->ResetWalkSpeed(400.0f);
 	Player->bJumpingOver = false;
 	Player->bCanMove = true;
@@ -125,7 +126,7 @@ void ULL_JumpVault_Ability::KeyPressed(FKey KeyPressed)
 			//Player->SetActorLocation();
 			Player->bJumpingOver = true;
 			Player->bCanMove = true;
-			Player = Cast<APlayerCharacter>(AbilityComponent->GetOwner());
+			Player =  nullptr ? Cast<APlayerCharacter>(AbilityComponent->GetOwner()) : Player;
 			if (Player)
 			{
 				Player->MovePlayerTo(PathPositions[1], 120.f, true,false,false);
@@ -172,6 +173,7 @@ void ULL_JumpVault_Ability::KeyPressed(FKey KeyPressed)
 
 void ULL_JumpVault_Ability::PlayerEndedMovement(APlayerCharacter* PlayerActor, bool bLightUpOrb, bool bStartOrbDecay)
 {
+	Player->OnObstacleCompleted.Broadcast(true);
 	AbilityComponent->StopAbilityByName(Player, "JumpOver", SpecialMovementZone);
 
 	bCanReceiveInput = true;

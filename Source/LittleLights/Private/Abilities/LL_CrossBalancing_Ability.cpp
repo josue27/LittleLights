@@ -81,8 +81,11 @@ void ULL_CrossBalancing_Ability::Update_Implementation(float DeltaTime)
 		
 		if (DistanceWalkedX >= 1.0f || DistanceWalkedX < 0.f)
 		{
+			PlayerCharacter->OnObstacleCompleted.Broadcast(true);
+
 			AbilityComponent->StopAbilityByName(PlayerCharacter, "CrossBalancing", nullptr);
 			bStartBalance = false;
+
 		}
 		
 	}
@@ -92,9 +95,6 @@ void ULL_CrossBalancing_Ability::StopAbility_Implementation(AActor* Instigator, 
 {
 	Super::StopAbility_Implementation(Instigator, SecondActor);
 
-
-	
-	
 	DistanceWalkedX= 0.0f;
 	
 	bStartBalance = false;
@@ -110,5 +110,7 @@ void ULL_CrossBalancing_Ability::StopAbility_Implementation(AActor* Instigator, 
 	JumpOverZone = nullptr;
 	PlayerStartLoc = FVector::Zero();
 	PlayerEndLoc = FVector::Zero();
+
+
 	
 }

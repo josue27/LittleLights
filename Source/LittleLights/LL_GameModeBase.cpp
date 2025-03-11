@@ -53,7 +53,7 @@ void ALL_GameModeBase::StartPlay()
 }
 void ALL_GameModeBase::SaveFileLoaded(bool bSuccess)
 {
-	if(bSuccess)
+	if(bSuccess && GetLevelConfiguration())
 	{
 		if(LlGameManager->GameSave.LevelsCompleted == GetLevelConfiguration()->InLevel)
 		{
