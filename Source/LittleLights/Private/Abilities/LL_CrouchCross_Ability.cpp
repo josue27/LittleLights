@@ -54,7 +54,7 @@ void ULL_CrouchCross_Ability::StartAbility_Implementation(AActor* Instigator, AA
 	LLPlayerController = Cast<ALL_PlayerControllerBase>(PC);
 	if (LLPlayerController)
 	{
-		for(int32 i = 0 ; i < KeyToPress.Num()-1;i++)
+		for(int32 i = 0 ; i < KeyToPress.Num();i++)
 		{
 			RandKeysToPress.Add(KeyToPress[FMath::RandRange(0,KeyToPress.Num()-1)]);
 		}
@@ -93,9 +93,10 @@ void ULL_CrouchCross_Ability::PlayerEndedMovement(APlayerCharacter* PlayerCaller
 	if (Player)
 		Player->OnAutomaticMovementEnded.RemoveDynamic(this,&ULL_CrouchCross_Ability::PlayerEndedMovement);
 	
-	if (InKeyPressed >= RandKeysToPress.Num()-1)
+	if (InKeyPressed >= RandKeysToPress.Num())
 	{
 		bCompleted = true;
+		Player->OnObstacleCompleted.Broadcast(true);
 		AbilityComponent->StopAbilityByName(Player, "Crouch", SpecialMovementZone);
 
 	
@@ -108,10 +109,8 @@ void ULL_CrouchCross_Ability::PlayerEndedMovement(APlayerCharacter* PlayerCaller
 
 	}
 
-	///
 	if (LLPlayerController)
 	{
-		//LLPlayerController->ShowKeyWithTimeToPressUI("Press "+ RandKeysToPress[InKeyPressed].ToString(), Player,RemainingDeltaActionTime);
 		LLPlayerController->ShowArrowWithTimeToPressUI(RandKeysToPress[InKeyPressed], Player,RemainingDeltaActionTime);
 	}
 	RemainingActionTime = TimeToPressKey + Player->GetWorld()->GetTimeSeconds();
@@ -134,14 +133,13 @@ void ULL_CrouchCross_Ability::Update_Implementation(float DeltaTime)
 		//LogOnScreen(Player->GetWorld(),TRemainingStrinag,FColor::Red,0.1f);
 		if (IsValid(LLPlayerController))
 		{
-			//LLPlayerController->ShowKeyWithTimeToPressUI("Press "+RandKeysToPress[InKeyPressed].ToString(), Player,RemainingDeltaActionTime);
 			LLPlayerController->ShowArrowWithTimeToPressUI(RandKeysToPress[InKeyPressed], Player,RemainingDeltaActionTime);
 
 		}
 		if(RemainingDeltaActionTime <= 0.0f)
 		{
 			AbilityComponent->StopAbilityByName(Player, "Crouch", SpecialMovementZone);
-			LLPlayerController->RemoveArrowToPressUI();
+		
 		}
 	}
 }
@@ -150,6 +148,14 @@ void ULL_CrouchCross_Ability::StopAbility_Implementation(AActor* Instigator, AAc
 {
 	Super::StopAbility_Implementation(Instigator, SecondActor);
 
+	if (UWorld* World = GetWorld())
+	{
+		World->GetTimerManager().SetTimerForNextTick(FTimerDelegate::CreateWeakLambda(this, [&]()
+		{
+			
+		}));
+	}
+	
 	Player->UnCrouch();
 	Player->ResetWalkSpeed(400.0f);
 	Player->bIsCrossingUnder = false;
@@ -157,16 +163,19 @@ void ULL_CrouchCross_Ability::StopAbility_Implementation(AActor* Instigator, AAc
 	//Player->OnAutomaticMovementEnded.RemoveDynamic(this, &ULL_CrouchCross_Ability::PlayerEndedMovement);
 	Player->OnKeyPressed.RemoveDynamic(this, &ULL_CrouchCross_Ability::KeyPressed);
 	Player->DisableInteraction(false);
-	
+	LLPlayerController->RemoveArrowToPressUI();
+
+	RandKeysToPress.Empty();
 
 	//Call the stop interaction, Mainly for the Beast slowmotion
-	
+
 
 	Player = nullptr;
-	
+
 	SpecialMovementZone->PlayerEndedTask();
 	SpecialMovementZone = nullptr;
-	
+
 	InKeyPressed = 0;
 	PathPositions.Empty();
+	
 }

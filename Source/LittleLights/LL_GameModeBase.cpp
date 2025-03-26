@@ -53,7 +53,7 @@ void ALL_GameModeBase::StartPlay()
 }
 void ALL_GameModeBase::SaveFileLoaded(bool bSuccess)
 {
-	if(bSuccess)
+	if(bSuccess && GetLevelConfiguration())
 	{
 		if(LlGameManager->GameSave.LevelsCompleted == GetLevelConfiguration()->InLevel)
 		{
@@ -213,25 +213,25 @@ float ALL_GameModeBase::DeltaDistanceToBeast()
 
 void ALL_GameModeBase::SpawnBeast_Implementation()
 {
-	if(ensure(BeastAI_Class) )
-	{
-		LogOnScreen(GetWorld(),"Can not spawn, BeastAI_Class = none ");
-
-		return;
-	}
-	if(BeastAI)
-	{
-		LogOnScreen(GetWorld()," Beast was already spawned");
-		return;
-	}
-	LogOnScreen(GetWorld(),"Starting Beast spawn");
-
-	//TODO: Make an EQS for get a spawnable location
-	UEnvQueryInstanceBlueprintWrapper* QueryLocationInstance = UEnvQueryManager::RunEQSQuery(this,SpawnBeastLocationQuery,this,EEnvQueryRunMode::RandomBest5Pct,nullptr);
-	if(ensure(QueryLocationInstance))
-	{
-		QueryLocationInstance->GetOnQueryFinishedEvent().AddDynamic(this,&ALL_GameModeBase::OnLocationQueryCompleted);
-	}
+	// if(ensure(BeastAI_Class) )
+	// {
+	// 	LogOnScreen(GetWorld(),"Can not spawn, BeastAI_Class = none ");
+	//
+	// 	return;
+	// }
+	// if(BeastAI)
+	// {
+	// 	LogOnScreen(GetWorld()," Beast was already spawned");
+	// 	return;
+	// }
+	// LogOnScreen(GetWorld(),"Starting Beast spawn");
+	//
+	// //TODO: Make an EQS for get a spawnable location
+	// UEnvQueryInstanceBlueprintWrapper* QueryLocationInstance = UEnvQueryManager::RunEQSQuery(this,SpawnBeastLocationQuery,this,EEnvQueryRunMode::RandomBest5Pct,nullptr);
+	// if(ensure(QueryLocationInstance))
+	// {
+	// 	QueryLocationInstance->GetOnQueryFinishedEvent().AddDynamic(this,&ALL_GameModeBase::OnLocationQueryCompleted);
+	// }
 
 }
 void ALL_GameModeBase::OnLocationQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryInstance,

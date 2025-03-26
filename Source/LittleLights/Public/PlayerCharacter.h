@@ -17,6 +17,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnAutomaticMovementEnded, APlayerCharacter*, PlayerCharacter,bool,bLightUpTorch,bool,bStartDecay);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnKeyPressed, FKey, KeyPressed);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogueAdvance);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnObstacleCompleted,bool, bSucess);
 
 class ATorch;
 class UArrowComponent;
@@ -92,8 +93,12 @@ public:
 	UPROPERTY(BlueprintAssignable,BlueprintCallable)
 	FOnDialogueAdvance OnDialogueAdvance;
 
+
+
 	struct FEnhancedInputActionValueBinding* MoveActionBinding;
 #pragma endregion
+	UPROPERTY(BlueprintAssignable,BlueprintCallable)
+	FOnObstacleCompleted OnObstacleCompleted;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
