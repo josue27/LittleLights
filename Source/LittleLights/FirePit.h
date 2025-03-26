@@ -42,6 +42,8 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Pond")
 	float RefillAmount = 30.0f;
 	
-	
-
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Pond | Tutorial")
+	bool bIsTutorial;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Pond | Tutorial")
+	bool bCompleted;
 };
