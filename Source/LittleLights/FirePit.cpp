@@ -44,6 +44,11 @@ void AFirePit::Tick(float DeltaTime)
 
 void AFirePit::Interact_Implementation(APawn* InstigatorPawn)
 {
+	if(bIsTutorial)
+	{
+		if(bCompleted)
+			return;
+	}
 	APlayerCharacter* Player = Cast<APlayerCharacter>(InstigatorPawn);
 	if(Player)
 	{
@@ -54,10 +59,16 @@ void AFirePit::Interact_Implementation(APawn* InstigatorPawn)
 			TC->StartOrbRefill(RefillAmount);
 		}
 	}
+	bCompleted = true;
 }
 
 FText AFirePit::GetInteractText_Implementation(APawn* InstigatorPawn)
 {
+	if(bIsTutorial)
+	{
+		if(bCompleted)
+			return FText::GetEmpty();
+	}
 	APlayerCharacter* Player = Cast<APlayerCharacter>(InstigatorPawn);
 
 	
