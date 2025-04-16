@@ -4,8 +4,6 @@
 #include "LL_InteractorComponent.h"
 
 #include "DrawDebugHelpers.h"
-#include "InterchangeResult.h"
-#include "LLGamePlayFunctionLibrary.h"
 #include "LL_GameplayInterface.h"
 #include "PlayerCharacter.h"
 #include "Tottem_Piece.h"

@@ -24,7 +24,10 @@ struct FTottemPieceSettings
 	UPROPERTY(EditAnywhere, BluePrintReadWrite, Category = "Tottem Settigs")
 	ATottem_Piece* TottemPiece = nullptr;
 
-
+	FTottemPieceSettings()
+	{
+		bColocated = false;
+	}
 };
 
 UCLASS()

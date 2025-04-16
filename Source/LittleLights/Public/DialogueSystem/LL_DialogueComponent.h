@@ -4,11 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Components/SlateWrapperTypes.h"
 #include "Engine/DataTable.h"
 #include "LL_DialogueComponent.generated.h"
 
 
 class UDataTable;
+enum class  ESlateVisibility :  uint8;
 
 UENUM(BlueprintType)
 enum class LL_DialogueState : uint8
@@ -83,6 +85,14 @@ struct FLL_DialogueLineStruct
 	ESlateVisibility SpeakerA_Visibility;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	ESlateVisibility SpeakerB_Visibility;
+	
+	FLL_DialogueLineStruct(): SpeakerA_Info(ELL_CharacterID::CI_None),
+		  SpeakerB_Info(ELL_CharacterID::CI_None),
+		  SpeakerA_Visibility(ESlateVisibility::Collapsed),
+		  SpeakerB_Visibility(ESlateVisibility::Collapsed)
+	{
+		
+	}
 	
 };
 

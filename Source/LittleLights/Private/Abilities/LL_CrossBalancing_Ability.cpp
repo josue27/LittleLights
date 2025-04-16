@@ -3,7 +3,6 @@
 
 #include "Abilities/LL_CrossBalancing_Ability.h"
 
-#include "JumpOverZone.h"
 #include "LLGamePlayFunctionLibrary.h"
 #include "PlayerCharacter.h"
 #include "Components/CapsuleComponent.h"
