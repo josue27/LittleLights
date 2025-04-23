@@ -23,7 +23,7 @@ struct FLLMapListInfo : public FTableRowBase
 	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadOnly,EditAnywhere)
-	ELLMapsIndexEntry MapID;
+	ELLMapsIndexEntry MapID = ELLMapsIndexEntry::TutorialA;
 	
 	UPROPERTY(BlueprintReadOnly,EditAnywhere)
 	TSoftObjectPtr<UWorld> Map;
@@ -39,10 +39,10 @@ struct FLLGameSaveData
 	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadWrite)
-	ELLMapsIndexEntry LevelsCompleted;//Witch level user has completed
+	ELLMapsIndexEntry LevelsCompleted ;//Witch level user has completed
 	
 	UPROPERTY(BlueprintReadWrite)
-	ELLMapsIndexEntry InLevel;//Witch level should we load;
+	ELLMapsIndexEntry InLevel = ELLMapsIndexEntry::TutorialA;//Witch level should we load;
 
 	//The initial movement the character makes, if completed we should not trigger this and tell the GM of the level
 	UPROPERTY(BlueprintReadWrite)
@@ -53,5 +53,13 @@ struct FLLGameSaveData
 
 	UPROPERTY(BlueprintReadWrite)
 	FVector Totem;
-	
+
+	FLLGameSaveData()
+	{
+		LevelsCompleted = ELLMapsIndexEntry::TutorialA;
+		InLevel = ELLMapsIndexEntry::TutorialA;
+		InitialEntranceCompleted = false;
+		PlayerLocation = FVector::Zero();
+		Totem = FVector::Zero();
+	}
 };

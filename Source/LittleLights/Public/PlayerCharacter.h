@@ -46,6 +46,10 @@ struct FCameraOccludedActor
 	TArray<UMaterialInterface*> Materials;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool IsOccluded;
+	FCameraOccludedActor()
+	{
+		IsOccluded = false;
+	}
 };
 
 UCLASS()

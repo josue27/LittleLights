@@ -33,7 +33,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector EndPosition;
 	
-	
+	FTottemPieceState()
+	{
+		PieceType = TottemPieceType::PieceA;
+		Delivered = false;
+		EndPosition = FVector::Zero();
+		
+	}
 };
 
 UCLASS()
