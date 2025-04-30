@@ -16,7 +16,10 @@ void ULL_CrouchCross_Ability::StartAbility_Implementation(AActor* Instigator, AA
 	Super::StartAbility_Implementation(Instigator, SecondActor);
 
 	SpecialMovementZone = Cast< ALL_SpecialMovementZone>(SecondActor);
-	if (SpecialMovementZone == nullptr)return;
+	
+	if (SpecialMovementZone == nullptr)
+		return;
+	
 	InKeyPressed = 0;
 	bCanReceiveInput = true;
 	bCompleted = false;
