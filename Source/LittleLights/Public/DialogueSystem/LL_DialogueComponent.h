@@ -47,7 +47,7 @@ struct FLL_DialogueLine : public FTableRowBase
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,  meta = (MultiLine="true"))
 	FText Dialogue;
 	UPROPERTY(EditAnywhere,BlueprintReadOnly);
-	LL_SpeakerTurn Speaker;
+	LL_SpeakerTurn Speaker = LL_SpeakerTurn();
 	
 };
 
@@ -57,7 +57,7 @@ struct FLL_DialogueSpeakers : public FTableRowBase
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	ELL_CharacterID CharacterID;
+	ELL_CharacterID CharacterID = ELL_CharacterID::CI_None;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	FText DisplayName;
