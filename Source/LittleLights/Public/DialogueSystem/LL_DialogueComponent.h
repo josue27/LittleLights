@@ -113,7 +113,7 @@ struct FLL_Dialogue : public FTableRowBase
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class LITTLELIGHTS_API ULL_DialogueComponent : public UActorComponent
 {
-	GENERATED_BODY()
+ 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
