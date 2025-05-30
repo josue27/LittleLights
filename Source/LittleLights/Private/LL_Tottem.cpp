@@ -158,16 +158,16 @@ void ALL_Tottem::MovePieceAnimEnded()
 	//by logic the last one will be removed and TottemPieces will be 0 so we could
 	//check the completition
 	return;
-	if(Player->TottemPieces.Num() == 0)
-	{
-		TotemCompletion();
-
-
-	}else
-	{
-		//TODO:Warning this might be recursive
-		Interact_Implementation(Player);
-	}
+	// if(Player->TottemPieces.Num() == 0)
+	// {
+	// 	TotemCompletion();
+	//
+	//
+	// }else
+	// {
+	// 	//TODO:Warning this might be recursive
+	// 	Interact_Implementation(Player);
+	// }
 	
 }
 /**

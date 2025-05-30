@@ -10,5 +10,8 @@ public class LittleLightsTarget : TargetRules
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
 		ExtraModuleNames.AddRange( new string[] { "LittleLights" } );
+		bOverrideBuildEnvironment = true;
+		CppStandard = CppStandardVersion.Cpp20;
+
 	}
 }
