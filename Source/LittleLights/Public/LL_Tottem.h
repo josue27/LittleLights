@@ -38,6 +38,9 @@ public:
 		PieceType = TottemPieceType::PieceA;
 		Delivered = false;
 		EndPosition = FVector::Zero();
+		TotemPice = nullptr;
+		TotemPiecePlaced = nullptr;
+		TotemPiece_Dummy = nullptr;
 		
 	}
 };

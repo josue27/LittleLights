@@ -50,10 +50,6 @@
 			]
 		},
 		{
-			"Name": "Volumetrics",
-			"Enabled": true
-		},
-		{
 			"Name": "Text3D",
 			"Enabled": true
 		},

@@ -38,9 +38,9 @@ struct FCameraOccludedActor
 {
 	GENERATED_USTRUCT_BODY()
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	const AActor* Actor;
+	const AActor* Actor = nullptr;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* StaticMesh;
+	UStaticMeshComponent* StaticMesh = nullptr;
   
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TArray<UMaterialInterface*> Materials;

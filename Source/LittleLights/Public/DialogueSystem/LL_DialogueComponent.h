@@ -65,7 +65,12 @@ struct FLL_DialogueSpeakers : public FTableRowBase
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UTexture2D* Portrait;
 	
-	
+	FLL_DialogueSpeakers()
+	{
+		CharacterID = ELL_CharacterID::CI_None;
+		DisplayName = FText();
+		Portrait = nullptr;
+	}
 	
 };
 
