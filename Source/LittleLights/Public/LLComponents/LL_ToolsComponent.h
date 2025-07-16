@@ -29,6 +29,9 @@ public:
 		ALL_Orb* Orb;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LL Tools | Orb")
 		bool bStartWithOrb;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+		bool bOrbRefillFinishedTutorial;
+	
 protected:
 
 	APlayerCharacter* PlayerCharacter;
@@ -63,5 +66,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "LL Tools | Orb")
 		float GetDeltaRemainOrb();
 
+
+	UFUNCTION(BlueprintCallable, Category = "LL Tools | Orb")
+	void OrbRefillFinishedTutorial(bool bInShouldAvoidMovement);
 #pragma endregion
 };

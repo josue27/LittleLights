@@ -101,29 +101,10 @@ void ULL_ToolsComponent::RefillOrb(float Amount, bool bStartDecay)
 	{
 		Orb->RefillOrb(Amount);
 		
-
-		if(bStartDecay)
+		if (bStartDecay)
 			StartOrbDecay();
-
-		Orb->UpdateLight(1.f);
-		
-		
-	//Is this duplicated?
-		// APlayerCharacter* PC = Cast<APlayerCharacter>(GetOwner());
-		// if (PC)
-		// {
-		// 	ALL_PlayerState* PS = Cast<ALL_PlayerState>(PC->GetPlayerState());
-		// 	if (PS)
-		// 	{
-		// 		PS->OnRefillingOrb.Broadcast(false);
-		// 		PS->OnOrbRefillFinished.Broadcast(true);
-		// 		PS->OnInteractionEnded.Broadcast(GetOwner(),false);
-		// 	}
-		// }
-
 	}
 	LogOnScreen(GetWorld(), "Orb refilled");
-
 }
 
 void ULL_ToolsComponent::OrbRefillFinished()
@@ -135,7 +116,10 @@ void ULL_ToolsComponent::OrbRefillFinished()
 	if (PC)
 	{
 		PC->bLightingTorch = false;
-		PC->ContinueMovement();
+		
+		if(!bOrbRefillFinishedTutorial)
+			PC->ContinueMovement();
+		
 		PC->ResetCameraPosition();
 		//PC->bUpdateFov = true;
 		ALL_PlayerState* PS = Cast<ALL_PlayerState>(PC->GetPlayerState());
@@ -160,6 +144,12 @@ float ULL_ToolsComponent::GetDeltaRemainOrb()
 		return Orb->RemainingDeltaTime;
 	}
 	return 0.0f;
+}
+
+//This is kind of hacky
+void ULL_ToolsComponent::OrbRefillFinishedTutorial(bool bInShouldAvoidMovement)
+{
+	bOrbRefillFinishedTutorial = bInShouldAvoidMovement;
 }
 
 #pragma endregion 
