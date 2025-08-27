@@ -182,6 +182,13 @@ void ALL_Tottem::SendLevelCompleted()
 	ALL_GameModeBase* GM = Cast<ALL_GameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 	//remember that you have to call this in each actor that has implemented this cause this is an interface not a MulticasEvent
 	Execute_BeaconCompleted(GM);
+	if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
+	{
+		if (APlayerCharacter* PC = Cast<APlayerCharacter>(PlayerController->GetPawn()))
+		{
+			Execute_BeaconCompleted(PC);
+		}
+	}
 	Execute_BeaconCompleted(this);
 		
 	TotemCompleted = true;

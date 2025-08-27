@@ -330,7 +330,7 @@ public:
 		void JumpButtonCall(const FInputActionValue& Value);
 
 	/// <summary>
-	/// Evaluates what is the PlayerCharacater is looking at so it can display something in HUD(or not)
+	/// Evaluates what is the PlayerCharacter is looking at so it can display something in HUD(or not)
 	/// </summary>
 	UFUNCTION(BlueprintCallable, Category = "LLPLayer|HUD")
 		void LookingAt();
