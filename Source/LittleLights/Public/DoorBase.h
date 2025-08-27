@@ -27,9 +27,9 @@ protected:
 
 	UPROPERTY( BlueprintReadWrite)
 	UBoxComponent* EndTrigger;
-
+	/**Level that corresponds to this door*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Door Base")
-	ELLMapsIndexEntry LevelID;//Level that corresponds to this door
+	ELLMapsIndexEntry LevelID;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
