@@ -10,6 +10,7 @@ enum class ELLMapsIndexEntry : uint8
 {
 	TutorialA,
 	TutorialB,
+	TutorialC,//Entrance golem base
 	Lobby,//Golem base
 	Level1,//Totem A
 	Level2,//Totem B
