@@ -16,6 +16,7 @@ enum class ELLDialogueActivationType : uint8
 	JumpToTime = 3 UMETA (DisplayName = "Jump to Time"),
 	ShowNextDialogue = 4 UMETA (DisplayName = "Show Next Dialogue"),
 	ShowSpecificDialogue = 5 UMETA (DisplayName = "Show Specific Dialogue"),
+	BeaconCompletion = 6 UMETA(DisplayName ="Beacon completion"),
 	MAX
 };
 
