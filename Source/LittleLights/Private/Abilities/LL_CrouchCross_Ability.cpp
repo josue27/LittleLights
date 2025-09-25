@@ -67,11 +67,10 @@ void ULL_CrouchCross_Ability::StartAbility_Implementation(AActor* Instigator, AA
 }
 
 
-void ULL_CrouchCross_Ability::KeyPressed(FKey KeyPressed)
+void ULL_CrouchCross_Ability::KeyPressed(LLEInputDirection KeyDirection)
 {
-	if (KeyPressed.GetFName() == FKey("E") || KeyPressed.GetFName() == FKey("e"))return;
 
-	if (RandKeysToPress.IsValidIndex(InKeyPressed) && KeyPressed == RandKeysToPress[InKeyPressed])
+	if (RandKeysToPress.IsValidIndex(InKeyPressed) && KeyDirection == RandKeysToPress[InKeyPressed])
 	{
 
 	    Player = Player == nullptr? Cast<APlayerCharacter>(AbilityComponent->GetOwner()): Player;

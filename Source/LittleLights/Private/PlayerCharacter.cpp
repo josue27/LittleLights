@@ -219,6 +219,13 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Input->BindAction(Sprint_IA, ETriggerEvent::Completed, this, &APlayerCharacter::SprintCancelled);//Might Be wrong
 	Input->BindAction(Jump_IA, ETriggerEvent::Triggered, this, &APlayerCharacter::JumpButtonCall);
 	Input->BindAction(AdvanceDialogue_IA, ETriggerEvent::Triggered, this, &APlayerCharacter::AdvanceDialogueCall);
+	
+	Input->BindAction(DPadUp_IA, ETriggerEvent::Triggered, this, &APlayerCharacter::DPadUpPressed);
+	Input->BindAction(DPadDown_IA, ETriggerEvent::Triggered, this, &APlayerCharacter::DPadDownPressed);
+	Input->BindAction(DPadLeft_IA, ETriggerEvent::Triggered, this, &APlayerCharacter::DPadLeftPressed);
+	Input->BindAction(DPadRight_IA, ETriggerEvent::Triggered, this, &APlayerCharacter::DPadRightPressed);
+
+	
 
 	MoveActionBinding = &Input->BindActionValue(MoveForward_IA);
 }
@@ -333,6 +340,46 @@ void APlayerCharacter::ActionButtonCall(const FInputActionValue& Value)
 	
 }
 
+void APlayerCharacter::DPadUpPressed(const FInputActionValue& Value)
+{
+	const bool bPressed = Value.Get<bool>();
+	if(bPressed)
+	{
+		OnKeyPressed.Broadcast(LLEInputDirection::Up);
+
+	}
+}
+
+void APlayerCharacter::DPadDownPressed(const FInputActionValue& Value)
+{
+	const bool bPressed = Value.Get<bool>();
+	if(bPressed)
+	{
+		OnKeyPressed.Broadcast(LLEInputDirection::Down);
+	}
+}
+
+void APlayerCharacter::DPadLeftPressed(const FInputActionValue& Value)
+{
+	const bool bPressed = Value.Get<bool>();
+	if(bPressed)
+	{
+		OnKeyPressed.Broadcast(LLEInputDirection::Left);
+
+	}
+}
+
+void APlayerCharacter::DPadRightPressed(const FInputActionValue& Value)
+{
+	const bool bPressed = Value.Get<bool>();
+	if(bPressed)
+	{
+		OnKeyPressed.Broadcast(LLEInputDirection::Right);
+
+	}
+}
+
+
 void APlayerCharacter::ResetWalkSpeed(float speed)
 {
 	GetCharacterMovement()->MaxWalkSpeed = speed;
@@ -404,6 +451,7 @@ void APlayerCharacter::Movement(const FInputActionValue& Value)
 		// FString DebugText = FString::Printf(TEXT("Forward Direction; %s Right Direction: %s Axisvalue: %s, Rotationyas %f "),*ForwardDirection.ToString(),*RightDirection.ToString(),*InputVector.ToString(),Rotation.Yaw);
 		// LogOnScreen(GetWorld(),DebugText);
 
+	
 	}
 }
 void APlayerCharacter::ForwardMovement(const FInputActionValue& Value)

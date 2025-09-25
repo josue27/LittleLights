@@ -112,10 +112,9 @@ void ULL_JumpVault_Ability::StopAbility_Implementation(AActor* Instigator, AActo
 	PathPositions.Empty();
 }
 
-void ULL_JumpVault_Ability::KeyPressed(FKey KeyPressed)
+void ULL_JumpVault_Ability::KeyPressed(LLEInputDirection KeyPressed)
 {
 
-	if (KeyPressed.GetFName() == FKey("E") || KeyPressed.GetFName() == FKey("e"))return;
 
 	if (RandKeys.IsValidIndex(InKeyPressed) && KeyPressed == RandKeys[InKeyPressed])
 	{

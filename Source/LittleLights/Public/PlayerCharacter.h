@@ -14,10 +14,6 @@
 #include "Components/TimelineComponent.h"
 #include "PlayerCharacter.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnAutomaticMovementEnded, APlayerCharacter*, PlayerCharacter,bool,bLightUpTorch,bool,bStartDecay);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnKeyPressed, FKey, KeyPressed);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogueAdvance);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnObstacleCompleted,bool, bSucess);
 
 class ATorch;
 class UArrowComponent;
@@ -33,6 +29,17 @@ class ALL_GameModeBase;
 class ALL_AIBeast;
 class UInputMappingContext;
 class UInputAction;
+
+UENUM(BlueprintType)
+enum class LLEInputDirection : uint8
+{
+	Up,
+	Down,
+	Left,
+	Right
+};
+
+
 USTRUCT(BlueprintType)
 struct FCameraOccludedActor
 {
@@ -51,6 +58,12 @@ struct FCameraOccludedActor
 		IsOccluded = false;
 	}
 };
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnAutomaticMovementEnded, APlayerCharacter*, PlayerCharacter,bool,bLightUpTorch,bool,bStartDecay);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnKeyPressed, LLEInputDirection, KeyDirection);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogueAdvance);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnObstacleCompleted,bool, bSucess);
+
 
 UCLASS()
 class LITTLELIGHTS_API APlayerCharacter : public ACharacter, public ILL_GameplayInterface
@@ -93,6 +106,15 @@ public:
 	UInputAction* Jump_IA;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,  Category = "LLPLayer | EnhancedInput")
 	UInputAction* AdvanceDialogue_IA;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,  Category = "LLPLayer | EnhancedInput")
+	UInputAction* DPadUp_IA;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,  Category = "LLPLayer | EnhancedInput")
+	UInputAction* DPadDown_IA;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,  Category = "LLPLayer | EnhancedInput")
+	UInputAction* DPadRight_IA;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,  Category = "LLPLayer | EnhancedInput")
+	UInputAction* DPadLeft_IA;
+	
 
 	UPROPERTY(BlueprintAssignable,BlueprintCallable)
 	FOnDialogueAdvance OnDialogueAdvance;
@@ -310,6 +332,15 @@ public:
 		void ActionButtonCall(const FInputActionValue& Value);
 	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable)
 		void MovePlayerTo(FVector Location, float Speed = 150.0f,bool bNotify = false,bool bLightUpOrb = true,bool bStartOrbDecay = true);
+
+	UFUNCTION(BlueprintCallable)
+	void DPadUpPressed(const FInputActionValue& Value);
+	UFUNCTION(BlueprintCallable)
+	void DPadDownPressed(const FInputActionValue& Value);
+	UFUNCTION(BlueprintCallable)
+	void DPadLeftPressed(const FInputActionValue& Value);
+	UFUNCTION(BlueprintCallable)
+	void DPadRightPressed(const FInputActionValue& Value);
 	
 	UFUNCTION(BlueprintCallable,Category="LLPLayer|LL_Player")
 		void ResetWalkSpeed(float speed=400.0f);

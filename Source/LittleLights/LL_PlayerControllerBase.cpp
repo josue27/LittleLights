@@ -149,7 +149,7 @@ void ALL_PlayerControllerBase::ShowKeyWithTimeToPressUI(FString keymsg, AActor* 
 
 #pragma region Arrow
 
-void ALL_PlayerControllerBase::ShowArrowToPressUI(FKey KeyToPress, AActor* ActorToAttach)
+void ALL_PlayerControllerBase::ShowArrowToPressUI(LLEInputDirection KeyToPress, AActor* ActorToAttach)
 {
 	if (ArrowWidgetInstance == nullptr && ensure(DefaultWidgetClass))
 	{
@@ -174,7 +174,7 @@ void ALL_PlayerControllerBase::RemoveArrowToPressUI()
 	}
 }
 //TODO: merge these to one
-void ALL_PlayerControllerBase::ShowArrowWithTimeToPressUI(FKey KeyPressed, AActor* ActorToAttach, float TimeRemainng)
+void ALL_PlayerControllerBase::ShowArrowWithTimeToPressUI(LLEInputDirection KeyPressed, AActor* ActorToAttach, float TimeRemainng)
 {
 	if (ArrowWidgetInstance == nullptr && ensure(DefaultWidgetClass))
 	{

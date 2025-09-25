@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Abilities/LL_CrouchCross_Ability.h"
 #include "GameFramework/PlayerController.h"
 #include "LL_PlayerControllerBase.generated.h"
 
@@ -70,11 +71,11 @@ public:
 		void ShowKeyWithTimeToPressUI(FString keymsg,AActor* ActorToAttach,float TimeRemainng);
 
 	UFUNCTION(BlueprintCallable)
-		void ShowArrowToPressUI(FKey KeyToPress, AActor* ActorToAttach);
+		void ShowArrowToPressUI(LLEInputDirection KeyToPress, AActor* ActorToAttach);
 	UFUNCTION(BlueprintCallable)
 		void RemoveArrowToPressUI();
 	UFUNCTION(BlueprintCallable)
-		void ShowArrowWithTimeToPressUI(FKey KeyPressed, AActor* ActorToAttach, float TimeRemainng);
+		void ShowArrowWithTimeToPressUI(LLEInputDirection KeyPressed, AActor* ActorToAttach, float TimeRemainng);
 		
 	UFUNCTION(BlueprintCallable)
 		void ShowTotemPiecesHUD(bool bShow);
