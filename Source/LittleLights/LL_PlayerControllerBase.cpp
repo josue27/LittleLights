@@ -164,6 +164,19 @@ void ALL_PlayerControllerBase::ShowArrowToPressUI(LLEInputDirection KeyToPress, 
 			ArrowWidgetInstance->AddToViewport();
 		}
 		ArrowWidgetInstance->SetArrow(KeyToPress);
+		
+		FVector2D ViewportSize;
+		if (GEngine && GEngine->GameViewport)
+		{
+			GEngine->GameViewport->GetViewportSize(ViewportSize);
+		}
+		
+		// Calcular posición: centro horizontal, 10% arriba del centro vertical
+		FVector2D WidgetPosition;
+		WidgetPosition.X = 0.f;// ViewportSize.X * 0.5f;  // Centro horizontal (50%)
+		WidgetPosition.Y = 0.f;//ViewportSize.Y * 0.5f;  // 10% arriba del centro (40% desde arriba)
+		
+		ArrowWidgetInstance->SetPositionInViewport(WidgetPosition);
 	}
 }
 void ALL_PlayerControllerBase::RemoveArrowToPressUI()
