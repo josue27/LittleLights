@@ -229,8 +229,12 @@ void ALL_PlayerControllerBase::ShowDialogue(FLL_DialogueLineStruct DialogueStruc
 	{
 	
 		LL_GameHUD->PlayerOverlay->ShowDialogue(bShow, DialogueStruct);
-		if(DialogueStruct.DialogueLines.Num()>0)
-			LL_GameHUD->PlayerOverlay->OnDialogueLinesOver.AddDynamic(this,&ALL_PlayerControllerBase::DialogueEnded);
+		if(DialogueStruct.DialogueLines.Num() > 0)
+		{
+			if(!LL_GameHUD->PlayerOverlay->OnDialogueLinesOver.IsAlreadyBound(this,&ALL_PlayerControllerBase::DialogueEnded))
+				LL_GameHUD->PlayerOverlay->OnDialogueLinesOver.AddDynamic(this,&ALL_PlayerControllerBase::DialogueEnded);
+
+		}
 		
 	}
 }
