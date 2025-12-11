@@ -7,6 +7,8 @@
 #include "GameFramework/PlayerController.h"
 #include "LL_PlayerControllerBase.generated.h"
 
+struct FLL_DialogueLineStruct;
+struct FInputActionValue;
 class UUserWidget;
 class ALLGame_HUD;
 class ULL_WorldUserWidget;
@@ -84,7 +86,7 @@ public:
 		void TotemPiecesDeliveredHUD();
 
 	UFUNCTION(BlueprintCallable)
-	void ShowDialogue(FLL_DialogueLineStruct DialogueStruct, bool bShow);
+	void ShowDialogue(const FLL_DialogueLineStruct DialogueStruct, const bool bShow);
 	UFUNCTION(BlueprintCallable)
 	void ShowNextDialogue();
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)

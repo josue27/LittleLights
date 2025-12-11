@@ -75,7 +75,7 @@ struct FLL_DialogueSpeakers : public FTableRowBase
 };
 
 USTRUCT(BlueprintType)
-struct FLL_DialogueLineStruct  
+struct FLL_DialogueLineStruct  : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -85,18 +85,20 @@ struct FLL_DialogueLineStruct
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	ELL_CharacterID SpeakerB_Info;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,  meta = (MultiLine="true"))
-	TArray<FLL_DialogueLine> DialogueLines;
+	TArray<FLL_DialogueLine> DialogueLines = {};
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	ESlateVisibility SpeakerA_Visibility;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	ESlateVisibility SpeakerB_Visibility;
 	
-	FLL_DialogueLineStruct(): SpeakerA_Info(ELL_CharacterID::CI_None),
-		  SpeakerB_Info(ELL_CharacterID::CI_None),
-		  SpeakerA_Visibility(ESlateVisibility::Collapsed),
-		  SpeakerB_Visibility(ESlateVisibility::Collapsed)
+
+	FLL_DialogueLineStruct()
 	{
-		
+		SpeakerA_Info = ELL_CharacterID::CI_None;
+		SpeakerB_Info = ELL_CharacterID::CI_None;
+		DialogueLines ={};
+		SpeakerA_Visibility = ESlateVisibility::Collapsed;
+		SpeakerB_Visibility = ESlateVisibility::Collapsed;
 	}
 	
 };

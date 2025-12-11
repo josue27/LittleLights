@@ -10,11 +10,11 @@
 #include "Camera/CameraComponent.h"
 #include "Components/SpotLightComponent.h"
 #include "GameFramework/Character.h"
-#include "GameFramework/HUD.h"
 #include "Components/TimelineComponent.h"
 #include "PlayerCharacter.generated.h"
 
 
+struct FInputActionValue;
 class ATorch;
 class UArrowComponent;
 class AFirePit;

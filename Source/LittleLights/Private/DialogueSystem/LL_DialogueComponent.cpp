@@ -54,7 +54,7 @@ void ULL_DialogueComponent::StartDialogue()
 				InDialogueIndex++;
 				return;
 			}
-			FLL_DialogueLineStruct DialogueStruct;
+			FLL_DialogueLineStruct DialogueStruct = FLL_DialogueLineStruct();
 			FLL_DialogueLine DialogueLine;
 			DialogueLine.Dialogue = FText::FromString("[Closing...]");
 			DialogueStruct.DialogueLines.Add(DialogueLine);
@@ -64,7 +64,7 @@ void ULL_DialogueComponent::StartDialogue()
 		}
 		else
 		{
-			FLL_DialogueLineStruct DialogueStruct;
+			FLL_DialogueLineStruct DialogueStruct = FLL_DialogueLineStruct();
 			FLL_DialogueLine DialogueLine;
 			DialogueLine.Dialogue = FText::FromString("[Closing...]");
 			DialogueStruct.DialogueLines.Add(DialogueLine);
@@ -103,7 +103,7 @@ void ULL_DialogueComponent::StartDialogue()
 			}
 			else
 			{
-				FLL_DialogueLineStruct DialogueStruct;
+				FLL_DialogueLineStruct DialogueStruct = FLL_DialogueLineStruct();
 				FLL_DialogueLine DialogueLine;
 				DialogueLine.Dialogue = FText::FromString("[DUMMY DIALOGUE]");
 				DialogueStruct.DialogueLines.Add(DialogueLine);
