@@ -20,6 +20,7 @@ void ULL_JumpVault_Ability::StartAbility_Implementation(AActor* Instigator, AAct
 	bCompleted = false;
 	InKeyPressed = 0;
 	bCanReceiveInput = true;
+	bFailed = false;
 	Player = Cast<APlayerCharacter>(AbilityComponent->GetOwner());
 	if (Player)
 	{
@@ -74,7 +75,7 @@ void ULL_JumpVault_Ability::Update_Implementation(float DeltaTime)
 
 		FString TRemainingStrinag = FString::Printf(TEXT("Remaining: %f"),RemainingDeltaJumpTime);
 		LogOnScreen(Player->GetWorld(),TRemainingStrinag,FColor::Red,0.1f);
-		if (LLPlayerController)
+		if (LLPlayerController && !bFailed)
 		{
 			LLPlayerController->ShowArrowWithTimeToPressUI(RandKeys[InKeyPressed], Player,RemainingDeltaJumpTime);
 		}
@@ -119,7 +120,7 @@ void ULL_JumpVault_Ability::KeyPressed(LLEInputDirection KeyPressed)
 {
 	if(!bCanReceiveInput)return;
 
-	
+
 	if (RandKeys.IsValidIndex(InKeyPressed) && KeyPressed == RandKeys[InKeyPressed])
 	{
 
@@ -148,17 +149,20 @@ void ULL_JumpVault_Ability::KeyPressed(LLEInputDirection KeyPressed)
 	
 		//bCanReceiveInput = true;
 		RemainingActionTime = TimeToPressKey + Player->GetWorld()->GetTimeSeconds();
-		
+		CorrectKeyPressed();
 		return;
 	}
 
-
+	bCanReceiveInput = false;
+	bFailed = true;
+	InCorrectKeyPressed();
 	float AnimDuration = Player->PlayAnimation(JumpFailedAnimation);
 	FTimerHandle FailedAnimationTimerHandle;
 	FTimerDelegate FailedTimerDelegate;
 	FailedTimerDelegate.BindLambda([&]
 	{
 		AbilityComponent->StopAbilityByName(Player, "JumpOver", SpecialMovementZone);
+		bCanReceiveInput = true;
 	});
 	Player->GetWorldTimerManager().SetTimer(FailedAnimationTimerHandle, FailedTimerDelegate, AnimDuration, false);
 	if (LLPlayerController)

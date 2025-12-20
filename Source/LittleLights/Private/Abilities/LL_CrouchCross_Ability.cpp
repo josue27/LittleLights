@@ -82,12 +82,13 @@ void ULL_CrouchCross_Ability::KeyPressed(LLEInputDirection KeyDirection)
 			bCanReceiveInput = false;
 		}
 		InKeyPressed += 1;
-		
+		CorrectKeyPressed();
 	}
 	else
 	{
 		AbilityComponent->StopAbilityByName(Player, "Crouch", SpecialMovementZone);
 		LLPlayerController->RemoveArrowToPressUI();
+		InCorrectKeyPressed();
 	}
 }
 void ULL_CrouchCross_Ability::PlayerEndedMovement(APlayerCharacter* PlayerCaller,bool bLightUpOrb, bool bStartOrbDecay)

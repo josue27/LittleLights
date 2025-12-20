@@ -10,12 +10,13 @@
 /**
  * 
  */
+class USoundBase;
 UCLASS(Blueprintable)
 class LITTLELIGHTS_API ULL_Ability : public UObject
 {
 	GENERATED_BODY()
 
-	public:
+public:
 
 	
 	
@@ -25,6 +26,8 @@ class LITTLELIGHTS_API ULL_Ability : public UObject
 	FName AbilityName;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	float RemainingActionTime;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	USoundBase* CorrectSoundCue;
 
 	UFUNCTION(BlueprintNativeEvent,Category="Ability")
 	void StartAbility(AActor* Instigator, AActor* SecondActor =nullptr);
@@ -38,6 +41,12 @@ class LITTLELIGHTS_API ULL_Ability : public UObject
 	UFUNCTION(BlueprintCallable,Category="Ability")
 	bool IsRunning();
 
+	UFUNCTION(BlueprintNativeEvent,Category="Ability")
+	void CorrectKeyPressed();
+
+	UFUNCTION(BlueprintNativeEvent,Category="Ability")
+	void InCorrectKeyPressed();
+	
 	UFUNCTION(BlueprintCallable,Category="Ability Tags")
 	ULL_AbilityComponent* GetOwningComponent();
 
@@ -52,9 +61,12 @@ class LITTLELIGHTS_API ULL_Ability : public UObject
 	virtual void Update_Implementation(float DeltaTime);
 	protected:
 
+	/**The ability currently running?*/
 	UPROPERTY()
 	bool bIsRunning;
 
+	UPROPERTY()
+	bool bFailed;
 	
 	UPROPERTY(BlueprintReadOnly)
 	ULL_AbilityComponent* AbilityComponent;
