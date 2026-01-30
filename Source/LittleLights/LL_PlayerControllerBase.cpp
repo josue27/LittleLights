@@ -149,7 +149,7 @@ void ALL_PlayerControllerBase::ShowKeyWithTimeToPressUI(FString keymsg, AActor* 
 
 #pragma region Arrow
 
-void ALL_PlayerControllerBase::ShowArrowToPressUI(FKey KeyToPress, AActor* ActorToAttach)
+void ALL_PlayerControllerBase::ShowArrowToPressUI(LLEInputDirection KeyToPress, AActor* ActorToAttach)
 {
 	if (ArrowWidgetInstance == nullptr && ensure(DefaultWidgetClass))
 	{
@@ -164,6 +164,19 @@ void ALL_PlayerControllerBase::ShowArrowToPressUI(FKey KeyToPress, AActor* Actor
 			ArrowWidgetInstance->AddToViewport();
 		}
 		ArrowWidgetInstance->SetArrow(KeyToPress);
+		
+		// FVector2D ViewportSize;
+		// if (GEngine && GEngine->GameViewport)
+		// {
+		// 	GEngine->GameViewport->GetViewportSize(ViewportSize);
+		// }
+		//
+		// // Calcular posición: centro horizontal, 10% arriba del centro vertical
+		// FVector2D WidgetPosition;
+		// WidgetPosition.X = 0.f;// ViewportSize.X * 0.5f;  // Centro horizontal (50%)
+		// WidgetPosition.Y = 0.f;//ViewportSize.Y * 0.5f;  // 10% arriba del centro (40% desde arriba)
+		//
+		// ArrowWidgetInstance->SetPositionInViewport(WidgetPosition);
 	}
 }
 void ALL_PlayerControllerBase::RemoveArrowToPressUI()
@@ -174,7 +187,7 @@ void ALL_PlayerControllerBase::RemoveArrowToPressUI()
 	}
 }
 //TODO: merge these to one
-void ALL_PlayerControllerBase::ShowArrowWithTimeToPressUI(FKey KeyPressed, AActor* ActorToAttach, float TimeRemainng)
+void ALL_PlayerControllerBase::ShowArrowWithTimeToPressUI(LLEInputDirection KeyPressed, AActor* ActorToAttach, float TimeRemainng)
 {
 	if (ArrowWidgetInstance == nullptr && ensure(DefaultWidgetClass))
 	{
@@ -210,14 +223,18 @@ void ALL_PlayerControllerBase::TotemPiecesDeliveredHUD()
 	}
 }
 
-void ALL_PlayerControllerBase::ShowDialogue(FLL_DialogueLineStruct DialogueStruct, bool bShow)
+void ALL_PlayerControllerBase::ShowDialogue(const FLL_DialogueLineStruct DialogueStruct, const bool bShow)
 {
 	if(LL_GameHUD )
 	{
 	
 		LL_GameHUD->PlayerOverlay->ShowDialogue(bShow, DialogueStruct);
-		if(DialogueStruct.DialogueLines.Num()>0)
-			LL_GameHUD->PlayerOverlay->OnDialogueLinesOver.AddDynamic(this,&ALL_PlayerControllerBase::DialogueEnded);
+		if(DialogueStruct.DialogueLines.Num() > 0)
+		{
+			if(!LL_GameHUD->PlayerOverlay->OnDialogueLinesOver.IsAlreadyBound(this,&ALL_PlayerControllerBase::DialogueEnded))
+				LL_GameHUD->PlayerOverlay->OnDialogueLinesOver.AddDynamic(this,&ALL_PlayerControllerBase::DialogueEnded);
+
+		}
 		
 	}
 }

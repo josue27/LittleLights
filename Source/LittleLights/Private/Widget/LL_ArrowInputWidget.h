@@ -6,6 +6,7 @@
 #include "Widget/LL_WorldUserWidget.h"
 #include "LL_ArrowInputWidget.generated.h"
 
+enum class LLEInputDirection : uint8;
 /**
  * 
  */
@@ -16,5 +17,5 @@ class LITTLELIGHTS_API ULL_ArrowInputWidget : public ULL_WorldUserWidget
 
 public:
 	UFUNCTION(BlueprintImplementableEvent)
-	void SetArrow(FKey KeyPressed);
+	void SetArrow(LLEInputDirection KeyPressed);
 };

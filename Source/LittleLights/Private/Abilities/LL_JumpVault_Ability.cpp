@@ -19,14 +19,18 @@ void ULL_JumpVault_Ability::StartAbility_Implementation(AActor* Instigator, AAct
 	if (SpecialMovementZone == nullptr)return;
 	bCompleted = false;
 	InKeyPressed = 0;
+	bCanReceiveInput = true;
+	bFailed = false;
 	Player = Cast<APlayerCharacter>(AbilityComponent->GetOwner());
 	if (Player)
 	{
 		Player->bCanMove = false;
 		Player->DisableInteraction(true);
 		//TODO: make the calls of this delegates on the player
-		 Player->OnAutomaticMovementEnded.AddDynamic(this,&ULL_JumpVault_Ability::PlayerEndedMovement);
-		Player->OnKeyPressed.AddDynamic(this,&ULL_JumpVault_Ability::KeyPressed);
+		if(!Player->OnAutomaticMovementEnded.IsAlreadyBound(this,&ULL_JumpVault_Ability::PlayerEndedMovement))
+			Player->OnAutomaticMovementEnded.AddUniqueDynamic(this,&ULL_JumpVault_Ability::PlayerEndedMovement);
+		if(!Player->OnKeyPressed.IsAlreadyBound(this,&ULL_JumpVault_Ability::KeyPressed))
+			Player->OnKeyPressed.AddUniqueDynamic(this,&ULL_JumpVault_Ability::KeyPressed);
 	}
 
 	SpecialMovementZone->BlockerCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -71,7 +75,7 @@ void ULL_JumpVault_Ability::Update_Implementation(float DeltaTime)
 
 		FString TRemainingStrinag = FString::Printf(TEXT("Remaining: %f"),RemainingDeltaJumpTime);
 		LogOnScreen(Player->GetWorld(),TRemainingStrinag,FColor::Red,0.1f);
-		if (LLPlayerController)
+		if (LLPlayerController && !bFailed)
 		{
 			LLPlayerController->ShowArrowWithTimeToPressUI(RandKeys[InKeyPressed], Player,RemainingDeltaJumpTime);
 		}
@@ -112,10 +116,10 @@ void ULL_JumpVault_Ability::StopAbility_Implementation(AActor* Instigator, AActo
 	PathPositions.Empty();
 }
 
-void ULL_JumpVault_Ability::KeyPressed(FKey KeyPressed)
+void ULL_JumpVault_Ability::KeyPressed(LLEInputDirection KeyPressed)
 {
+	if(!bCanReceiveInput)return;
 
-	if (KeyPressed.GetFName() == FKey("E") || KeyPressed.GetFName() == FKey("e"))return;
 
 	if (RandKeys.IsValidIndex(InKeyPressed) && KeyPressed == RandKeys[InKeyPressed])
 	{
@@ -123,12 +127,12 @@ void ULL_JumpVault_Ability::KeyPressed(FKey KeyPressed)
 		if(InKeyPressed >= RandKeys.Num()-1)//This means we have pressed all key correctly
 		{
 			bCompleted = true;
-			//Player->SetActorLocation();
-			Player->bJumpingOver = true;
-			Player->bCanMove = true;
-			Player =  nullptr ? Cast<APlayerCharacter>(AbilityComponent->GetOwner()) : Player;
+
+			Player = Player == nullptr? Cast<APlayerCharacter>(AbilityComponent->GetOwner()): Player;
 			if (Player)
 			{
+				Player->bJumpingOver = true;
+				Player->bCanMove = true;
 				Player->MovePlayerTo(PathPositions[1], 120.f, true,false,false);
 				bCanReceiveInput = false;
 			}
@@ -137,38 +141,37 @@ void ULL_JumpVault_Ability::KeyPressed(FKey KeyPressed)
 				LLPlayerController->RemoveArrowToPressUI();
 			}
 			
-			
-		}
-		else
-		{
-			InKeyPressed += 1;
-			if (LLPlayerController)
-			{
-				LLPlayerController->ShowArrowWithTimeToPressUI(RandKeys[InKeyPressed], Player,RemainingDeltaJumpTime);
-
-			}
-			bCanReceiveInput = true;
-			//RemainingActionTime = TimeToPressKey+Player->GetWorld()->GetTimeSeconds();
+			return;
 		}
 
+
+		InKeyPressed += 1;
+	
+		//bCanReceiveInput = true;
+		RemainingActionTime = TimeToPressKey + Player->GetWorld()->GetTimeSeconds();
+		CorrectKeyPressed();
+		return;
 	}
-	else
+
+	bCanReceiveInput = false;
+	bFailed = true;
+	InCorrectKeyPressed();
+	float AnimDuration = Player->PlayAnimation(JumpFailedAnimation);
+	FTimerHandle FailedAnimationTimerHandle;
+	FTimerDelegate FailedTimerDelegate;
+	FailedTimerDelegate.BindLambda([&]
 	{
-		float AnimDuration = Player->PlayAnimation(JumpFailedAnimation);
-		FTimerHandle FailedAnimationTimerHandle;
-		FTimerDelegate FailedTimerDelegate;
-		FailedTimerDelegate.BindLambda([&]
-		{
-			
-			AbilityComponent->StopAbilityByName(Player, "JumpOver", SpecialMovementZone);
-		});
-		Player->GetWorldTimerManager().SetTimer(FailedAnimationTimerHandle,FailedTimerDelegate,AnimDuration,false);
-		if (LLPlayerController)
-		{
-			LLPlayerController->RemoveArrowToPressUI();
-		}
+		AbilityComponent->StopAbilityByName(Player, "JumpOver", SpecialMovementZone);
+		bCanReceiveInput = true;
+	});
+	Player->GetWorldTimerManager().SetTimer(FailedAnimationTimerHandle, FailedTimerDelegate, AnimDuration, false);
+	if (LLPlayerController)
+	{
+		LLPlayerController->RemoveArrowToPressUI();
 	}
 	
+	UE_LOG(LogTemp, Warning, TEXT("KeyPressed: %d, Expected: %d, InKeyPressed: %d"), 
+	(int32)KeyPressed, (int32)RandKeys[InKeyPressed], InKeyPressed);
 }
 
 void ULL_JumpVault_Ability::PlayerEndedMovement(APlayerCharacter* PlayerActor, bool bLightUpOrb, bool bStartOrbDecay)

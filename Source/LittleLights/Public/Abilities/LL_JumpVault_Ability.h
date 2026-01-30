@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "LL_Ability.h"
+#include "Widget/LL_ArrowInputWidget.h"
 #include "LL_JumpVault_Ability.generated.h"
 
 /**
@@ -20,9 +21,9 @@ class LITTLELIGHTS_API ULL_JumpVault_Ability : public ULL_Ability
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LL | Ability")
-	TArray<FKey> KeysToPress;
+	TArray<LLEInputDirection> KeysToPress;
 	UPROPERTY()
-	TArray<FKey> RandKeys;
+	TArray<LLEInputDirection> RandKeys;
 	//Time we want the user to  press a key
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LL | Ability")
 	float TimeToPressKey =3.f;
@@ -58,7 +59,7 @@ private:
 	int InKeyPressed;
 
 	UFUNCTION()
-	void KeyPressed(FKey KeyPressed);
+	void KeyPressed(LLEInputDirection KeyPressed);
 
 	UFUNCTION()
 	void PlayerEndedMovement(APlayerCharacter* PlayerActor,bool bLightUpOrb, bool bStartOrbDecay);

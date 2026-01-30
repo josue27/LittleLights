@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "LL_Ability.h"
 #include "LL_CrouchCross_Ability.generated.h"
+enum class LLEInputDirection : uint8;
 class APlayerCharacter;
 class ALL_SpecialMovementZone;
 class ULL_WorldUserWidget;
@@ -18,9 +19,9 @@ class LITTLELIGHTS_API ULL_CrouchCross_Ability : public ULL_Ability
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
-		TArray<FKey> KeyToPress;
+		TArray<LLEInputDirection> KeyToPress;
 	UPROPERTY()
-	TArray<FKey> RandKeysToPress;
+	TArray<LLEInputDirection> RandKeysToPress;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LL | Ability")
 	float TimeToPressKey =3.f;
 	UPROPERTY(BlueprintReadWrite)
@@ -33,7 +34,7 @@ public:
 	UFUNCTION()
 	void PlayerEndedMovement(APlayerCharacter* Player,bool bLightUpOrb, bool bStartOrbDecay);
 	UFUNCTION()
-	void KeyPressed(FKey KeyPressed);
+	void KeyPressed(LLEInputDirection KeyPressed);
 
 	virtual void Update_Implementation(float DeltaTime) override;
 

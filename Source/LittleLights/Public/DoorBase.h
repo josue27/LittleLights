@@ -47,6 +47,10 @@ public:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bDoorOpened = false;
+	/**
+	 * If it is a door in the golem base set it to true, otherwise is false to avoid the user to be able to finish the level
+	 * by accident
+	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bDoorUnlocked = false;
 

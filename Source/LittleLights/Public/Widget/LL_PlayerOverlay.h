@@ -7,6 +7,7 @@
 #include "LL_PlayerOverlay.generated.h"
 
 
+struct FLL_DialogueLineStruct;
 class UProgressBar;
 class UImage;
 /**

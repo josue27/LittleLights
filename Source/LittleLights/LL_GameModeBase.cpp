@@ -28,7 +28,7 @@ ALL_GameModeBase::ALL_GameModeBase()
 //ATTTENTION BeginPlays starts before STARTPLAY
 void ALL_GameModeBase::BeginPlay()
 {
-	Super::BeginPlay();
+	Super::BeginPlay();	
 	LlGameManager = GetGameInstance()->GetSubsystem<ULLGameManager>();
 
 }

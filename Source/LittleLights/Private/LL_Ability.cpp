@@ -80,6 +80,16 @@ bool ULL_Ability::IsRunning()
 	return bIsRunning;
 }
 
+void ULL_Ability::CorrectKeyPressed_Implementation()
+{
+	UGameplayStatics::PlaySound2D(this,CorrectSoundCue);
+}
+
+
+void ULL_Ability::InCorrectKeyPressed_Implementation()
+{
+}
+
 ULL_AbilityComponent* ULL_Ability::GetOwningComponent()
 {
 	return  AbilityComponent;
