@@ -41,6 +41,9 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent)
 	void NextDialogue();
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void ShowGameHUD(bool bShow);
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnDialogueLinesOver OnDialogueLinesOver;

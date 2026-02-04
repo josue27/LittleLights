@@ -59,7 +59,7 @@ void ULL_AbilityComponent::StartAbilityByName(AActor* Instigator, FName AbilityN
 			if(!Ability->CanStart(Instigator))
 			{
 				FString FailedMsg = FString::Printf(TEXT("Failed to run: %s"), *AbilityName.ToString());
-				GEngine->AddOnScreenDebugMessage(-1,2.0f, FColor::Red, FailedMsg);
+				GEngine->AddOnScreenDebugMessage(-1,0.2f, FColor::Red, FailedMsg);
 				continue;//remember to go back
 			}
 			Ability->StartAbility(Instigator,ActorInfo);
