@@ -11,7 +11,7 @@
 
 void ULL_CrossBalancing_Ability::StartAbility_Implementation(AActor* Instigator, AActor* SecondActor)
 {
-	Super::StartAbility_Implementation(Instigator, SecondActor);
+ 	Super::StartAbility_Implementation(Instigator, SecondActor);
 
 	 PlayerCharacter = Cast<APlayerCharacter>(Instigator);
 	 JumpOverZone = Cast<ALL_SpecialMovementZone>(SecondActor);
