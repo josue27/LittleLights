@@ -30,5 +30,8 @@ class LITTLELIGHTS_API ULLGamePlayFunctionLibrary : public UBlueprintFunctionLib
 
 	UFUNCTION()
 	static void ScreenLog(FString text,FColor Color = FColor::White);
+	
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "GetAppVersion"), Category = "Game Config")
+	static FString GetAppVersion();
 
 };

@@ -2,7 +2,7 @@
 
 
 #include "LLGamePlayFunctionLibrary.h"
-
+#include "CoreMinimal.h"
 #include "PlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -68,6 +68,19 @@ void ULLGamePlayFunctionLibrary::ScreenLog(FString text, FColor Color)
 	{
 		GEngine->AddOnScreenDebugMessage(-1,15.0f,Color,text);
 	}
+}
+
+FString ULLGamePlayFunctionLibrary::GetAppVersion()
+{
+	FString AppVersion;
+	GConfig->GetString(
+		TEXT("/Script/EngineSettings.GeneralProjectSettings"),
+		TEXT("ProjectVersion"),
+		AppVersion,
+		GGameIni
+	);
+
+	return "LL_"+AppVersion+" a";
 }
 
 
