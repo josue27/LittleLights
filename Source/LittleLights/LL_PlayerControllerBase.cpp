@@ -249,6 +249,10 @@ void ALL_PlayerControllerBase::ShowNextDialogue()
 	}
 }
 
+void ALL_PlayerControllerBase::ShowObstacleFade_Implementation()
+{
+}
+
 void ALL_PlayerControllerBase::DialogueEnded_Implementation()
 {
 	ShowDialogue(FLL_DialogueLineStruct(),false);

@@ -86,9 +86,20 @@ void ULL_CrouchCross_Ability::KeyPressed(LLEInputDirection KeyDirection)
 	}
 	else
 	{
-		AbilityComponent->StopAbilityByName(Player, "Crouch", SpecialMovementZone);
-		LLPlayerController->RemoveArrowToPressUI();
-		InCorrectKeyPressed();
+		InCorrectKeyPressed_Implementation();
+		if (UWorld* World = GetWorld())
+		{
+			FTimerHandle TimeHandle;
+			FTimerDelegate TempTimerDelegate;
+			TempTimerDelegate.BindLambda([&]
+			{
+				Player->SetActorLocation(PathPositions[0],false,nullptr,ETeleportType::ResetPhysics);
+				AbilityComponent->StopAbilityByName(Player, "Crouch", SpecialMovementZone);
+			});
+
+			World->GetTimerManager().SetTimer(TimeHandle, TempTimerDelegate, 0.16f, false);
+		}
+		
 	}
 }
 void ULL_CrouchCross_Ability::PlayerEndedMovement(APlayerCharacter* PlayerCaller,bool bLightUpOrb, bool bStartOrbDecay)

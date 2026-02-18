@@ -94,7 +94,7 @@ void ULL_CrossBalancing_Ability::StopAbility_Implementation(AActor* Instigator, 
 {
 	Super::StopAbility_Implementation(Instigator, SecondActor);
 
-	DistanceWalkedX= 0.0f;
+	DistanceWalkedX = 0.0f;
 	
 	bStartBalance = false;
 	BalancingX = 0.f;
@@ -103,6 +103,7 @@ void ULL_CrossBalancing_Ability::StopAbility_Implementation(AActor* Instigator, 
 	PlayerCharacter->bInJumpOverZone = false;
 	PlayerCharacter->GetCapsuleComponent()->SetActive(true);
 	PlayerCharacter->DisableInteraction(false);
+	// PlayerCharacter->EnableInput();
 	PlayerCharacter = nullptr;
 	//JumpOverZone->DisableCollisions(false);
 	//JumpOverZone->DisableMeshCollisions(3.0f);

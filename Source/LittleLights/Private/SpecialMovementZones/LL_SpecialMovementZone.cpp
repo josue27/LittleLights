@@ -6,6 +6,7 @@
 #include "LLGamePlayFunctionLibrary.h"
 #include "LL_PlayerState.h"
 #include "PlayerCharacter.h"
+#include "Components/ArrowComponent.h"
 #include "LittleLights/LittleLights.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -14,7 +15,7 @@
 // Sets default values
 ALL_SpecialMovementZone::ALL_SpecialMovementZone()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	RootComp = CreateDefaultSubobject<USceneComponent>(TEXT("RootComp"));
@@ -25,43 +26,41 @@ ALL_SpecialMovementZone::ALL_SpecialMovementZone()
 	TriggerCollider->SetupAttachment(RootComp);
 	BlockerCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("BlockerCollider"));
 	BlockerCollider->SetupAttachment(RootComp);
-
-	
-
+	RespawnPointA = CreateDefaultSubobject<UArrowComponent>(TEXT("RespawnPointA"));
+	RespawnPointA->SetupAttachment(RootComp);
+	RespawnPointB = CreateDefaultSubobject<UArrowComponent>(TEXT("RespawnPointB"));
+	RespawnPointB->SetupAttachment(RootComp);
 }
 
 // Called when the game starts or when spawned
 void ALL_SpecialMovementZone::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
 void ALL_SpecialMovementZone::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
-
-
 
 
 void ALL_SpecialMovementZone::Interact_Implementation(APawn* InstigatorPawn)
 {
-	if(bIsSingleUse && bUsed)
+	if (bIsSingleUse && bUsed)
 	{
 		//This is mainly for tutorial purposes but we might need a case for single use
 		return;
 	}
-	if(!bEnabled)
+	if (!bEnabled)
 	{
 		return;
 	}
 	APlayerCharacter* PC = Cast<APlayerCharacter>(InstigatorPawn);
 	if (PC)
 	{
-		ULL_AbilityComponent* AC = Cast<ULL_AbilityComponent>(InstigatorPawn->GetComponentByClass(ULL_AbilityComponent::StaticClass()));
+		ULL_AbilityComponent* AC = Cast<ULL_AbilityComponent>(
+			InstigatorPawn->GetComponentByClass(ULL_AbilityComponent::StaticClass()));
 		if (AC)
 		{
 			switch (MovementZone_Type)
@@ -88,13 +87,12 @@ void ALL_SpecialMovementZone::Interact_Implementation(APawn* InstigatorPawn)
 		}
 		//Call slow down, mainly for beast
 		ALL_PlayerState* PlayerState = Cast<ALL_PlayerState>(PC->GetPlayerState());
-		if(PlayerState)
+		if (PlayerState)
 		{
-			PlayerState->OnInteractionStarted.Broadcast(this,true);
-			if(!PlayerState->OnInteractionEnded.IsBound())
-				PlayerState->OnInteractionEnded.AddDynamic(this,&ALL_SpecialMovementZone::InteractionEnded);
+			PlayerState->OnInteractionStarted.Broadcast(this, true);
+			if (!PlayerState->OnInteractionEnded.IsBound())
+				PlayerState->OnInteractionEnded.AddDynamic(this, &ALL_SpecialMovementZone::InteractionEnded);
 		}
-
 	}
 }
 
@@ -117,22 +115,21 @@ void ALL_SpecialMovementZone::PlayerEndedTask()
 {
 	BlockerCollider->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	TriggerCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	ALL_PlayerState* PlayerState = Cast<ALL_PlayerState>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
-	if(PlayerState)
+	ALL_PlayerState* PlayerState = Cast<ALL_PlayerState>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	if (PlayerState)
 	{
-		PlayerState->OnInteractionEnded.RemoveDynamic(this,&ALL_SpecialMovementZone::InteractionEnded);
+		PlayerState->OnInteractionEnded.RemoveDynamic(this, &ALL_SpecialMovementZone::InteractionEnded);
 	}
-	if(bIsSingleUse)
+	if (bIsSingleUse)
 	{
 		TriggerCollider->SetCollisionResponseToChannels(ECollisionResponse::ECR_Ignore);
 		bUsed = true;
-		
 	}
 }
 
 void ALL_SpecialMovementZone::DisableCollisions(bool bDisable)
 {
-	if(bDisable)
+	if (bDisable)
 	{
 		BlockerCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		TriggerCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);

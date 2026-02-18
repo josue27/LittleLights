@@ -7,6 +7,7 @@
 #include "GameFramework/Actor.h"
 #include "SpecialZonesTypes.h"
 #include "LL_SpecialMovementZone.generated.h"
+class UArrowComponent;
 class USplineComponent;
 class UBoxComponent;
 UCLASS()
@@ -44,6 +45,10 @@ public:
 		UBoxComponent* TriggerCollider;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UBoxComponent* BlockerCollider;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UArrowComponent* RespawnPointA;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UArrowComponent* RespawnPointB;
 	//If true it will destroy after the player completes de movement
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsSingleUse;

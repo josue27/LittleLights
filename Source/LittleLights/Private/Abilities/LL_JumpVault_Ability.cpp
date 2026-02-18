@@ -155,7 +155,6 @@ void ULL_JumpVault_Ability::KeyPressed(LLEInputDirection KeyPressed)
 
 	bCanReceiveInput = false;
 	bFailed = true;
-	InCorrectKeyPressed();
 	float AnimDuration = Player->PlayAnimation(JumpFailedAnimation);
 	FTimerHandle FailedAnimationTimerHandle;
 	FTimerDelegate FailedTimerDelegate;
@@ -165,6 +164,7 @@ void ULL_JumpVault_Ability::KeyPressed(LLEInputDirection KeyPressed)
 		bCanReceiveInput = true;
 	});
 	Player->GetWorldTimerManager().SetTimer(FailedAnimationTimerHandle, FailedTimerDelegate, AnimDuration, false);
+	InCorrectKeyPressed_Implementation();
 	if (LLPlayerController)
 	{
 		LLPlayerController->RemoveArrowToPressUI();

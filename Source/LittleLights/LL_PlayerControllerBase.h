@@ -95,6 +95,8 @@ public:
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	void DialogueEnded();
 
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+	void ShowObstacleFade();
 
 	UPROPERTY(BlueprintAssignable,BlueprintCallable)
 	FOnDialogueOver OnDialogueLinesOver;
