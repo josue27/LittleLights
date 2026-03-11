@@ -19,6 +19,7 @@ class UInputAction;
  * 
  */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogueOver);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGamePaused, bool, bGamePaused);
 UCLASS()
 class LITTLELIGHTS_API ALL_PlayerControllerBase : public APlayerController
 {
