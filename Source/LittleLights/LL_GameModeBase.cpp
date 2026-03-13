@@ -110,6 +110,7 @@ void ALL_GameModeBase::StartSequence_Implementation()
 		{
 			if (Player)
 			{
+				//TODO: the speed should be calculated by the charactermovement not an arbitrary value or set value
 				Player->MovePlayerTo(StartTargetLocation->GetActorLocation(), 150.0f, true);
 				if (Player->ToolsComponent)
 				{
