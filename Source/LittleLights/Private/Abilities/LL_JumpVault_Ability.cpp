@@ -133,7 +133,7 @@ void ULL_JumpVault_Ability::KeyPressed(LLEInputDirection KeyPressed)
 			{
 				Player->bJumpingOver = true;
 				Player->bCanMove = true;
-				Player->MovePlayerTo(PathPositions[1], 120.f, true,false,false);
+				Player->MovePlayerTo(PathPositions[1], 130.f, true,false,false);
 				bCanReceiveInput = false;
 			}
 			if (LLPlayerController)

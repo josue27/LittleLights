@@ -88,8 +88,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ShowDialogue(const FLL_DialogueLineStruct DialogueStruct, const bool bShow);
+	
 	UFUNCTION(BlueprintCallable)
 	void ShowNextDialogue();
+	
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	void ShowBeastPresenceImg(bool bShow);
 
