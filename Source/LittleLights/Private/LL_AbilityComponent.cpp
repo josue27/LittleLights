@@ -2,6 +2,8 @@
 
 
 #include "LL_AbilityComponent.h"
+
+#include "LLGamePlayFunctionLibrary.h"
 #include "LL_Ability.h"
 #include "PlayerCharacter.h"
 #include "LL_PlayerState.h"
@@ -58,8 +60,12 @@ void ULL_AbilityComponent::StartAbilityByName(AActor* Instigator, FName AbilityN
 		{
 			if(!Ability->CanStart(Instigator))
 			{
-				FString FailedMsg = FString::Printf(TEXT("Failed to run: %s"), *AbilityName.ToString());
-				GEngine->AddOnScreenDebugMessage(-1,0.2f, FColor::Red, FailedMsg);
+				if (ULLGamePlayFunctionLibrary::IsDebugBuild())
+				{
+					
+					FString FailedMsg = FString::Printf(TEXT("Failed to run: %s"), *AbilityName.ToString());
+					GEngine->AddOnScreenDebugMessage(-1,0.2f, FColor::Red, FailedMsg);
+				}
 				continue;//remember to go back
 			}
 			Ability->StartAbility(Instigator,ActorInfo);
@@ -78,7 +84,7 @@ void ULL_AbilityComponent::StopAbilityByName(AActor* Instigator, FName AbilityNa
 			{
 				Ability->StopAbility(Instigator, ActorInfo);
 				//FString compstring =  FString::Printf((TEXT("Stop ability:%s"), AbilityName));
-				LogOnScreen(this, FString(TEXT("Ability stopped")));
+				//LogOnScreen(this, FString(TEXT("Ability stopped")));
 
 				APlayerCharacter* PC = Cast<APlayerCharacter>(Instigator);
 				if (PC)
@@ -117,8 +123,8 @@ void ULL_AbilityComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	}
 	if (GEngine)
 	{
-		FString DebugMsg = GetNameSafe(GetOwner()) + " : " + ActiveGameplayTags.ToStringSimple();
-		GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, DebugMsg);
+		// FString DebugMsg = GetNameSafe(GetOwner()) + " : " + ActiveGameplayTags.ToStringSimple();
+		// GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, DebugMsg);
 	}
 }
 

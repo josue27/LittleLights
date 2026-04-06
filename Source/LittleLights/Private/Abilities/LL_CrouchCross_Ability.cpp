@@ -76,59 +76,77 @@ void ULL_CrouchCross_Ability::KeyPressed(LLEInputDirection KeyDirection)
 	    Player = Player == nullptr? Cast<APlayerCharacter>(AbilityComponent->GetOwner()): Player;
 		if (Player)
 		{
-			Player->OnAutomaticMovementEnded.AddDynamic(this,&ULL_CrouchCross_Ability::PlayerEndedMovement);
-
-			Player->MovePlayerTo(PathPositions[InKeyPressed], 100.f, true,false,false);
 			bCanReceiveInput = false;
 		}
+	
+		
+		if (LLPlayerController)
+		{
+			LLPlayerController->ShowArrowWithTimeToPressUI(RandKeysToPress[InKeyPressed], Player,RemainingDeltaActionTime);
+		}
+		RemainingActionTime = TimeToPressKey + Player->GetWorld()->GetTimeSeconds();
+		bCanReceiveInput = true;
+		
+		if (InKeyPressed >= RandKeysToPress.Num()-1)
+		{
+	
+			Player->OnAutomaticMovementEnded.AddDynamic(this,&ULL_CrouchCross_Ability::PlayerEndedMovement);
+			Player->MovePlayerTo(PathPositions[InKeyPressed], 100.f, true,false,false);
+			if (LLPlayerController)
+			{
+				LLPlayerController->RemoveArrowToPressUI();
+			}
+			
+		}
+		//We have to add this at the end
 		InKeyPressed += 1;
 		CorrectKeyPressed();
+		
 	}
 	else
 	{
 		InCorrectKeyPressed_Implementation();
-		if (UWorld* World = GetWorld())
+		// if (UWorld* World = GetWorld())
+		// {
+		// 	FTimerHandle TimeHandle;
+		// 	FTimerDelegate TempTimerDelegate;
+		// 	TempTimerDelegate.BindLambda([&]
+		// 	{
+		// 		Player->SetActorLocation(PathPositions[0],false,nullptr,ETeleportType::ResetPhysics);
+		// 		AbilityComponent->StopAbilityByName(Player, "Crouch", SpecialMovementZone);
+		// 	});
+		//
+		// 	World->GetTimerManager().SetTimer(TimeHandle, TempTimerDelegate, 0.16f, false);
+		// }
+		Player->SetActorLocation(PathPositions[0],false,nullptr,ETeleportType::ResetPhysics);
+		AbilityComponent->StopAbilityByName(Player, "Crouch", SpecialMovementZone);
+		if (LLPlayerController)
 		{
-			FTimerHandle TimeHandle;
-			FTimerDelegate TempTimerDelegate;
-			TempTimerDelegate.BindLambda([&]
-			{
-				Player->SetActorLocation(PathPositions[0],false,nullptr,ETeleportType::ResetPhysics);
-				AbilityComponent->StopAbilityByName(Player, "Crouch", SpecialMovementZone);
-			});
-
-			World->GetTimerManager().SetTimer(TimeHandle, TempTimerDelegate, 0.16f, false);
+			LLPlayerController->RemoveArrowToPressUI();
 		}
-		
 	}
 }
+
 void ULL_CrouchCross_Ability::PlayerEndedMovement(APlayerCharacter* PlayerCaller,bool bLightUpOrb, bool bStartOrbDecay)
 {
 	if (Player)
 		Player->OnAutomaticMovementEnded.RemoveDynamic(this,&ULL_CrouchCross_Ability::PlayerEndedMovement);
 	
-	if (InKeyPressed >= RandKeysToPress.Num())
+	if (InKeyPressed >= RandKeysToPress.Num()-1)
 	{
 		bCompleted = true;
 		Player->OnObstacleCompleted.Broadcast(true);
 		AbilityComponent->StopAbilityByName(Player, "Crouch", SpecialMovementZone);
 
-	
 		if (LLPlayerController)
 		{
 			LLPlayerController->RemoveArrowToPressUI();
 		}
 		
 		return;
-
 	}
 
-	if (LLPlayerController)
-	{
-		LLPlayerController->ShowArrowWithTimeToPressUI(RandKeysToPress[InKeyPressed], Player,RemainingDeltaActionTime);
-	}
-	RemainingActionTime = TimeToPressKey + Player->GetWorld()->GetTimeSeconds();
-	bCanReceiveInput = true;
+
 
 }
 
@@ -145,7 +163,7 @@ void ULL_CrouchCross_Ability::Update_Implementation(float DeltaTime)
 
 		//FString TRemainingStrinag = FString::Printf(TEXT("Remaining: %f"),RemainingDeltaJumpTime);
 		//LogOnScreen(Player->GetWorld(),TRemainingStrinag,FColor::Red,0.1f);
-		if (IsValid(LLPlayerController))
+		if (IsValid(LLPlayerController) && RandKeysToPress.IsValidIndex(InKeyPressed))
 		{
 			LLPlayerController->ShowArrowWithTimeToPressUI(RandKeysToPress[InKeyPressed], Player,RemainingDeltaActionTime);
 

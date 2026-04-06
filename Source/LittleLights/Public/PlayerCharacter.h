@@ -331,7 +331,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void ActionButtonCall(const FInputActionValue& Value);
 	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable)
-		void MovePlayerTo(FVector Location, float Speed = 150.0f,bool bNotify = false,bool bLightUpOrb = true,bool bStartOrbDecay = true);
+		void MovePlayerTo(FVector Location, float Speed = 400.0f,bool bNotify = false,bool bLightUpOrb = true,bool bStartOrbDecay = true);
 
 	UFUNCTION(BlueprintCallable)
 	void DPadUpPressed(const FInputActionValue& Value);

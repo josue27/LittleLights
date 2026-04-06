@@ -19,6 +19,7 @@ class UInputAction;
  * 
  */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogueOver);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGamePaused, bool, bGamePaused);
 UCLASS()
 class LITTLELIGHTS_API ALL_PlayerControllerBase : public APlayerController
 {
@@ -87,8 +88,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ShowDialogue(const FLL_DialogueLineStruct DialogueStruct, const bool bShow);
+	
 	UFUNCTION(BlueprintCallable)
 	void ShowNextDialogue();
+	
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	void ShowBeastPresenceImg(bool bShow);
 
