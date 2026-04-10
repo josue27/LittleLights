@@ -105,19 +105,7 @@ void ULL_CrouchCross_Ability::KeyPressed(LLEInputDirection KeyDirection)
 	}
 	else
 	{
-		// InCorrectKeyPressed_Implementation();
-		// if (UWorld* World = GetWorld())
-		// {
-		// 	FTimerHandle TimeHandle;
-		// 	FTimerDelegate TempTimerDelegate;
-		// 	TempTimerDelegate.BindLambda([&]
-		// 	{
-		// 		Player->SetActorLocation(PathPositions[0],false,nullptr,ETeleportType::ResetPhysics);
-		// 		AbilityComponent->StopAbilityByName(Player, "Crouch", SpecialMovementZone);
-		// 	});
-		//
-		// 	World->GetTimerManager().SetTimer(TimeHandle, TempTimerDelegate, 0.16f, false);
-		// }
+		
 		float AnimDuration = Player->PlayAnimation(FailedAnimation);
 		FTimerHandle FailedAnimationTimerHandle;
 		FTimerDelegate FailedTimerDelegate;
@@ -129,7 +117,7 @@ void ULL_CrouchCross_Ability::KeyPressed(LLEInputDirection KeyDirection)
 			AbilityComponent->StopAbilityByName(Player, "Crouch", SpecialMovementZone);
 			bCanReceiveInput = true;
 		});
-		
+		//We start a timer that last the FailedAsnimation duration after that we end the ability
 		Player->GetWorldTimerManager().SetTimer(FailedAnimationTimerHandle, FailedTimerDelegate, AnimDuration, false);
 		InCorrectKeyPressed_Implementation();
 		
