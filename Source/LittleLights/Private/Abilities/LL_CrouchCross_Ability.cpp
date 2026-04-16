@@ -128,26 +128,22 @@ void ULL_CrouchCross_Ability::KeyPressed(LLEInputDirection KeyDirection)
 	}
 }
 
-void ULL_CrouchCross_Ability::PlayerEndedMovement(APlayerCharacter* PlayerCaller,bool bLightUpOrb, bool bStartOrbDecay)
+void ULL_CrouchCross_Ability::PlayerEndedMovement(APlayerCharacter* PlayerCaller, bool bLightUpOrb, bool bStartOrbDecay)
 {
 	if (Player)
-		Player->OnAutomaticMovementEnded.RemoveDynamic(this,&ULL_CrouchCross_Ability::PlayerEndedMovement);
-	
-	if (InKeyPressed >= RandKeysToPress.Num()-1)
+		Player->OnAutomaticMovementEnded.RemoveDynamic(this, &ULL_CrouchCross_Ability::PlayerEndedMovement);
+
+
+	bCompleted = true;
+	if (PlayerCaller)
+		PlayerCaller->OnObstacleCompleted.Broadcast(true);
+	AbilityComponent->StopAbilityByName(Player, "Crouch", SpecialMovementZone);
+
+	if (LLPlayerController)
 	{
-		bCompleted = true;
-		Player->OnObstacleCompleted.Broadcast(true);
-		AbilityComponent->StopAbilityByName(Player, "Crouch", SpecialMovementZone);
-
-		if (LLPlayerController)
-		{
-			LLPlayerController->RemoveArrowToPressUI();
-		}
-		
-		return;
+		LLPlayerController->RemoveArrowToPressUI();
 	}
-
-
+	
 
 }
 
