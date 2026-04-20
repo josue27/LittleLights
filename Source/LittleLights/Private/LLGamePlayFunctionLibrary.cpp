@@ -2,7 +2,7 @@
 
 
 #include "LLGamePlayFunctionLibrary.h"
-
+#include "CoreMinimal.h"
 #include "PlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -23,7 +23,7 @@ float ULLGamePlayFunctionLibrary::TimeToLocation(float Velocity, FVector Start, 
 }
 
 //TODO: Change name of this function or make it take 2 FVectors not 1 and 1 spline comp,
-///Returns true if player is closer to end point of the given spline
+///Returns true if the player is closer to the end point of the given spline
 bool ULLGamePlayFunctionLibrary::IsCloserToEnd(FVector PlayerPos, USplineComponent* Spline)
 {
 	if(!Spline) return false;
@@ -68,6 +68,19 @@ void ULLGamePlayFunctionLibrary::ScreenLog(FString text, FColor Color)
 	{
 		GEngine->AddOnScreenDebugMessage(-1,15.0f,Color,text);
 	}
+}
+
+FString ULLGamePlayFunctionLibrary::GetAppVersion()
+{
+	FString AppVersion;
+	GConfig->GetString(
+		TEXT("/Script/EngineSettings.GeneralProjectSettings"),
+		TEXT("ProjectVersion"),
+		AppVersion,
+		GGameIni
+	);
+
+	return "LL_"+AppVersion+" a";
 }
 
 

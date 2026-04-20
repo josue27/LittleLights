@@ -18,6 +18,8 @@ class LITTLELIGHTS_API ULL_CrouchCross_Ability : public ULL_Ability
 {
 	GENERATED_BODY()
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LL | Ability")
+	UAnimMontage* FailedAnimation;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
 		TArray<LLEInputDirection> KeyToPress;
 	UPROPERTY()

@@ -331,7 +331,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void ActionButtonCall(const FInputActionValue& Value);
 	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable)
-		void MovePlayerTo(FVector Location, float Speed = 150.0f,bool bNotify = false,bool bLightUpOrb = true,bool bStartOrbDecay = true);
+		void MovePlayerTo(FVector Location, float Speed = 400.0f,bool bNotify = false,bool bLightUpOrb = true,bool bStartOrbDecay = true);
 
 	UFUNCTION(BlueprintCallable)
 	void DPadUpPressed(const FInputActionValue& Value);
@@ -371,7 +371,7 @@ public:
 		void BalanceUpdate();
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-		void PlayerFall();
+		void PlayerFall(FVector LocToMove);
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category="LLPLayer|Abilities")
 	ULL_AbilityComponent* AbilityComponent;
@@ -391,9 +391,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void MakeStepNoise();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPlayer|AI")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPlayer | AI")
 		int32 MinStepsGivenForSound;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPlayer|AI")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPlayer | AI")
 		int32 MaxStepsGivenForSound;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)

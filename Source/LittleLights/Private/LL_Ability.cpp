@@ -5,6 +5,7 @@
 
 #include "LL_PlayerState.h"
 #include "Kismet/GameplayStatics.h"
+#include "LittleLights/LL_PlayerControllerBase.h"
 
 
 void ULL_Ability::Initialize(ULL_AbilityComponent* AbilityComp)
@@ -88,6 +89,11 @@ void ULL_Ability::CorrectKeyPressed_Implementation()
 
 void ULL_Ability::InCorrectKeyPressed_Implementation()
 {
+	APlayerController* PC = UGameplayStatics::GetPlayerController(AbilityComponent->GetOwner(), 0);
+	if (ALL_PlayerControllerBase* TempLLPlayerController = Cast<ALL_PlayerControllerBase>(PC))
+	{
+		TempLLPlayerController ->ShowObstacleFade();
+	}
 }
 
 ULL_AbilityComponent* ULL_Ability::GetOwningComponent()

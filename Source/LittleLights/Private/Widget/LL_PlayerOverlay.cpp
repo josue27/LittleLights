@@ -29,7 +29,7 @@ void ULL_PlayerOverlay::ShowBeastPresenceHUD_Implementation(bool bShow)
 
 void ULL_PlayerOverlay::ShowDialogue_Implementation(bool bShow,  FLL_DialogueLineStruct DialogueStruct)
 {
-	
+	ShowGameHUD(bShow);
 }
 
 void ULL_PlayerOverlay::NextDialogue_Implementation()
@@ -39,4 +39,9 @@ void ULL_PlayerOverlay::NextDialogue_Implementation()
 
 void ULL_PlayerOverlay::SetSequenceTimer_Implementation(float InTime)
 {
+}
+
+void ULL_PlayerOverlay::ShowGameHUD_Implementation(bool bShow)
+{
+	
 }

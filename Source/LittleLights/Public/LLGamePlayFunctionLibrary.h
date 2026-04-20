@@ -30,5 +30,41 @@ class LITTLELIGHTS_API ULLGamePlayFunctionLibrary : public UBlueprintFunctionLib
 
 	UFUNCTION()
 	static void ScreenLog(FString text,FColor Color = FColor::White);
+	
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "GetAppVersion"), Category = "Game Config")
+	static FString GetAppVersion();
+	
+#pragma region Build Type info getter
+public:
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Build Info")
+	static bool IsShippingBuild()
+	{
+#if UE_BUILD_SHIPPING
+		return true;
+#else
+		return false;
+#endif
+	}
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Build Info")
+	static bool IsDevelopmentBuild()
+	{
+#if UE_BUILD_DEVELOPMENT
+		return true;
+#else
+		return false;
+#endif
+	}
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Build Info")
+	static bool IsDebugBuild()
+	{
+#if UE_BUILD_DEBUG
+		return true;
+#else
+		return false;
+#endif
+	}
+#pragma endregion
 
 };
