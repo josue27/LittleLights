@@ -18,7 +18,7 @@ bool ULLGamePlayFunctionLibrary::IsPlayerAlive(AActor* PlayerActor)
 
 float ULLGamePlayFunctionLibrary::TimeToLocation(float Velocity, FVector Start, FVector End)
 {
-	float Dist = FVector::Dist(Start, End) ;// 0.01f; if we want cm we multiply
+	float Dist = FVector::Dist(Start, End) ;//* 0.01f; //if we want cm we multiply
 	return  Dist / Velocity;
 }
 
