@@ -9,6 +9,7 @@
 
 class UPointLightComponent;
 class USphereComponent;
+class APlayerCharacter;
 UCLASS()
 class LITTLELIGHTS_API AFirePit : public AActor, public  ILL_GameplayInterface
 {
@@ -24,6 +25,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY()
+	FTimerHandle OrbRefillTimerHandle;
+	
+	UPROPERTY()
+	bool bFillingOrb;
+	
+	UFUNCTION()
+	void OnPlayerMovementEnded(APlayerCharacter* PlayerCharacter,bool bLightUpTorch,bool bStartDecay);
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

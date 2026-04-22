@@ -49,15 +49,52 @@ void AFirePit::Interact_Implementation(APawn* InstigatorPawn)
 		if(bCompleted)
 			return;
 	}
+	
 	APlayerCharacter* Player = Cast<APlayerCharacter>(InstigatorPawn);
 	if(Player)
 	{
-		ULL_ToolsComponent* TC = Cast<ULL_ToolsComponent>(Player->ToolsComponent);
-		//ULL_AbilityComponent* AC = Cast<ULL_AbilityComponent>( Player->GetComponentByClass(ULL_AbilityComponent::StaticClass()));
-		if(TC)
+		bFillingOrb = true;
+
+		if (GetDistanceTo(InstigatorPawn) > 150)
 		{
-			TC->StartOrbRefill(RefillAmount);
+			FVector DirectionToFirePit = GetActorLocation() - Player->GetActorLocation();
+			DirectionToFirePit.Z = 0.f;
+			//Rotate character to look at center of this actor
+			float YawAngle = FMath::Atan2(DirectionToFirePit.Y, DirectionToFirePit.X) * (180.f / PI);
+			Player->SetActorRotation(FRotator(0.f, YawAngle, 0.f));
+			
+
+			//Move character closer
+			FVector Direction2D = DirectionToFirePit.GetSafeNormal(); // Normal ya sin Z
+			FVector NewLocation = GetActorLocation() - (Direction2D * 140.f);
+			NewLocation.Z = Player->GetActorLocation().Z; // Mantener altura del Player
+			DrawDebugBox(GetWorld(),NewLocation,FVector(5, 5, 5),FColor::Red,false,100.f,0,3.f);
+			DrawDebugLine(GetWorld(),Player->GetActorLocation(),NewLocation,FColor::Red,false,100.f,0,3.f);
+			if (!Player->OnAutomaticMovementEnded.IsAlreadyBound(this,&AFirePit::OnPlayerMovementEnded))
+				Player->OnAutomaticMovementEnded.AddUniqueDynamic(this,&AFirePit::OnPlayerMovementEnded);
+				
+			Player->MovePlayerTo(NewLocation, 400, true, false, false);
+
+			// //Wait until it moves so
+			// FTimerDelegate TimerDelegate;
+			// TimerDelegate.BindLambda([WeakPlayer = TWeakObjectPtr<APlayerCharacter>(Player), this]()
+			// {
+			// 	if (!WeakPlayer.IsValid()) return;
+			//
+			// 	ULL_ToolsComponent* TC = Cast<ULL_ToolsComponent>(WeakPlayer->ToolsComponent);
+			// 	if (TC)
+			// 	{
+			// 		if (TC->Orb == nullptr)
+			// 		{
+			// 			UE_LOG(LogTemp, Warning, TEXT("FirePit: Orb is null"));
+			// 			return;
+			// 		}
+			// 		TC->StartOrbRefill(RefillAmount);
+			// 	}
+			// });
+			// GetWorldTimerManager().SetTimer(OrbRefillTimerHandle, TimerDelegate, 1.5f, false);
 		}
+		
 	}
 	bCompleted = true;
 }
@@ -82,4 +119,22 @@ FText AFirePit::GetInteractText_Implementation(APawn* InstigatorPawn)
 	
 	return FText::GetEmpty();
 	//return ILL_GameplayInterface::GetInteractText_Implementation(InstigatorPawn);
+}
+
+void AFirePit::OnPlayerMovementEnded(APlayerCharacter* PlayerCharacter, bool bLightUpTorch, bool bStartDecay)
+{
+	if (bFillingOrb == false) return;
+	
+	ULL_ToolsComponent* TC = Cast<ULL_ToolsComponent>(PlayerCharacter->ToolsComponent);
+	if (TC)
+	{
+		if (TC->Orb == nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("FirePit: Orb is null"));
+			return;
+		}
+		TC->StartOrbRefill(RefillAmount);
+	}
+	
+	bFillingOrb = false;
 }
