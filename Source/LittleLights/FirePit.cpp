@@ -68,8 +68,8 @@ void AFirePit::Interact_Implementation(APawn* InstigatorPawn)
 			FVector Direction2D = DirectionToFirePit.GetSafeNormal(); // Normal ya sin Z
 			FVector NewLocation = GetActorLocation() - (Direction2D * 140.f);
 			NewLocation.Z = Player->GetActorLocation().Z; // Mantener altura del Player
-			DrawDebugBox(GetWorld(),NewLocation,FVector(5, 5, 5),FColor::Red,false,100.f,0,3.f);
-			DrawDebugLine(GetWorld(),Player->GetActorLocation(),NewLocation,FColor::Red,false,100.f,0,3.f);
+			// DrawDebugBox(GetWorld(),NewLocation,FVector(5, 5, 5),FColor::Red,false,100.f,0,3.f);
+			// DrawDebugLine(GetWorld(),Player->GetActorLocation(),NewLocation,FColor::Red,false,100.f,0,3.f);
 			if (!Player->OnAutomaticMovementEnded.IsAlreadyBound(this,&AFirePit::OnPlayerMovementEnded))
 				Player->OnAutomaticMovementEnded.AddUniqueDynamic(this,&AFirePit::OnPlayerMovementEnded);
 				
