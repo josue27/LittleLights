@@ -173,6 +173,6 @@ void ALL_AIBeast::Destroyed()
 	if(LLPlayerState)
 	{
 		LLPlayerState->OnInteractionStarted.RemoveDynamic(this,&ALL_AIBeast::ALL_AIBeast::UserStartedInteraction);
-		LLPlayerState->OnInteractionStarted.RemoveDynamic(this,&ALL_AIBeast::ALL_AIBeast::UserFinishedInteraction);
+		LLPlayerState->OnInteractionEnded.RemoveDynamic(this,&ALL_AIBeast::ALL_AIBeast::UserFinishedInteraction);
 	}
 }

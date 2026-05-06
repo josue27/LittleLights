@@ -25,12 +25,6 @@ ALL_Tottem::ALL_Tottem()
 	CapsuleCollider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleColider"));
 	CapsuleCollider->SetupAttachment(SceneComponent);
 
-	if(ALL_GameModeBase* GameMode = Cast<ALL_GameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))
-	{
-		if(GameMode->OnLevelCompleted.IsAlreadyBound(this,&ALL_Tottem::SendLevelCompleted))
-			GameMode->OnLevelCompleted.AddUniqueDynamic(this,&ALL_Tottem::SendLevelCompleted);
-	}
-
 }
 // Called when the game starts or when spawned
 void ALL_Tottem::BeginPlay()
@@ -40,6 +34,11 @@ void ALL_Tottem::BeginPlay()
 	if (LLPlayerState)
 	{
 		LLPlayerState->LevelPiecesToFind = TotemPieces.Num();
+	}
+
+	if (ALL_GameModeBase* GameMode = Cast<ALL_GameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))
+	{
+		GameMode->OnLevelCompleted.AddUniqueDynamic(this, &ALL_Tottem::SendLevelCompleted);
 	}
 
 	for (FTottemPieceState& TootemPiece : TotemPieces)
@@ -88,10 +87,14 @@ void ALL_Tottem::Interact_Implementation(APawn* InstigatorPawn)
 		
 		FTimerHandle InteractionTimeHandler;
 		FTimerDelegate TimerCallback;
-		TimerCallback.BindLambda([&]
+		TWeakObjectPtr<ALL_Tottem> WeakThis(this);
+		TWeakObjectPtr<ALL_PlayerState> WeakPS(LLPlayerState);
+		TimerCallback.BindLambda([WeakThis, WeakPS]
 		{
-			// callback;
-			LLPlayerState->OnInteractionEnded.Broadcast(this,false);
+			if (WeakThis.IsValid() && WeakPS.IsValid())
+			{
+				WeakPS->OnInteractionEnded.Broadcast(WeakThis.Get(), false);
+			}
 		});
 		GetWorldTimerManager().SetTimer(InteractionTimeHandler,TimerCallback,2.f,false);
 	}

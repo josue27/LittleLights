@@ -139,7 +139,10 @@ void APersonaje::TorchLightingCompleted()
 		{
 			Torch->StartDecay(LevelManager->TorchLightUpTime,true);
 		}
-		Torch->StartDecay(DefaultTorchDecay,true);//TODO:Hardcoded with need the level manager ref
+		else
+		{
+			Torch->StartDecay(DefaultTorchDecay,true);
+		}
 	}
 	bLightingTorch = false;
 
@@ -156,7 +159,7 @@ void APersonaje::SprintAction()
 	if (CurrentStamine > 0)
 	{
 		VelocidadMovimiento = CurrentStamine > 0 ? SprintVelocity : NormalMaxVelocity;
-		CurrentStamine = FMath::Abs((GetWorld()->GetTimeSeconds() + CurrentStamine) - GetWorld()->GetTimeSeconds());
+		CurrentStamine -= GetWorld()->GetDeltaSeconds();
 		bSprint = true;
 
 	}

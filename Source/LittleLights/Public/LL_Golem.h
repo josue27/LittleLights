@@ -43,7 +43,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 		void GolemStoped();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bDestroyAtEnd = false;
 
 };

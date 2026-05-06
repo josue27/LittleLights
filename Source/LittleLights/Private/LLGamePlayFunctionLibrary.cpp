@@ -28,7 +28,7 @@ bool ULLGamePlayFunctionLibrary::IsCloserToEnd(FVector PlayerPos, USplineCompone
 {
 	if(!Spline) return false;
 	float DistanceToStart = FVector::Dist2D(PlayerPos, Spline->GetLocationAtSplinePoint(0,ESplineCoordinateSpace::World));
-	float DistanceToEnd = FVector::Dist2D(PlayerPos,Spline->GetLocationAtSplinePoint(Spline->GetNumberOfSplinePoints(),ESplineCoordinateSpace::World));
+	float DistanceToEnd = FVector::Dist2D(PlayerPos,Spline->GetLocationAtSplinePoint(Spline->GetNumberOfSplinePoints() - 1,ESplineCoordinateSpace::World));
 
 	if(DistanceToStart < DistanceToEnd)
 	{

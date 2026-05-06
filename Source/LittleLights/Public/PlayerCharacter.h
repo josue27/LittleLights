@@ -186,9 +186,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LLPLayer|AI")
 		UAIPerceptionStimuliSourceComponent* AIPerceptionStimuliSource;
-	UPROPERTY(BlueprintreadWrite)
+	UPROPERTY(BlueprintReadWrite)
 		ALL_GameModeBase* LLGameMode;
-	UPROPERTY(BlueprintreadWrite)
+	UPROPERTY(BlueprintReadWrite)
 		ALL_AIBeast* Beast;
 public:
 	// Called every frame

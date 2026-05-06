@@ -16,12 +16,6 @@ ALL_Orb::ALL_Orb()
 
 	TorchMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Torch Mesh"));
 	TorchMesh->SetupAttachment(Root);
-
-	if (LiquidMesh)
-	{
-
-		InstanceLiquidMaterial = UMaterialInstanceDynamic::Create(LiquidMesh->GetMaterial(0), this);
-	}
 }
 
 // Called when the game starts or when spawned
@@ -30,7 +24,11 @@ void ALL_Orb::BeginPlay()
 	Super::BeginPlay();
 	//Initial Light
 	RemainingLightTime = MaxLightUpTime + GetWorld()->GetTimeSeconds();
-	//UpdateLight(1.0f);
+
+	if (LiquidMesh)
+	{
+		InstanceLiquidMaterial = UMaterialInstanceDynamic::Create(LiquidMesh->GetMaterial(0), this);
+	}
 }
 
 // Called every frame
