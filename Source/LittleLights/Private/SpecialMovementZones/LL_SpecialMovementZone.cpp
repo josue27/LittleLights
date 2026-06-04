@@ -115,10 +115,14 @@ void ALL_SpecialMovementZone::PlayerEndedTask()
 {
 	BlockerCollider->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	TriggerCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	ALL_PlayerState* PlayerState = Cast<ALL_PlayerState>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-	if (PlayerState)
+	APlayerCharacter* PC = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	if (PC)
 	{
-		PlayerState->OnInteractionEnded.RemoveDynamic(this, &ALL_SpecialMovementZone::InteractionEnded);
+		ALL_PlayerState* PlayerState = Cast<ALL_PlayerState>(PC->GetPlayerState());
+		if (PlayerState)
+		{
+			PlayerState->OnInteractionEnded.RemoveDynamic(this, &ALL_SpecialMovementZone::InteractionEnded);
+		}
 	}
 	if (bIsSingleUse)
 	{

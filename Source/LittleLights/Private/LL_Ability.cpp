@@ -20,10 +20,16 @@ void ULL_Ability::Initialize(ULL_AbilityComponent* AbilityComp)
 
 UWorld* ULL_Ability::GetWorld() const
 {
-	UWorld* World = Cast<UWorld>(GetOuter());
-	if(World)
+	if (AbilityComponent)
 	{
-		return  World;
+		if (AActor* Owner = AbilityComponent->GetOwner())
+		{
+			return Owner->GetWorld();
+		}
+	}
+	if (AActor* OuterActor = Cast<AActor>(GetOuter()))
+	{
+		return OuterActor->GetWorld();
 	}
 	return nullptr;
 }

@@ -79,8 +79,11 @@ void ALL_PlayerControllerBase::SetupInputComponent()
 	// InputComponent->BindAction("PauseMenu",IE_Pressed,this,&ALL_PlayerControllerBase::TogglePauseMenu);
 
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	Subsystem->ClearAllMappings();
-	Subsystem->AddMappingContext(InputMapping, 0);
+	if (Subsystem)
+	{
+		Subsystem->ClearAllMappings();
+		Subsystem->AddMappingContext(InputMapping, 0);
+	}
 	
 	UEnhancedInputComponent* Input = Cast<UEnhancedInputComponent>(InputComponent);
 	Input->BindAction(Pause_IA,ETriggerEvent::Triggered,this,&ALL_PlayerControllerBase::TogglePauseMenu);

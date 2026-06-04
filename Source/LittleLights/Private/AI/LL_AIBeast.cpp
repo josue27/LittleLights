@@ -36,10 +36,11 @@ void ALL_AIBeast::BeginPlay()
 {
 	Super::BeginPlay();
 
-	LLPlayer = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerController(GetWorld(),0)->GetPawn());
-	AIC = nullptr ? Cast<AAIController>(GetController()) : AIC;
+	APlayerController* PlayerCtrl = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	LLPlayer = PlayerCtrl ? Cast<APlayerCharacter>(PlayerCtrl->GetPawn()) : nullptr;
+	if (!AIC) { AIC = Cast<AAIController>(GetController()); }
 
-	ALL_PlayerState* LLPlayerState = Cast<ALL_PlayerState>(LLPlayer->GetPlayerState());
+	ALL_PlayerState* LLPlayerState = LLPlayer ? Cast<ALL_PlayerState>(LLPlayer->GetPlayerState()) : nullptr;
 	if(LLPlayerState)
 	{
 		LLPlayerState->OnInteractionStarted.AddDynamic(this,&ALL_AIBeast::ALL_AIBeast::UserStartedInteraction);
@@ -64,7 +65,7 @@ void ALL_AIBeast::Tick(float DeltaTime)
 	}*/
 	if (LLPlayer )
 	{
-		AIC = nullptr ? Cast<AAIController>(GetController()) : AIC;
+		if (!AIC) { AIC = Cast<AAIController>(GetController()); }
 		if (AIC)
 		{
 			AIC->GetBlackboardComponent()->SetValueAsBool("CanChasePlayer", LLPlayer->bOrbOff);

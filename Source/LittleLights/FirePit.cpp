@@ -111,7 +111,7 @@ FText AFirePit::GetInteractText_Implementation(APawn* InstigatorPawn)
 	
 	if(Player )
 	{
-		//this is not working because
+		//this is not working because meeeh 
 		return InteractionMessage;
 
 	}

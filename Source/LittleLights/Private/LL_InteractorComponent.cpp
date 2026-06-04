@@ -48,6 +48,7 @@ void ULL_InteractorComponent::TickComponent(float DeltaTime, ELevelTick TickType
 void ULL_InteractorComponent::FindInteractable()
 {
 	APawn* PlayerOwner = Cast<APawn>(GetOwner());
+	if (!PlayerOwner) return;
 
 	FVector Start = PlayerOwner->GetActorLocation();
 	FVector End = Start + (PlayerOwner->GetActorForwardVector() * DistanceRay);
@@ -69,7 +70,7 @@ void ULL_InteractorComponent::FindInteractable()
 		}
 		
 		AActor* Actor = Hit.GetActor();
-		if(Actor->Implements<ULL_GameplayInterface>() && !Cast<APlayerCharacter>(Actor))
+		if(Actor && Actor->Implements<ULL_GameplayInterface>() && !Cast<APlayerCharacter>(Actor))
 		{
 			if(ALL_SpecialMovementZone* SpecialMZ = Cast<ALL_SpecialMovementZone>(Actor))
 			{
