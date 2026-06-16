@@ -212,7 +212,7 @@ void ALL_PlayerControllerBase::ShowArrowWithTimeToPressUI(LLEInputDirection KeyP
 
 void ALL_PlayerControllerBase::ShowTotemPiecesHUD(bool bShow)
 {
-	if (LL_GameHUD)
+	if (LL_GameHUD && LL_GameHUD->PlayerOverlay)
 	{
 		LL_GameHUD->PlayerOverlay->ShowTotemPieceHUD(bShow);
 	}
@@ -220,7 +220,7 @@ void ALL_PlayerControllerBase::ShowTotemPiecesHUD(bool bShow)
 
 void ALL_PlayerControllerBase::TotemPiecesDeliveredHUD()
 {
-	if (LL_GameHUD)
+	if (LL_GameHUD && LL_GameHUD->PlayerOverlay)
 	{
 		LL_GameHUD->PlayerOverlay->TotemPieceDeliveredHUD();
 	}
@@ -228,9 +228,9 @@ void ALL_PlayerControllerBase::TotemPiecesDeliveredHUD()
 
 void ALL_PlayerControllerBase::ShowDialogue(const FLL_DialogueLineStruct DialogueStruct, const bool bShow)
 {
-	if(LL_GameHUD )
+	if(LL_GameHUD && LL_GameHUD->PlayerOverlay)
 	{
-	
+
 		LL_GameHUD->PlayerOverlay->ShowDialogue(bShow, DialogueStruct);
 		if(DialogueStruct.DialogueLines.Num() > 0)
 		{
@@ -238,17 +238,17 @@ void ALL_PlayerControllerBase::ShowDialogue(const FLL_DialogueLineStruct Dialogu
 				LL_GameHUD->PlayerOverlay->OnDialogueLinesOver.AddDynamic(this,&ALL_PlayerControllerBase::DialogueEnded);
 
 		}
-		
+
 	}
 }
 
 void ALL_PlayerControllerBase::ShowNextDialogue()
 {
-	if(LL_GameHUD)
+	if(LL_GameHUD && LL_GameHUD->PlayerOverlay)
 	{
-	
+
 		LL_GameHUD->PlayerOverlay->NextDialogue();
-	
+
 	}
 }
 
@@ -260,14 +260,14 @@ void ALL_PlayerControllerBase::DialogueEnded_Implementation()
 {
 	ShowDialogue(FLL_DialogueLineStruct(),false);
 	OnDialogueLinesOver.Broadcast();
-	if(LL_GameHUD)
+	if(LL_GameHUD && LL_GameHUD->PlayerOverlay)
 		LL_GameHUD->PlayerOverlay->OnDialogueLinesOver.RemoveDynamic(this,&ALL_PlayerControllerBase::DialogueEnded);
 
 }
 
 void ALL_PlayerControllerBase::ShowBeastPresenceImg_Implementation(bool bShow)
 {
-	if(LL_GameHUD)
+	if(LL_GameHUD && LL_GameHUD->PlayerOverlay)
 	{
 		LL_GameHUD->PlayerOverlay->ShowBeastPresenceHUD(bShow);
 	}

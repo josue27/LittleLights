@@ -64,12 +64,12 @@ void ULL_DialogueComponent::StartDialogue()
 		}
 		else
 		{
-			FLL_DialogueLineStruct DialogueStruct = FLL_DialogueLineStruct();
-			FLL_DialogueLine DialogueLine;
-			DialogueLine.Dialogue = FText::FromString("[Closing...]");
-			DialogueStruct.DialogueLines.Add(DialogueLine);
-			PC->ShowDialogue(DialogueStruct, false);
-
+			// PC is null, clean up state without showing dialogue
+			// FLL_DialogueLineStruct DialogueStruct = FLL_DialogueLineStruct();
+			// FLL_DialogueLine DialogueLine;
+			// DialogueLine.Dialogue = FText::FromString("[Closing...]");
+			// DialogueStruct.DialogueLines.Add(DialogueLine);
+			// PC->ShowDialogue(DialogueStruct, false);
 		}
 		InDialogueIndex = 0;
 		DialogueStatus = LL_DialogueState::D_Ended;
