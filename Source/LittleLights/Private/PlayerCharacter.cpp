@@ -65,6 +65,8 @@ APlayerCharacter::APlayerCharacter()
 	
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->SetupAttachment(SpringArmComponent);
+	// Fix widescreen stretching: maintain vertical FOV, let horizontal expand
+	CameraComp->AspectRatioAxisConstraint = EAspectRatioAxisConstraint::AspectRatio_MaintainYFOV;
 	FillLight = CreateDefaultSubobject<USpotLightComponent>(TEXT("FillLight"));
 	FillLight->SetupAttachment(SpringArmComp_FillLight);
 

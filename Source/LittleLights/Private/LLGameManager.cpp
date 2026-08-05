@@ -43,6 +43,19 @@ void ULLGameManager::SaveGame()
 	}
 }
 
+void ULLGameManager::DeleteSaveGame()
+{
+	if (UGameplayStatics::DoesSaveGameExist("LLSaveGame", 0))
+	{
+		UGameplayStatics::DeleteGameInSlot("LLSaveGame", 0);
+		UE_LOG(LogTemp, Warning, TEXT("Save game deleted."));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No save game found to delete."));
+	}
+}
+
 void ULLGameManager::LoadGame()
 {
 	if (USaveGame* LoadedSaveGame = UGameplayStatics::LoadGameFromSlot("LLSaveGame", 0))

@@ -39,6 +39,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void LoadGame();
+
+	UFUNCTION(BlueprintCallable)
+	void DeleteSaveGame();
 	
 	UPROPERTY(BlueprintReadOnly)
 	ELLMapsIndexEntry InLevelCompleted;
