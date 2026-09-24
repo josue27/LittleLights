@@ -53,19 +53,13 @@ void ALL_GameModeBase::StartPlay()
 }
 void ALL_GameModeBase::SaveFileLoaded(bool bSuccess)
 {
+	//A completed level must not re-trigger completion on load. Always run the
+	//normal level sequence; "already completed" only gates progression (see
+	//ADoorBase::CanOpenDoor), not level startup.
+	StartSequence();
+
 	if(bSuccess && GetLevelConfiguration())
 	{
-		if(LlGameManager->GameSave.LevelsCompleted == GetLevelConfiguration()->InLevel)
-		{
-			//we have completed the level, what should we do?
-			OnLevelCompleted.Broadcast();
-			
-		}
-		else
-		{
-			
-			StartSequence();
-		}
 		//Save game
 		if (ULLGameManager* GameManager = GetGameInstance()->GetSubsystem<ULLGameManager>())
 		{
@@ -75,10 +69,9 @@ void ALL_GameModeBase::SaveFileLoaded(bool bSuccess)
 	}
 	else
 	{
-		StartSequence();
 		StartBeastTimer();
 	}
-		
+
 }
 
 void ALL_GameModeBase::StartSequence_Implementation()
@@ -90,7 +83,10 @@ void ALL_GameModeBase::StartSequence_Implementation()
 	Player = Cast<APlayerCharacter>( UGameplayStatics::GetPlayerPawn(GetWorld(),0));
 
 	bool bStartWithIntroMovement = false;
-	if(LevelConfigurationDataAsset)
+	const bool bHasLevelConfig = (LevelConfigurationDataAsset != nullptr);
+	const bool bStartWithLightUp = bHasLevelConfig && LevelConfigurationDataAsset->bStartWithLightUp;
+	const bool bStartWithDecay = bHasLevelConfig && LevelConfigurationDataAsset->bStartWithDecay;
+	if(bHasLevelConfig)
 	{
 		bStartWithIntroMovement = LevelConfigurationDataAsset->bStartWithIntroMovement;
 	}
@@ -98,7 +94,7 @@ void ALL_GameModeBase::StartSequence_Implementation()
 	{
 		if (Player->ToolsComponent)
 		{
-			if(LevelConfigurationDataAsset->bStartWithLightUp)
+			if(bStartWithLightUp)
 				Player->ToolsComponent->RefillOrb(30.0f, false);
 			
 			UE_LOG(LogTemp, Warning, TEXT("GM: Lighting orb"));
@@ -115,8 +111,8 @@ void ALL_GameModeBase::StartSequence_Implementation()
 				if (Player->ToolsComponent)
 				{
 					//This is so when we start the level the light is up
-					if(LevelConfigurationDataAsset->bStartWithLightUp)
-						Player->ToolsComponent->RefillOrb(30.0f, LevelConfigurationDataAsset->bStartWithDecay);
+					if(bStartWithLightUp)
+						Player->ToolsComponent->RefillOrb(30.0f, bStartWithDecay);
 					
 					UE_LOG(LogTemp, Warning, TEXT("GM: Lighting orb"));
 				}
@@ -127,13 +123,13 @@ void ALL_GameModeBase::StartSequence_Implementation()
 			LogOnScreen(GetWorld(), "No Start Target found", FColor::Yellow);
 			UE_LOG(LogTemp, Warning, TEXT("Could not start the sequence"))
 
-			PlayerEndedIntroMovement(LevelConfigurationDataAsset->bStartWithLightUp,LevelConfigurationDataAsset->bStartWithDecay);
+			PlayerEndedIntroMovement(bStartWithLightUp,bStartWithDecay);
 
 		}
 	}
 	else
 	{
-		PlayerEndedIntroMovement(LevelConfigurationDataAsset->bStartWithLightUp,LevelConfigurationDataAsset->bStartWithDecay);
+		PlayerEndedIntroMovement(bStartWithLightUp,bStartWithDecay);
 
 	}
 	

@@ -28,9 +28,12 @@ void ALL_DialogueTrigger::ActivateObjectsOnList_Implementation()
 {
 	ILL_GameplayInterface::ActivateObjectsOnList_Implementation();
 	
-	for (auto ActorItem: ActivableItems)
+	for (AActor* ActorItem : ActivableItems)
 	{
-		ILL_GameplayInterface::Execute_ActivateObject(ActorItem);
+		if (ActorItem && IsValid(ActorItem) && ActorItem->Implements<ULL_GameplayInterface>())
+		{
+			ILL_GameplayInterface::Execute_ActivateObject(ActorItem);
+		}
 	}
 }
 

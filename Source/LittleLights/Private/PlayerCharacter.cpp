@@ -163,7 +163,10 @@ void APlayerCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	//UpdateRotacion();
 	
-	MovementInputVector = MoveActionBinding->GetValue().Get<FVector2D>();
+	if (MoveActionBinding)
+	{
+		MovementInputVector = MoveActionBinding->GetValue().Get<FVector2D>();
+	}
 	if(bIsTutorialCharacter)return;
 	CurveTimeline.TickTimeline(DeltaTime);
 
@@ -209,9 +212,15 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());
-	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
-	Subsystem->ClearAllMappings();
-	Subsystem->AddMappingContext(InputMapping, 0);
+	if (PlayerController && PlayerController->GetLocalPlayer())
+	{
+		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+		if (Subsystem)
+		{
+			Subsystem->ClearAllMappings();
+			Subsystem->AddMappingContext(InputMapping, 0);
+		}
+	}
 	
 	UEnhancedInputComponent* Input = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	Input->BindAction(MoveForward_IA,ETriggerEvent::Triggered,this,&APlayerCharacter::Movement);
