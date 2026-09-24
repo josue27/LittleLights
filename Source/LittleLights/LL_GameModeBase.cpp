@@ -13,6 +13,8 @@
 #include "PlayerCharacter.h"
 #include "Blueprint/UserWidget.h"
 #include "Torch.h"
+#include "LL_Tottem.h"
+#include "Engine/StaticMeshActor.h"
 #include "Engine/AssetManager.h"
 #include "LLComponents/LL_ToolsComponent.h"
 
@@ -53,24 +55,23 @@ void ALL_GameModeBase::StartPlay()
 }
 void ALL_GameModeBase::SaveFileLoaded(bool bSuccess)
 {
-	if(bSuccess && GetLevelConfiguration())
+	ULLGameManager* GameManager = GetGameInstance()->GetSubsystem<ULLGameManager>();
+
+	if (bSuccess && GetLevelConfiguration() && GameManager)
 	{
-		if(LlGameManager->GameSave.LevelsCompleted == GetLevelConfiguration()->InLevel)
+		const ELLMapsIndexEntry EnteringLevel = GetLevelConfiguration()->InLevel;
+		const bool bResume = GameManager->GameSave.bHasMidLevelProgress
+			&& GameManager->GameSave.InLevel == EnteringLevel;
+
+		if (bResume)
 		{
-			//we have completed the level, what should we do?
-			OnLevelCompleted.Broadcast();
-			
+			RestoreLevelProgress();
 		}
 		else
 		{
-			
+			GameManager->ClearLevelProgress();
+			GameManager->LevelChanged(EnteringLevel);
 			StartSequence();
-		}
-		//Save game
-		if (ULLGameManager* GameManager = GetGameInstance()->GetSubsystem<ULLGameManager>())
-		{
-			GameManager->LevelChanged(GetLevelConfiguration()->InLevel);
-			GameManager->SaveGame();
 		}
 	}
 	else
@@ -78,7 +79,59 @@ void ALL_GameModeBase::SaveFileLoaded(bool bSuccess)
 		StartSequence();
 		StartBeastTimer();
 	}
-		
+
+}
+
+void ALL_GameModeBase::RestoreLevelProgress()
+{
+	ULLGameManager* GameManager = GetGameInstance()->GetSubsystem<ULLGameManager>();
+	if (!GameManager)
+	{
+		return;
+	}
+
+	// 1. Totem: marcar piezas ya entregadas
+	if (ALL_Tottem* Totem = Cast<ALL_Tottem>(UGameplayStatics::GetActorOfClass(GetWorld(), ALL_Tottem::StaticClass())))
+	{
+		for (FTottemPieceState& State : Totem->TotemPieces)
+		{
+			if (GameManager->GameSave.DeliveredPieces.Contains(State.PieceType))
+			{
+				State.Delivered = true;
+				if (State.TotemPiecePlaced)
+				{
+					State.TotemPiecePlaced->SetActorHiddenInGame(true);
+					State.TotemPiecePlaced->SetActorEnableCollision(false);
+				}
+				if (State.TotemPice)
+				{
+					State.TotemPice->SetActorHiddenInGame(true);
+				}
+			}
+		}
+	}
+
+	// 2. Posicion del jugador
+	Player = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	if (Player && !GameManager->GameSave.PlayerLocation.IsZero())
+	{
+		Player->SetActorLocation(GameManager->GameSave.PlayerLocation);
+	}
+
+	// 3. Orbe
+	if (Player && Player->ToolsComponent)
+	{
+		const float Delta = FMath::Clamp(GameManager->GameSave.OrbRemainingDelta, 0.f, 1.f);
+		Player->ToolsComponent->RefillOrb(Delta * 30.0f, false);
+	}
+
+	// 4. Habilitar input (equivalente a fin de intro, sin el movimiento)
+	if (Player)
+	{
+		Player->EnableInput(UGameplayStatics::GetPlayerController(this, 0));
+		Player->ResetWalkSpeed();
+	}
+	GameStart();
 }
 
 void ALL_GameModeBase::StartSequence_Implementation()
@@ -310,6 +363,7 @@ void ALL_GameModeBase::BeaconCompleted_Implementation()
 	//Save game
 	if (ULLGameManager* GameManager = GetGameInstance()->GetSubsystem<ULLGameManager>())
 	{
+		GameManager->ClearLevelProgress();
 		GameManager->LevelCompleted(GetLevelConfiguration()->InLevel);
 		GameManager->SaveGame();
 	}

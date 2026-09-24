@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
+#include "Tottem_Piece.h"
 #include "FLLGameSaveData.generated.h"
 
 
@@ -55,6 +56,22 @@ struct FLLGameSaveData
 	UPROPERTY(BlueprintReadWrite)
 	FVector Totem;
 
+	//Progreso medio nivel: piezas entregadas en el nivel en curso
+	UPROPERTY(BlueprintReadWrite)
+	TArray<TottemPieceType> DeliveredPieces;
+
+	//true cuando hay un nivel en curso que reanudar
+	UPROPERTY(BlueprintReadWrite)
+	bool bHasMidLevelProgress = false;
+
+	//Orbe: luz restante normalizada 0..1 (para reanudar)
+	UPROPERTY(BlueprintReadWrite)
+	float OrbRemainingDelta = 1.0f;
+
+	//Antorcha encendida
+	UPROPERTY(BlueprintReadWrite)
+	bool bTorchLit = false;
+
 	FLLGameSaveData()
 	{
 		LevelsCompleted = ELLMapsIndexEntry::TutorialA;
@@ -62,5 +79,9 @@ struct FLLGameSaveData
 		InitialEntranceCompleted = false;
 		PlayerLocation = FVector::Zero();
 		Totem = FVector::Zero();
+		DeliveredPieces.Empty();
+		bHasMidLevelProgress = false;
+		OrbRemainingDelta = 1.0f;
+		bTorchLit = false;
 	}
 };

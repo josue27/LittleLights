@@ -3,6 +3,7 @@
 
 #include "LLGameManager.h"
 #include "Kismet/GameplayStatics.h"
+#include "Misc/DateTime.h"
 
 
 void ULLGameManager::LevelCompleted(ELLMapsIndexEntry InLevel)
@@ -19,11 +20,11 @@ void ULLGameManager::SaveGame()
 {
 	if(ULLCustomSaveGame* LLSaveGame = Cast<ULLCustomSaveGame>(UGameplayStatics::CreateSaveGameObject(ULLCustomSaveGame::StaticClass())))
 	{
-		//We should equal the data I guess?
-		//LLSaveGame->GameData = GameSave;
-		
-		LLSaveGame->GameData.LevelsCompleted = GameSave.LevelsCompleted;
-		LLSaveGame->GameData.InLevel = GameSave.InLevel;
+		LLSaveGame->GameData = GameSave;
+		LLSaveGame->SaveID = 0;
+		LLSaveGame->UserIndex = 0;
+		LLSaveGame->DateWhenSaveLastModified = FDateTime::Now();
+
 		FAsyncSaveGameToSlotDelegate SaveDelegate;
 		SaveDelegate.BindLambda([this , LLSaveGame](const FString& SlotName, const int32 UserIndex, bool bSuccess)
 		{
@@ -41,6 +42,40 @@ void ULLGameManager::SaveGame()
 
 		UGameplayStatics::AsyncSaveGameToSlot(LLSaveGame,"LLSaveGame",0,SaveDelegate);
 	}
+}
+
+void ULLGameManager::AddDeliveredPiece(TottemPieceType PieceType)
+{
+	GameSave.DeliveredPieces.AddUnique(PieceType);
+	GameSave.bHasMidLevelProgress = true;
+}
+
+void ULLGameManager::ClearLevelProgress()
+{
+	GameSave.DeliveredPieces.Empty();
+	GameSave.bHasMidLevelProgress = false;
+	GameSave.OrbRemainingDelta = 1.0f;
+	GameSave.bTorchLit = false;
+}
+
+void ULLGameManager::SetPlayerLocation(const FVector& Location)
+{
+	GameSave.PlayerLocation = Location;
+}
+
+void ULLGameManager::SetInitialEntranceCompleted(bool bCompleted)
+{
+	GameSave.InitialEntranceCompleted = bCompleted;
+}
+
+void ULLGameManager::SetOrbState(float RemainingDelta)
+{
+	GameSave.OrbRemainingDelta = RemainingDelta;
+}
+
+void ULLGameManager::SetTorchState(bool bLit)
+{
+	GameSave.bTorchLit = bLit;
 }
 
 void ULLGameManager::DeleteSaveGame()

@@ -42,7 +42,25 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void DeleteSaveGame();
-	
+
+	UFUNCTION(BlueprintCallable)
+	void AddDeliveredPiece(TottemPieceType PieceType);
+
+	UFUNCTION(BlueprintCallable)
+	void ClearLevelProgress();
+
+	UFUNCTION(BlueprintCallable)
+	void SetPlayerLocation(const FVector& Location);
+
+	UFUNCTION(BlueprintCallable)
+	void SetInitialEntranceCompleted(bool bCompleted);
+
+	UFUNCTION(BlueprintCallable)
+	void SetOrbState(float RemainingDelta);
+
+	UFUNCTION(BlueprintCallable)
+	void SetTorchState(bool bLit);
+
 	UPROPERTY(BlueprintReadOnly)
 	ELLMapsIndexEntry InLevelCompleted;
 

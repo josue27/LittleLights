@@ -146,6 +146,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	ULevelConfiguration* GetLevelConfiguration();
 
+	UFUNCTION(BlueprintCallable)
+	void RestoreLevelProgress();
+
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable,Category="LLGameMode|GameMode")
 	void TottemCompleted();
 

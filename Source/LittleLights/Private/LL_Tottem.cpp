@@ -135,7 +135,14 @@ void ALL_Tottem::AddTotemPiece_Implementation(APlayerCharacter* InstigatorPlayer
 				}
 			
 				TotemPieces[i].Delivered = true;
-			
+
+				if (ULLGameManager* GameManager = GetGameInstance()->GetSubsystem<ULLGameManager>())
+				{
+					GameManager->AddDeliveredPiece(TotemPieces[i].PieceType);
+					GameManager->SetPlayerLocation(InstigatorPlayer->GetActorLocation());
+					GameManager->SaveGame();
+				}
+
 				PiecesToMove.Add(TotemPieces[i].PieceType,FVector::Zero());
 
 				UE_LOG(LogTemp,Warning,TEXT("piece found and added to tottem"));
