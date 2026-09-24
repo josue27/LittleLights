@@ -89,6 +89,13 @@ void ULLGameManager::DeleteSaveGame()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("No save game found to delete."));
 	}
+
+	//Reset in-memory state. Deleting only the disk slot leaves the stale GameSave
+	//struct (this subsystem lives for the whole process) which would be re-saved
+	//on the next SaveGame() call and resurrect the deleted file.
+	GameSave = FLLGameSaveData();
+	InLevelCompleted = ELLMapsIndexEntry::TutorialA;
+	CurrentLevel = ELLMapsIndexEntry::TutorialA;
 }
 
 void ULLGameManager::LoadGame()
