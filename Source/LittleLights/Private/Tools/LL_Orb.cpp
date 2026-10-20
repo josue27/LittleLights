@@ -81,12 +81,11 @@ void ALL_Orb::StopDecay()
 
 void ALL_Orb::RefillOrb(float Amount)
 {
-	
-	//this should work 
-	float AmountToAdd = FMath::Clamp(Amount + RemainingLightTime, 1.f, MaxLightUpTime);
-	RemainingLightTime = AmountToAdd + GetWorld()->GetTimeSeconds();
+	const float Now = GetWorld()->GetTimeSeconds();
+	const float CurrentRemaining = FMath::Max(RemainingLightTime - Now, 0.f);
+	const float NewRemaining = FMath::Clamp(CurrentRemaining + Amount, 0.f, MaxLightUpTime);
+	RemainingLightTime = Now + NewRemaining;
 
 	UpdateLight(1.f);
-
 }
 

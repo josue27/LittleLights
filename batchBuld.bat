@@ -1,16 +1,16 @@
 @echo off
-set ENGINE_PATH=E:\Epic\UE_5.4
-set PROJECT_PATH=F:\ParallelsGames\LittleLights 5.0\LittleLights.uproject
-set OUTPUT_PATH=F:\ParallelsGames\LittleLightsBuilds
+set ENGINE_PATH=C:\Program Files\Epic Games\UE_5.4
+set PROJECT_PATH=C:\Users\meval\Documents\ParallelsGames\LittleLights\LittleLights.uproject
+set OUTPUT_PATH=C:\Users\meval\Documents\ParallelsGames\LittleLightsBuilds
 set WINRAR_PATH=C:\Program Files\WinRAR\WinRAR.exe
-set RAR_OUTPUT=F:\ParallelsGames\LittleLightsBuilds\LittleLights_%date:~-4%-%date:~3,2%-%date:~0,2%.rar
+set RAR_OUTPUT=C:\Users\meval\Documents\ParallelsGames\LittleLightsBuilds\LittleLights_%date:~-4%-%date:~3,2%-%date:~0,2%.rar
 
 :: Build
 "%ENGINE_PATH%\Engine\Build\BatchFiles\RunUAT.bat" BuildCookRun ^
     -project="%PROJECT_PATH%" ^
     -noP4 ^
     -platform=Win64 ^
-    -clientconfig=Shipping ^
+    -clientconfig=Development ^
     -cook ^
     -build ^
     -stage ^

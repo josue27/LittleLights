@@ -18,6 +18,10 @@
 	],
 	"Plugins": [
 		{
+			"Name": "PythonScriptPlugin",
+			"Enabled": true
+		},
+		{
 			"Name": "BlockoutToolsPlugin",
 			"Enabled": false,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/d337b97aca8947a893526964e179acfd"
@@ -75,6 +79,26 @@
 		},
 		{
 			"Name": "OneClickControlRig",
+			"Enabled": true
+		},
+		{
+			"Name": "UE_MCP_Bridge",
+			"Enabled": true
+		},
+		{
+			"Name": "Niagara",
+			"Enabled": true
+		},
+		{
+			"Name": "PCG",
+			"Enabled": true
+		},
+		{
+			"Name": "EnhancedInput",
+			"Enabled": true
+		},
+		{
+			"Name": "GameplayAbilities",
 			"Enabled": true
 		}
 	]

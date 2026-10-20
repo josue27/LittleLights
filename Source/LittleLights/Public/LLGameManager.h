@@ -8,10 +8,11 @@
 #include "LLGameManager.generated.h"
 
 struct FLLGameSaveData;
+class APlayerCharacter;
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLoadGameCompleted,bool, bSuccess);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSaveGameCompleted);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSaveGameCompleted,bool, bSuccess);
 UCLASS()
 class LITTLELIGHTS_API ULLGameManager : public UGameInstanceSubsystem
 {
@@ -60,6 +61,18 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetTorchState(bool bLit);
+
+	UFUNCTION(BlueprintCallable)
+	void SetTotemDiscovered(bool bDiscovered);
+
+	UFUNCTION(BlueprintCallable)
+	void SetCarriedPieces(const TArray<TottemPieceType>& Pieces);
+
+	UFUNCTION(BlueprintCallable)
+	void CapturePlayerProgress(APlayerCharacter* Player);
+
+	UFUNCTION(BlueprintCallable)
+	void SaveGameAndCapturePlayer();
 
 	UPROPERTY(BlueprintReadOnly)
 	ELLMapsIndexEntry InLevelCompleted;

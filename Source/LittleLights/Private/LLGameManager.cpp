@@ -4,6 +4,12 @@
 #include "LLGameManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "Misc/DateTime.h"
+#include "PlayerCharacter.h"
+#include "../Torch.h"
+#include "Tottem_Piece.h"
+#include "LLComponents/LL_ToolsComponent.h"
+#include "Engine/GameInstance.h"
+#include "GameFramework/PlayerController.h"
 
 
 void ULLGameManager::LevelCompleted(ELLMapsIndexEntry InLevel)
@@ -31,12 +37,12 @@ void ULLGameManager::SaveGame()
 			if(bSuccess)
 			{
 				UE_LOG(LogTemp,Warning,TEXT("Saved Game Successfull"));
-				OnSaveGameCompleted.Broadcast();
+				OnSaveGameCompleted.Broadcast(true);
 			}
 			else
 			{
 				UE_LOG(LogTemp,Warning,TEXT("Saved Game Error"));
-
+				OnSaveGameCompleted.Broadcast(false);
 			}
 		});
 
@@ -53,9 +59,11 @@ void ULLGameManager::AddDeliveredPiece(TottemPieceType PieceType)
 void ULLGameManager::ClearLevelProgress()
 {
 	GameSave.DeliveredPieces.Empty();
+	GameSave.CarriedPieces.Empty();
 	GameSave.bHasMidLevelProgress = false;
 	GameSave.OrbRemainingDelta = 1.0f;
 	GameSave.bTorchLit = false;
+	GameSave.bTotemDiscovered = false;
 }
 
 void ULLGameManager::SetPlayerLocation(const FVector& Location)
@@ -76,6 +84,66 @@ void ULLGameManager::SetOrbState(float RemainingDelta)
 void ULLGameManager::SetTorchState(bool bLit)
 {
 	GameSave.bTorchLit = bLit;
+}
+
+void ULLGameManager::SetTotemDiscovered(bool bDiscovered)
+{
+	GameSave.bTotemDiscovered = bDiscovered;
+}
+
+void ULLGameManager::SetCarriedPieces(const TArray<TottemPieceType>& Pieces)
+{
+	GameSave.CarriedPieces = Pieces;
+}
+
+void ULLGameManager::CapturePlayerProgress(APlayerCharacter* Player)
+{
+	if (!Player)
+	{
+		return;
+	}
+
+	GameSave.PlayerLocation = Player->GetActorLocation();
+
+	GameSave.CarriedPieces.Empty();
+	for (ATottem_Piece* Piece : Player->TottemPieces)
+	{
+		if (Piece)
+		{
+			GameSave.CarriedPieces.AddUnique(Piece->PieceType);
+		}
+	}
+
+	if (Player->ToolsComponent)
+	{
+		GameSave.OrbRemainingDelta = Player->ToolsComponent->GetOrbRemainingDelta();
+	}
+
+	if (Player->Torch)
+	{
+		GameSave.bTorchLit = !Player->Torch->bLightOver;
+	}
+
+	GameSave.bHasMidLevelProgress = (GameSave.DeliveredPieces.Num() > 0)
+		|| (GameSave.CarriedPieces.Num() > 0)
+		|| (GameSave.OrbRemainingDelta < 1.0f)
+		|| GameSave.bTorchLit
+		|| GameSave.bTotemDiscovered;
+}
+
+void ULLGameManager::SaveGameAndCapturePlayer()
+{
+	APlayerCharacter* Player = nullptr;
+	if (UGameInstance* GI = GetGameInstance())
+	{
+		if (APlayerController* PC = GI->GetFirstLocalPlayerController())
+		{
+			Player = Cast<APlayerCharacter>(PC->GetPawn());
+		}
+	}
+
+	CapturePlayerProgress(Player);
+	SaveGame();
 }
 
 void ULLGameManager::DeleteSaveGame()

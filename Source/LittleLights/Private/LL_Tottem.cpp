@@ -74,6 +74,13 @@ void ALL_Tottem::Interact_Implementation(APawn* InstigatorPawn)
 		{
 			LLPlayerController->ShowTotemPiecesHUD(true);
 		}
+
+		if (ULLGameManager* GameManager = GetGameInstance()->GetSubsystem<ULLGameManager>())
+		{
+			GameManager->SetTotemDiscovered(true);
+			GameManager->CapturePlayerProgress(Player);
+			GameManager->SaveGame();
+		}
 	}else if(Player->TottemPieces.Num() > 0)
 	{
 		AddTotemPiece_Implementation(Player);
@@ -139,8 +146,6 @@ void ALL_Tottem::AddTotemPiece_Implementation(APlayerCharacter* InstigatorPlayer
 				if (ULLGameManager* GameManager = GetGameInstance()->GetSubsystem<ULLGameManager>())
 				{
 					GameManager->AddDeliveredPiece(TotemPieces[i].PieceType);
-					GameManager->SetPlayerLocation(InstigatorPlayer->GetActorLocation());
-					GameManager->SaveGame();
 				}
 
 				PiecesToMove.Add(TotemPieces[i].PieceType,FVector::Zero());
@@ -157,8 +162,15 @@ void ALL_Tottem::AddTotemPiece_Implementation(APlayerCharacter* InstigatorPlayer
 		}
 	}
 	InstigatorPlayer->TottemPieces.Empty();
+
+	if (ULLGameManager* GameManager = GetGameInstance()->GetSubsystem<ULLGameManager>())
+	{
+		GameManager->CapturePlayerProgress(InstigatorPlayer);
+		GameManager->SaveGame();
+	}
+
 	MovePieceAnim( PiecesToMove);
-	
+
 }
 
 //Called in blueprint for the moment
@@ -256,5 +268,15 @@ void ALL_Tottem::SetEndPositions()
 		{
 			TotemPiece.EndPosition = TotemPiece.TotemPiecePlaced->GetActorLocation();
 		}
+	}
+}
+
+void ALL_Tottem::RestoreDiscoveredState()
+{
+	discovered = true;
+	LLPlayerController = LLPlayerController == nullptr ? Cast<ALL_PlayerControllerBase>(UGameplayStatics::GetPlayerController(this, 0)) : LLPlayerController;
+	if (LLPlayerController)
+	{
+		LLPlayerController->ShowTotemPiecesHUD(true);
 	}
 }

@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "ue-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "ue-mcp@latest",
+        "C:/Users/meval/Documents/ParallelsGames/LittleLights/LittleLights.uproject"
+      ]
+    }
+  }
+}

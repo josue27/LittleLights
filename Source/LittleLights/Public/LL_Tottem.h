@@ -88,6 +88,9 @@ public:
 	UFUNCTION(CallInEditor)
 		void SetEndPositions();
 
+	UFUNCTION(BlueprintCallable)
+		void RestoreDiscoveredState();
+
 	
 
 protected:

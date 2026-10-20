@@ -53,12 +53,13 @@ struct FLLGameSaveData
 	UPROPERTY(BlueprintReadWrite)
 	FVector PlayerLocation;
 
-	UPROPERTY(BlueprintReadWrite)
-	FVector Totem;
-
 	//Progreso medio nivel: piezas entregadas en el nivel en curso
 	UPROPERTY(BlueprintReadWrite)
 	TArray<TottemPieceType> DeliveredPieces;
+
+	//Piezas en mano (recogidas, aun no entregadas)
+	UPROPERTY(BlueprintReadWrite)
+	TArray<TottemPieceType> CarriedPieces;
 
 	//true cuando hay un nivel en curso que reanudar
 	UPROPERTY(BlueprintReadWrite)
@@ -72,16 +73,21 @@ struct FLLGameSaveData
 	UPROPERTY(BlueprintReadWrite)
 	bool bTorchLit = false;
 
+	//Totem descubierto en el nivel en curso
+	UPROPERTY(BlueprintReadWrite)
+	bool bTotemDiscovered = false;
+
 	FLLGameSaveData()
 	{
 		LevelsCompleted = ELLMapsIndexEntry::TutorialA;
 		InLevel = ELLMapsIndexEntry::TutorialA;
 		InitialEntranceCompleted = false;
 		PlayerLocation = FVector::Zero();
-		Totem = FVector::Zero();
 		DeliveredPieces.Empty();
+		CarriedPieces.Empty();
 		bHasMidLevelProgress = false;
 		OrbRemainingDelta = 1.0f;
 		bTorchLit = false;
+		bTotemDiscovered = false;
 	}
 };

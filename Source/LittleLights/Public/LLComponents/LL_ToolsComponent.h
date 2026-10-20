@@ -66,6 +66,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "LL Tools | Orb")
 		float GetDeltaRemainOrb();
 
+	UFUNCTION(BlueprintCallable, Category = "LL Tools | Orb")
+		float GetOrbRemainingDelta();
+
+	UFUNCTION(BlueprintCallable, Category = "LL Tools | Orb")
+		void SetOrbRemainingDelta(float Delta);
+
 
 	UFUNCTION(BlueprintCallable, Category = "LL Tools | Orb")
 	void OrbRefillFinishedTutorial(bool bInShouldAvoidMovement);

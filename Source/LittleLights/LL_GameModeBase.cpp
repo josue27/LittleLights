@@ -17,6 +17,8 @@
 #include "Engine/StaticMeshActor.h"
 #include "Engine/AssetManager.h"
 #include "LLComponents/LL_ToolsComponent.h"
+#include "Tottem_Piece.h"
+#include "Tools/LL_Orb.h"
 
 ALL_GameModeBase::ALL_GameModeBase()
 {
@@ -93,6 +95,11 @@ void ALL_GameModeBase::RestoreLevelProgress()
 	// 1. Totem: marcar piezas ya entregadas
 	if (ALL_Tottem* Totem = Cast<ALL_Tottem>(UGameplayStatics::GetActorOfClass(GetWorld(), ALL_Tottem::StaticClass())))
 	{
+		if (GameManager->GameSave.bTotemDiscovered)
+		{
+			Totem->RestoreDiscoveredState();
+		}
+
 		for (FTottemPieceState& State : Totem->TotemPieces)
 		{
 			if (GameManager->GameSave.DeliveredPieces.Contains(State.PieceType))
@@ -118,14 +125,39 @@ void ALL_GameModeBase::RestoreLevelProgress()
 		Player->SetActorLocation(GameManager->GameSave.PlayerLocation);
 	}
 
-	// 3. Orbe
+	// 3. Piezas en mano
+	if (Player)
+	{
+		TArray<AActor*> PieceActors;
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATottem_Piece::StaticClass(), PieceActors);
+		for (AActor* Actor : PieceActors)
+		{
+			ATottem_Piece* Piece = Cast<ATottem_Piece>(Actor);
+			if (Piece && GameManager->GameSave.CarriedPieces.Contains(Piece->PieceType))
+			{
+				Player->AddTottemPiece(Piece);
+				Piece->bTaken = true;
+				Piece->SceneComponent->SetVisibility(false, true);
+				Piece->SphereCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
+			}
+		}
+	}
+
+	// 4. Orbe
 	if (Player && Player->ToolsComponent)
 	{
 		const float Delta = FMath::Clamp(GameManager->GameSave.OrbRemainingDelta, 0.f, 1.f);
-		Player->ToolsComponent->RefillOrb(Delta * 30.0f, false);
+		Player->ToolsComponent->SetOrbRemainingDelta(Delta);
 	}
 
-	// 4. Habilitar input (equivalente a fin de intro, sin el movimiento)
+	// 5. Antorcha
+	if (Player && Player->Torch && GameManager->GameSave.bTorchLit)
+	{
+		Player->Torch->TurnOnOrb();
+		Player->Torch->bLightOver = false;
+	}
+
+	// 6. Habilitar input (equivalente a fin de intro, sin el movimiento)
 	if (Player)
 	{
 		Player->EnableInput(UGameplayStatics::GetPlayerController(this, 0));

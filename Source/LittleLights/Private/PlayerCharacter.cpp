@@ -456,8 +456,8 @@ void APlayerCharacter::Movement(const FInputActionValue& Value)
 
 		
 
-		AddMovementInput(ForwardDirection,InputVector.Y * (VelocidadMovimiento * GetWorld()->DeltaTimeSeconds));
-		AddMovementInput(RightDirection,InputVector.X * (VelocidadMovimiento * GetWorld()->DeltaTimeSeconds));
+		AddMovementInput(ForwardDirection,InputVector.Y);
+		AddMovementInput(RightDirection,InputVector.X);
 
 		// FString DebugText = FString::Printf(TEXT("Forward Direction; %s Right Direction: %s Axisvalue: %s, Rotationyas %f "),*ForwardDirection.ToString(),*RightDirection.ToString(),*InputVector.ToString(),Rotation.Yaw);
 		// LogOnScreen(GetWorld(),DebugText);

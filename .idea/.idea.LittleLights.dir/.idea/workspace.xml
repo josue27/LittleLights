@@ -4,10 +4,23 @@
     <projectFile>LittleLights.uproject</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c088013-2782-4658-af1b-b1133f60d5c3" name="Changes" comment="">
+    <list default="true" id="fcf041f5-a2a9-45b3-ba1d-2444c1c207cf" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LittleLights.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LittleLights.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultGame.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultGame.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.LittleLights/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.LittleLights/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.LittleLights/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.LittleLights/.idea/indexLayout.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.LittleLights/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CLAUDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/CLAUDE.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UIX/Tutorial/CrossOver_Vid.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UIX/Tutorial/CrossOver_Vid.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UIX/Tutorial/CrouchUnderTut_Vid.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UIX/Tutorial/CrouchUnderTut_Vid.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UIX/Tutorial/JumpOverTut_Vid.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UIX/Tutorial/JumpOverTut_Vid.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UIX/Tutorial/beastscape.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UIX/Tutorial/beastscape.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LittleLights.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/LittleLights.uproject" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/LittleLights/Private/PlayerCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/LittleLights/Private/PlayerCharacter.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/batchBuld.bat" beforeDir="false" afterPath="$PROJECT_DIR$/batchBuld.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/global.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,26 +34,21 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$USER_HOME$/.claude/settings.json" root0="FORCE_HIGHLIGHTING" />
-  </component>
-  <component name="McpProjectServerCommands">
-    <commands />
-    <urls />
-  </component>
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="Toolset" />
+    <setting file="cidr-memory-view://0" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.mcp.json" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 4
 }</component>
-  <component name="ProjectId" id="37XfjuMJS9dHUAnIRk2PJrEyZoB" />
+  <component name="ProjectId" id="3JzRJpNahXi78WnSiQUKmokAoGk" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
@@ -129,22 +137,16 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="4c088013-2782-4658-af1b-b1133f60d5c3" name="Changes" comment="" />
-      <created>1767054475149</created>
+      <changelist id="fcf041f5-a2a9-45b3-ba1d-2444c1c207cf" name="Changes" comment="" />
+      <created>1790661844199</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1767054475149</updated>
-      <workItem from="1767054478655" duration="1234000" />
-      <workItem from="1769745153649" duration="32000" />
-      <workItem from="1769745205123" duration="66000" />
-      <workItem from="1778047164741" duration="1985000" />
-      <workItem from="1780377872614" duration="1915000" />
-      <workItem from="1780462957511" duration="1223000" />
-      <workItem from="1780550174289" duration="1603000" />
-      <workItem from="1780981250045" duration="801000" />
-      <workItem from="1781064796560" duration="547000" />
-      <workItem from="1785986972114" duration="797000" />
-      <workItem from="1785990408207" duration="1751000" />
+      <updated>1790661844199</updated>
+      <workItem from="1790661872448" duration="589000" />
+      <workItem from="1790831457265" duration="4386000" />
+      <workItem from="1791394743098" duration="6950000" />
+      <workItem from="1792026433716" duration="2869000" />
+      <workItem from="1792287773515" duration="9194000" />
     </task>
     <servers />
   </component>

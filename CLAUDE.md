@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+> **Session status / project history:** see [`CHANGELOG.md`](CHANGELOG.md). Update it at the end of each session.
+
 ## Build Commands
 
 - **Generate project files:** Right-click `.uproject` → "Generate Visual Studio project files", or run `UnrealVersionSelector.exe /projectfiles "<path>\LittleLights.uproject"`

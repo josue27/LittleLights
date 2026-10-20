@@ -146,6 +146,26 @@ float ULL_ToolsComponent::GetDeltaRemainOrb()
 	return 0.0f;
 }
 
+float ULL_ToolsComponent::GetOrbRemainingDelta()
+{
+	if (Orb && Orb->MaxLightUpTime > 0.f)
+	{
+		const float Remaining = Orb->RemainingLightTime - GetWorld()->GetTimeSeconds();
+		return FMath::Clamp(Remaining / Orb->MaxLightUpTime, 0.f, 1.f);
+	}
+	return 1.0f;
+}
+
+void ULL_ToolsComponent::SetOrbRemainingDelta(float Delta)
+{
+	if (Orb)
+	{
+		const float Clamped = FMath::Clamp(Delta, 0.f, 1.f);
+		Orb->RemainingLightTime = GetWorld()->GetTimeSeconds() + Clamped * Orb->MaxLightUpTime;
+		Orb->RemainingDeltaTime = Clamped;
+	}
+}
+
 //This is kind of hacky
 void ULL_ToolsComponent::OrbRefillFinishedTutorial(bool bInShouldAvoidMovement)
 {
