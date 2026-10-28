@@ -274,6 +274,8 @@ void ALL_Tottem::SetEndPositions()
 void ALL_Tottem::RestoreDiscoveredState()
 {
 	discovered = true;
+	TotemDiscoveredEvent();
+
 	LLPlayerController = LLPlayerController == nullptr ? Cast<ALL_PlayerControllerBase>(UGameplayStatics::GetPlayerController(this, 0)) : LLPlayerController;
 	if (LLPlayerController)
 	{
