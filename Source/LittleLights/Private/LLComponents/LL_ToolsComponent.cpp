@@ -148,10 +148,9 @@ float ULL_ToolsComponent::GetDeltaRemainOrb()
 
 float ULL_ToolsComponent::GetOrbRemainingDelta()
 {
-	if (Orb && Orb->MaxLightUpTime > 0.f)
+	if (Orb)
 	{
-		const float Remaining = Orb->RemainingLightTime - GetWorld()->GetTimeSeconds();
-		return FMath::Clamp(Remaining / Orb->MaxLightUpTime, 0.f, 1.f);
+		return FMath::Clamp(Orb->RemainingDeltaTime, 0.f, 1.f);
 	}
 	return 1.0f;
 }
@@ -164,6 +163,11 @@ void ULL_ToolsComponent::SetOrbRemainingDelta(float Delta)
 		Orb->RemainingLightTime = GetWorld()->GetTimeSeconds() + Clamped * Orb->MaxLightUpTime;
 		Orb->RemainingDeltaTime = Clamped;
 	}
+}
+
+bool ULL_ToolsComponent::IsOrbDecaying() const
+{
+	return Orb && Orb->bStartDecay;
 }
 
 //This is kind of hacky

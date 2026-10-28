@@ -72,6 +72,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "LL Tools | Orb")
 		void SetOrbRemainingDelta(float Delta);
 
+	UFUNCTION(BlueprintCallable, Category = "LL Tools | Orb")
+		bool IsOrbDecaying() const;
+
 
 	UFUNCTION(BlueprintCallable, Category = "LL Tools | Orb")
 	void OrbRefillFinishedTutorial(bool bInShouldAvoidMovement);

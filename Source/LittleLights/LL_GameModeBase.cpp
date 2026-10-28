@@ -148,6 +148,11 @@ void ALL_GameModeBase::RestoreLevelProgress()
 	{
 		const float Delta = FMath::Clamp(GameManager->GameSave.OrbRemainingDelta, 0.f, 1.f);
 		Player->ToolsComponent->SetOrbRemainingDelta(Delta);
+
+		if (GameManager->GameSave.bOrbDecaying)
+		{
+			Player->ToolsComponent->StartOrbDecay();
+		}
 	}
 
 	// 5. Antorcha

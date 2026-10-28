@@ -69,6 +69,10 @@ struct FLLGameSaveData
 	UPROPERTY(BlueprintReadWrite)
 	float OrbRemainingDelta = 1.0f;
 
+	//Orbe: decay en curso (para reanudar y mostrar status en WBP)
+	UPROPERTY(BlueprintReadWrite)
+	bool bOrbDecaying = false;
+
 	//Antorcha encendida
 	UPROPERTY(BlueprintReadWrite)
 	bool bTorchLit = false;
@@ -87,6 +91,7 @@ struct FLLGameSaveData
 		CarriedPieces.Empty();
 		bHasMidLevelProgress = false;
 		OrbRemainingDelta = 1.0f;
+		bOrbDecaying = false;
 		bTorchLit = false;
 		bTotemDiscovered = false;
 	}

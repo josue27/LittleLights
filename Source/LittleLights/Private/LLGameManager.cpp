@@ -62,6 +62,7 @@ void ULLGameManager::ClearLevelProgress()
 	GameSave.CarriedPieces.Empty();
 	GameSave.bHasMidLevelProgress = false;
 	GameSave.OrbRemainingDelta = 1.0f;
+	GameSave.bOrbDecaying = false;
 	GameSave.bTorchLit = false;
 	GameSave.bTotemDiscovered = false;
 }
@@ -117,6 +118,7 @@ void ULLGameManager::CapturePlayerProgress(APlayerCharacter* Player)
 	if (Player->ToolsComponent)
 	{
 		GameSave.OrbRemainingDelta = Player->ToolsComponent->GetOrbRemainingDelta();
+		GameSave.bOrbDecaying = Player->ToolsComponent->IsOrbDecaying();
 	}
 
 	if (Player->Torch)
@@ -127,6 +129,7 @@ void ULLGameManager::CapturePlayerProgress(APlayerCharacter* Player)
 	GameSave.bHasMidLevelProgress = (GameSave.DeliveredPieces.Num() > 0)
 		|| (GameSave.CarriedPieces.Num() > 0)
 		|| (GameSave.OrbRemainingDelta < 1.0f)
+		|| GameSave.bOrbDecaying
 		|| GameSave.bTorchLit
 		|| GameSave.bTotemDiscovered;
 }

@@ -46,7 +46,6 @@ void ALL_Orb::UpdateLight(float DeltaTime)
 {
 	RemainingDeltaTime = FMath::Clamp((RemainingLightTime - GetWorld()->GetTimeSeconds()) / MaxLightUpTime, 0.0f, 1.0f);
 	
-	RemainingDeltaTime = FMath::FInterpTo(RemainingDeltaTime, 0.f, DeltaTime, 0.5f);
 	if (ToolsComponent)
 	{
 
